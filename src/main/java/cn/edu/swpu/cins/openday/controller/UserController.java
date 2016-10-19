@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_AUTHENTICATING_USER_SUCCESS;
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_SUCCESS;
 
@@ -40,7 +42,12 @@ public class UserController {
 			if (cacheResult == ADD_AUTHENTICATING_USER_SUCCESS) {
 				String subject = MailFormatUtil.getSignUpSubject(signUpUser.getUsername());
 				String text = MailFormatUtil.getSignUpContent(signUpUser.getMail(), token);
-				mailService.send(signUpUser.getMail(), subject, text);
+				try {
+					mailService.send(signUpUser.getMail(), subject, text);
+				} catch (MessagingException e) {
+					// TODO: 16-10-19 deal exception
+					e.printStackTrace();
+				}
 				return new UserHttpResult(UserHttpResultEnum.ADD_USER_SUCCESS);
 			}
 			// TODO: 16-10-19 deal cache signUpUser failed
