@@ -1,0 +1,29 @@
+group 'cn.edu.swpu.cins'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+
+mainClassName = 'cn.edu.swpu.cins.openday.Main'
+
+sourceCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  compile ('org.springframework.boot:spring-boot-starter-web')
+  compile ('mysql:mysql-connector-java:5.1.38')
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath('org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE')
+  }
+}
