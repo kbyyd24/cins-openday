@@ -1,6 +1,6 @@
 package cn.edu.swpu.cins.openday.controller;
 
-import cn.edu.swpu.cins.openday.model.http.User;
+import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import cn.edu.swpu.cins.openday.service.MailService;
@@ -42,13 +42,13 @@ public class UserControllerTest {
 		String password = "password";
 		String repassword = "password";
 		String mail = "melo@gaoyuexiang.cn";
-		User user = new User(username, password, repassword, mail);
-		when(userService.signUp(user)).thenReturn(ADD_USER_SUCCESS);
+		SignUpUser signUpUser = new SignUpUser(username, password, repassword, mail);
+		when(userService.signUp(signUpUser)).thenReturn(ADD_USER_SUCCESS);
 		when(cacheService.saveAuthingUser(any(AuthenticatingUser.class)))
 						.thenReturn(ADD_AUTHENTICATING_USER_SUCCESS);
 		String subject = "subject";
 		String text = "text";
 		doNothing().when(mailService).send(mail, subject, text);
-		userController.signUp(user);
+		userController.signUp(signUpUser);
 	}
 }

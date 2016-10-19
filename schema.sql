@@ -1,4 +1,4 @@
-CREATE TABLE `user` (
+CREATE TABLE `signUpUser` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `username` varchar(255) NOT NULL COMMENT 'username',
   `password` char(60) NOT NULL COMMENT 'password',
@@ -42,7 +42,7 @@ CREATE TABLE `match` (
 CREATE TABLE registration (
   `id` int(11) NOT NULL COMMENT 'primary key',
   `match_id` int(11) NOT NULL COMMENT 'match id',
-  `user_id` int(11) NOT NULL COMMENT 'user id',
+  `user_id` int(11) NOT NULL COMMENT 'signUpUser id',
   `group_id` int(11) NULL COMMENT 'group id',
   PRIMARY KEY (`id`) ,
   INDEX `mugm_match_idx` (`match_id` ASC) USING BTREE,
@@ -54,14 +54,14 @@ CREATE TABLE registration (
 CREATE TABLE `score` (
   `id` int(11) NOT NULL COMMENT 'primary key',
   `regist_id` int(11) NOT NULL COMMENT 'registration id',
-  `score` int NOT NULL COMMENT 'user score',
+  `score` int NOT NULL COMMENT 'signUpUser score',
   `time` bigint NOT NULL COMMENT 'commit time',
   PRIMARY KEY (`id`)
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;
 
 ALTER TABLE `group` ADD CONSTRAINT `group_match_ref` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`);
 ALTER TABLE registration ADD CONSTRAINT `mugm_match_ref` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE registration ADD CONSTRAINT `mugm_user_ref` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE registration ADD CONSTRAINT `mugm_user_ref` FOREIGN KEY (`user_id`) REFERENCES `signUpUser` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE registration ADD CONSTRAINT `mugm_group_ref` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE `score` ADD CONSTRAINT `score_enlist_ref` FOREIGN KEY (regist_id) REFERENCES registration (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -75,7 +75,7 @@ INSERT INTO activity(title, content, img, create_time, end_time) VALUES
   ('title5', 'content5', '/img/5.jpg', 1477756800, 1480694400),
   ('title6', 'content6', '/img/6.jpg', 1475424000, 1480694400);
 
--- # INSERT INTO user(username, password, salt, mail) VALUES
+-- # INSERT INTO signUpUser(username, password, salt, mail) VALUES
 -- #   ('', '', '', ''),
 -- #   ('', '', '', ''),
 -- #   ('', '', '', ''),

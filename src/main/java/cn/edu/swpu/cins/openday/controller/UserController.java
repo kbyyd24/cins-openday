@@ -2,7 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.User;
+import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
@@ -32,25 +32,25 @@ public class UserController {
 	}
 
 	@PostMapping("signup")
-	public UserHttpResult signUp(User user) {
-		UserServiceResultEnum signUpResult = userService.signUp(user);
+	public UserHttpResult signUp(SignUpUser signUpUser) {
+		UserServiceResultEnum signUpResult = userService.signUp(signUpUser);
 		if (signUpResult == ADD_USER_SUCCESS) {
 			String token = String.valueOf(System.currentTimeMillis());
-			UserServiceResultEnum cacheResult = cacheAuthingUser(user, token);
+			UserServiceResultEnum cacheResult = cacheAuthingUser(signUpUser, token);
 			if (cacheResult == ADD_AUTHENTICATING_USER_SUCCESS) {
-				String subject = MailFormatUtil.getSignUpSubject(user.getUsername());
-				String text = MailFormatUtil.getSignUpContent(user.getMail(), token);
-				mailService.send(user.getMail(), subject, text);
+				String subject = MailFormatUtil.getSignUpSubject(signUpUser.getUsername());
+				String text = MailFormatUtil.getSignUpContent(signUpUser.getMail(), token);
+				mailService.send(signUpUser.getMail(), subject, text);
 				return new UserHttpResult(UserHttpResultEnum.ADD_USER_SUCCESS);
 			}
-			// TODO: 16-10-19 deal cache user failed
+			// TODO: 16-10-19 deal cache signUpUser failed
 		}
-		// TODO: 16-10-19 deal add user failed
+		// TODO: 16-10-19 deal add signUpUser failed
 		return null;
 	}
 
-	private UserServiceResultEnum cacheAuthingUser(User user, String token) {
-		AuthenticatingUser authenticatingUser = new AuthenticatingUser(user.getMail(), token);
+	private UserServiceResultEnum cacheAuthingUser(SignUpUser signUpUser, String token) {
+		AuthenticatingUser authenticatingUser = new AuthenticatingUser(signUpUser.getMail(), token);
 		return cacheService.saveAuthingUser(authenticatingUser);
 	}
 }

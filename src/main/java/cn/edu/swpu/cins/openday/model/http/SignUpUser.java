@@ -1,14 +1,14 @@
 package cn.edu.swpu.cins.openday.model.http;
 
-public class User {
+public class SignUpUser {
 	private String username;
 	private String password;
 	private String repassword;
 	private String mail;
 
-	public User() {}
+	public SignUpUser() {}
 
-	public User(String username, String password, String repassword, String mail) {
+	public SignUpUser(String username, String password, String repassword, String mail) {
 		this.username = username;
 		this.password = password;
 		this.repassword = repassword;
