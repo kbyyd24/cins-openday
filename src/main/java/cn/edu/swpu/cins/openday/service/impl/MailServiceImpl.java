@@ -14,12 +14,14 @@ import javax.mail.internet.MimeMessage;
 public class MailServiceImpl implements MailService {
 
 	private JavaMailSender javaMailSender;
-	@Value("${spring.mail.username}")
 	private String fromMail;
 
 	@Autowired
-	public MailServiceImpl(JavaMailSender javaMailSender) {
+	public MailServiceImpl(JavaMailSender javaMailSender,
+	                       @Value("${spring.mail.username}")
+					                       String fromMail) {
 		this.javaMailSender = javaMailSender;
+		this.fromMail = fromMail;
 	}
 
 	@Override
