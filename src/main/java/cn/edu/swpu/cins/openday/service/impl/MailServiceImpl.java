@@ -26,7 +26,7 @@ public class MailServiceImpl implements MailService {
 		message.setContent(text, "text/html");
 		helper.setTo(to);
 		helper.setSubject(subject);
-		helper.setFrom("melo@gaoyuexiang.cn");
+		helper.setFrom("cins@gaoyuexiang.cn");
 		javaMailSender.send(message);
 	}
 }
