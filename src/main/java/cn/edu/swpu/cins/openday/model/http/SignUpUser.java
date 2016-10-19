@@ -46,4 +46,8 @@ public class SignUpUser {
 	public void setRepassword(String repassword) {
 		this.repassword = repassword;
 	}
+
+	public boolean isPasswordValid() {
+		return password.equals(repassword);
+	}
 }
