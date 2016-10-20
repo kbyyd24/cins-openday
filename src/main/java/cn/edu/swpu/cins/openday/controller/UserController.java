@@ -1,5 +1,6 @@
 package cn.edu.swpu.cins.openday.controller;
 
+import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
 import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_AUTHENTICATING_USER_SUCCESS;
+import static cn.edu.swpu.cins.openday.enums.CacheResultEnum.SAVE_SUCCESS;
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_SUCCESS;
 
 @RestController
@@ -38,8 +39,8 @@ public class UserController {
 		UserServiceResultEnum signUpResult = userService.signUp(signUpUser);
 		if (signUpResult == ADD_USER_SUCCESS) {
 			String token = String.valueOf(System.currentTimeMillis());
-			UserServiceResultEnum cacheResult = cacheAuthingUser(signUpUser, token);
-			if (cacheResult == ADD_AUTHENTICATING_USER_SUCCESS) {
+			CacheResultEnum cacheResult = cacheAuthingUser(signUpUser, token);
+			if (cacheResult == SAVE_SUCCESS) {
 				String subject = MailFormatUtil.getSignUpSubject(signUpUser.getUsername());
 				String text = MailFormatUtil.getSignUpContent(signUpUser.getMail(), token);
 				try {
@@ -56,7 +57,7 @@ public class UserController {
 		return null;
 	}
 
-	private UserServiceResultEnum cacheAuthingUser(SignUpUser signUpUser, String token) {
+	private CacheResultEnum cacheAuthingUser(SignUpUser signUpUser, String token) {
 		AuthenticatingUser authenticatingUser = new AuthenticatingUser(signUpUser.getMail(), token);
 		return cacheService.saveAuthingUser(authenticatingUser);
 	}

@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_AUTHENTICATING_USER_SUCCESS;
+import static cn.edu.swpu.cins.openday.enums.CacheResultEnum.SAVE_SUCCESS;
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_SUCCESS;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -45,7 +45,7 @@ public class UserControllerTest {
 		SignUpUser signUpUser = new SignUpUser(username, password, repassword, mail);
 		when(userService.signUp(signUpUser)).thenReturn(ADD_USER_SUCCESS);
 		when(cacheService.saveAuthingUser(any(AuthenticatingUser.class)))
-						.thenReturn(ADD_AUTHENTICATING_USER_SUCCESS);
+						.thenReturn(SAVE_SUCCESS);
 		String subject = "subject";
 		String text = "text";
 		doNothing().when(mailService).send(mail, subject, text);
