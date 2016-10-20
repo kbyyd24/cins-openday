@@ -4,10 +4,16 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
+apply plugin: 'idea'
 
 mainClassName = 'cn.edu.swpu.cins.openday.Main'
 
+jar {
+  baseName = 'openday'
+  version = '0.0.1-SNAPSHOT'
+}
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
@@ -25,10 +31,13 @@ dependencies {
 }
 
 buildscript {
+  ext {
+    springBootVersion = '1.4.1.RELEASE'
+  }
   repositories {
     mavenCentral()
   }
   dependencies {
-    classpath('org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE')
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
   }
 }
