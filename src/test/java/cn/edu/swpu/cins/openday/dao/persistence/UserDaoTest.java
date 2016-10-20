@@ -32,7 +32,7 @@ public class UserDaoTest {
 	}
 
 	@Test
-	public void test_isValidUser_usable() throws Exception {
+	public void test_checkNewUser_usable() throws Exception {
 		String username = "username";
 		String password = "passwrod";
 		String mail = "melo@gaoyuexiang.cn";
@@ -41,7 +41,7 @@ public class UserDaoTest {
 						anyMapOf(String.class, String.class),
 						any(RowMapper.class)))
 						.thenReturn(new ArrayList<>());
-		UserServiceResultEnum ret = userDao.isValidUser(signUpUser);
+		UserServiceResultEnum ret = userDao.checkNewUser(signUpUser);
 		assertThat(ret, is(ADD_USER_USABLE));
 	}
 }

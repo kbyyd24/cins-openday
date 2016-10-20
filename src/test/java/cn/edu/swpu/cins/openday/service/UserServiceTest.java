@@ -35,7 +35,7 @@ public class UserServiceTest {
 		String mail = "melo@gaoyuexiang.cn";
 		SignUpUser signUpUser =
 						new SignUpUser(username, password, password, mail);
-		when(userDao.isValidUser(signUpUser)).thenReturn(ADD_USER_USABLE);
+		when(userDao.checkNewUser(signUpUser)).thenReturn(ADD_USER_USABLE);
 		when(userDao.signUpUser(signUpUser)).thenReturn(1);
 		UserServiceResultEnum userServiceResultEnum =
 						userService.signUp(signUpUser);

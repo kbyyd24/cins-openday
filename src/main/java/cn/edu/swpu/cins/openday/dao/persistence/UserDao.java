@@ -27,7 +27,7 @@ public class UserDao {
 		this.jdbcOperations = jdbcOperations;
 	}
 
-	public UserServiceResultEnum isValidUser(SignUpUser signUpUser) {
+	public UserServiceResultEnum checkNewUser(SignUpUser signUpUser) {
 		HashMap<String, String> queryMap = new HashMap<>(4);
 		queryMap.put(":username", signUpUser.getUsername());
 		queryMap.put(":mail", signUpUser.getMail());

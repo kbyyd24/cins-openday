@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 		if (!signUpUser.isPasswordValid()) {
 			return PASSWORD_NOT_SAME;
 		}
-		UserServiceResultEnum validRet = userDao.isValidUser(signUpUser);
+		UserServiceResultEnum validRet = userDao.checkNewUser(signUpUser);
 		if (validRet != ADD_USER_USABLE) {
 			return validRet;
 		}
