@@ -34,7 +34,7 @@ public class UserDaoTest {
 	@Test
 	public void test_checkNewUser_usable() throws Exception {
 		String username = "username";
-		String password = "passwrod";
+		String password = "password";
 		String mail = "melo@gaoyuexiang.cn";
 		SignUpUser signUpUser = new SignUpUser(username, password, password, mail);
 		when(jdbcOperations.query(anyString(),
@@ -43,5 +43,18 @@ public class UserDaoTest {
 						.thenReturn(new ArrayList<>());
 		UserServiceResultEnum ret = userDao.checkNewUser(signUpUser);
 		assertThat(ret, is(ADD_USER_USABLE));
+	}
+
+	@Test
+	public void test_signUpUser_success() throws Exception {
+		String username = "username";
+		String password = "password";
+		String mail = "melo@gaoyuexiang.cn";
+		SignUpUser signUpUser = new SignUpUser(username, password, password, mail);
+		when(jdbcOperations.update(anyString(),
+						anyMapOf(String.class, String.class)))
+						.thenReturn(1);
+		int ret = userDao.signUpUser(signUpUser);
+		assertThat(ret, is(1));
 	}
 }

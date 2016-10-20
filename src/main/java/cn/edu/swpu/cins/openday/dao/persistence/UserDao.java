@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,9 @@ public class UserDao {
 	private static final String SELECT_BY_USERNAME_OR_MAIL =
 					"select id, username, mail from user " +
 									"where username = :username or mail = :mail";
+	private static final String CREATE_NEW_USER =
+					"insert into user(username, password, mail) value " +
+									"(:username, :password, :mail)";
 
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -50,7 +54,12 @@ public class UserDao {
 						EXISTED_USERNAME : EXISTED_MAIL;
 	}
 
+	@Transactional
 	public int signUpUser(SignUpUser signUpUser) {
-		return 0;
+		HashMap<String, String> insertMap = new HashMap<>(4);
+		insertMap.put("username", signUpUser.getUsername());
+		insertMap.put("password", signUpUser.getPassword());
+		insertMap.put("mail", signUpUser.getMail());
+		return jdbcOperations.update(CREATE_NEW_USER, insertMap);
 	}
 }
