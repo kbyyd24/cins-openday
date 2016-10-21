@@ -12,6 +12,7 @@ import cn.edu.swpu.cins.openday.service.UserService;
 import cn.edu.swpu.cins.openday.util.MailFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,7 @@ public class UserController {
 	}
 
 	@PostMapping("signup")
-	public UserHttpResult signUp(SignUpUser signUpUser) {
+	public UserHttpResult signUp(@RequestBody SignUpUser signUpUser) {
 		UserServiceResultEnum signUpResult = userService.signUp(signUpUser);
 		if (signUpResult == ADD_USER_SUCCESS) {
 			String token = String.valueOf(System.currentTimeMillis());
