@@ -1,13 +1,13 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
+import cn.edu.swpu.cins.openday.exception.AddUserException;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +61,10 @@ public class UserDao {
 		insertMap.put("username", signUpUser.getUsername());
 		insertMap.put("password", signUpUser.getPassword());
 		insertMap.put("mail", signUpUser.getMail());
-		return jdbcOperations.update(CREATE_NEW_USER, insertMap);
+		try {
+			return jdbcOperations.update(CREATE_NEW_USER, insertMap);
+		} catch (DataAccessException dae) {
+			throw new AddUserException("exception happened when add user");
+		}
 	}
 }
