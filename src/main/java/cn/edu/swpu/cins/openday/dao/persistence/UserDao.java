@@ -33,8 +33,8 @@ public class UserDao {
 
 	public UserServiceResultEnum checkNewUser(SignUpUser signUpUser) {
 		HashMap<String, String> queryMap = new HashMap<>(4);
-		queryMap.put(":username", signUpUser.getUsername());
-		queryMap.put(":mail", signUpUser.getMail());
+		queryMap.put("username", signUpUser.getUsername());
+		queryMap.put("mail", signUpUser.getMail());
 		List<User> ret =
 						jdbcOperations.query(
 										SELECT_BY_USERNAME_OR_MAIL,
