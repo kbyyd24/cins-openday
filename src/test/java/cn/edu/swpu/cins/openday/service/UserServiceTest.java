@@ -37,8 +37,9 @@ public class UserServiceTest {
 						new SignUpUser(username, password, password, mail);
 		when(userDao.checkNewUser(signUpUser)).thenReturn(ADD_USER_USABLE);
 		when(userDao.signUpUser(signUpUser)).thenReturn(1);
+		String token = "123";
 		UserServiceResultEnum userServiceResultEnum =
-						userService.signUp(signUpUser);
+						userService.signUp(signUpUser, token);
 		assertThat(userServiceResultEnum, is(UserServiceResultEnum.ADD_USER_SUCCESS));
 	}
 }

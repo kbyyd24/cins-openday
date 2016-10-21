@@ -1,8 +1,9 @@
 package cn.edu.swpu.cins.openday.controller;
 
+import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
+import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
-import cn.edu.swpu.cins.openday.service.CacheService;
+import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import org.junit.Before;
@@ -11,9 +12,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static cn.edu.swpu.cins.openday.enums.CacheResultEnum.SAVE_SUCCESS;
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_SUCCESS;
-import static org.mockito.Matchers.any;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -26,14 +28,11 @@ public class UserControllerTest {
 	@Mock
 	private MailService mailService;
 
-	@Mock
-	private CacheService cacheService;
-
 	private UserController userController;
 
 	@Before
 	public void setUp() throws Exception {
-		userController = new UserController(userService, mailService, cacheService);
+		userController = new UserController(userService, mailService);
 	}
 
 	@Test
@@ -43,12 +42,11 @@ public class UserControllerTest {
 		String repassword = "password";
 		String mail = "melo@gaoyuexiang.cn";
 		SignUpUser signUpUser = new SignUpUser(username, password, repassword, mail);
-		when(userService.signUp(signUpUser)).thenReturn(ADD_USER_SUCCESS);
-		when(cacheService.saveAuthingUser(any(AuthenticatingUser.class)))
-						.thenReturn(SAVE_SUCCESS);
+		when(userService.signUp(eq(signUpUser), anyString())).thenReturn(UserServiceResultEnum.ADD_USER_SUCCESS);
 		String subject = "subject";
 		String text = "text";
 		doNothing().when(mailService).send(mail, subject, text);
-		userController.signUp(signUpUser);
+		UserHttpResult httpResult = userController.signUp(signUpUser);
+		assertThat(httpResult.getCode(), is(UserHttpResultEnum.ADD_USER_SUCCESS.getCode()));
 	}
 }

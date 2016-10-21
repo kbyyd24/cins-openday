@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserServiceResultEnum signUp(SignUpUser signUpUser) {
+	public UserServiceResultEnum signUp(SignUpUser signUpUser, String token) {
 		if (!signUpUser.isPasswordValid()) {
 			return PASSWORD_NOT_SAME;
 		}
