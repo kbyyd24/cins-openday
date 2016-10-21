@@ -49,8 +49,11 @@ public class UserDao {
 			return EXISTED_USERNAME_AND_MAIL;
 		}
 		User existedUser = ret.get(0);
-		return existedUser.getUsername().equals(signUpUser.getUsername()) ?
-						EXISTED_USERNAME : EXISTED_MAIL;
+		if (existedUser.getUsername().equals(signUpUser.getUsername())) {
+			return existedUser.getMail().equals(signUpUser.getMail()) ?
+							EXISTED_USERNAME_AND_MAIL : EXISTED_USERNAME;
+		}
+		return EXISTED_MAIL;
 	}
 
 	public int signUpUser(SignUpUser signUpUser) {
