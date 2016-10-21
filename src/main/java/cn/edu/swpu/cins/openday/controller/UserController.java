@@ -56,6 +56,8 @@ public class UserController {
 			return new UserHttpResult(UserHttpResultEnum.EXISTED_USERNAME);
 		} else if (signUpResult == EXISTED_MAIL) {
 			return new UserHttpResult(UserHttpResultEnum.EXISTED_MALI);
+		} else if (signUpResult == PASSWORD_NOT_SAME) {
+			return new UserHttpResult(UserHttpResultEnum.PASSWORD_NOT_SAME);
 		}
 		return new UserHttpResult(UserHttpResultEnum.UNKNOWN_ERROR);
 	}

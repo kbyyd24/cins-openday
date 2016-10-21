@@ -6,7 +6,8 @@ public enum UserHttpResultEnum {
 	EXISTED_USERNAME_AND_MAIL(202, "username and mail had been used, please input another"),
 	EXISTED_USERNAME(203, "username had been used, please input another"),
 	EXISTED_MALI(204, "mail had been used, please input another"),
-	UNKNOWN_ERROR(205, "add user failed with unknown error");
+	UNKNOWN_ERROR(205, "add user failed with unknown error"),
+	PASSWORD_NOT_SAME(206, "please ensure your password are in the same");
 
 	private int code;
 	private String description;
