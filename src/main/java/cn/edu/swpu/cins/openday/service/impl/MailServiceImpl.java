@@ -28,7 +28,7 @@ public class MailServiceImpl implements MailService {
 	public void send(String to, String subject, String text) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "utf-8");
-		message.setContent(text, "text/html");
+		helper.setText(text, true);
 		helper.setTo(to);
 		helper.setSubject(subject);
 		helper.setFrom(fromMail);
