@@ -11,6 +11,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -45,5 +47,16 @@ public class CacheDaoTest {
 		when(mockOps.hasKey(key, field)).thenReturn(true);
 		boolean ret = cacheDao.existField(key, field);
 		assertTrue(ret);
+	}
+
+	@Test
+	public void test_saveEntry_return_true() throws Exception {
+		HashOperations<Object, Object, Object> mockOps = Mockito.mock(HashOperations.class);
+		when(redisTemplate.opsForHash()).thenReturn(mockOps);
+		String token = "123";
+		doNothing().when(mockOps).put(key, field, token);
+		cacheDao.saveEntry(key, field, token);
+		verify(redisTemplate).opsForHash();
+		verify(mockOps).put(key, field, token);
 	}
 }
