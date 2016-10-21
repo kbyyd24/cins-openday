@@ -54,7 +54,6 @@ public class UserDao {
 						EXISTED_USERNAME : EXISTED_MAIL;
 	}
 
-	@Transactional
 	public int signUpUser(SignUpUser signUpUser) {
 		HashMap<String, String> insertMap = new HashMap<>(4);
 		insertMap.put("username", signUpUser.getUsername());
