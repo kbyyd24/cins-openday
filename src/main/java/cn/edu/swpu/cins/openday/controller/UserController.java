@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MessagingException;
 
 import static cn.edu.swpu.cins.openday.enums.CacheResultEnum.SAVE_SUCCESS;
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_SUCCESS;
+import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 
 @RestController
 @RequestMapping("user")
@@ -51,11 +51,24 @@ public class UserController {
 					e.printStackTrace();
 				}
 				return new UserHttpResult(UserHttpResultEnum.ADD_USER_SUCCESS);
+			} else {
+				// TODO: 16-10-19 deal cache signUpUser failed
 			}
-			// TODO: 16-10-19 deal cache signUpUser failed
 		}
-		// TODO: 16-10-19 deal add signUpUser failed
-		return null;
+		return returnSignUpError(signUpResult);
+	}
+
+	private UserHttpResult returnSignUpError(UserServiceResultEnum signUpResult) {
+		if (signUpResult == ADD_USER_FAILED) {
+			return new UserHttpResult(UserHttpResultEnum.ADD_USER_FAILED);
+		} else if (signUpResult == EXISTED_USERNAME_AND_MAIL) {
+			return new UserHttpResult(UserHttpResultEnum.EXISTED_USERNAME_AND_MAIL);
+		} else if (signUpResult == EXISTED_USERNAME) {
+			return new UserHttpResult(UserHttpResultEnum.EXISTED_USERNAME);
+		} else if (signUpResult == EXISTED_MAIL) {
+			return new UserHttpResult(UserHttpResultEnum.EXISTED_MALI);
+		}
+		return new UserHttpResult(UserHttpResultEnum.UNKNOWN_ERROR);
 	}
 
 	private CacheResultEnum cacheAuthingUser(SignUpUser signUpUser, String token) {

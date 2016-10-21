@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
 		int line = userDao.signUpUser(signUpUser);
 		if (line == 1) {
 			return ADD_USER_SUCCESS;
-		} else {
-			// TODO: 16-10-19 deal with add failed
 		}
 		return ADD_USER_FAILED;
 	}
