@@ -23,15 +23,10 @@ public class RedisCacheServiceImpl implements CacheService {
 
 	@Override
 	public CacheResultEnum saveAuthingUser(AuthenticatingUser au) {
-		if (cacheDao.existField(AUTHENTICATION_KEY, au.getMail())) {
-			// TODO: 16-10-20 check if token invalid, update and resent mail
-		} else {
-			if (cacheDao.saveEntry(AUTHENTICATION_KEY, au.getMail(), au.getToken())) {
-				return CacheResultEnum.SAVE_SUCCESS;
-			}
-			return CacheResultEnum.SAVE_FAILED;
+		if (cacheDao.saveEntry(AUTHENTICATION_KEY, au.getMail(), au.getToken())) {
+			return CacheResultEnum.SAVE_SUCCESS;
 		}
-		return null;
+		return CacheResultEnum.SAVE_FAILED;
 	}
 
 	@Override

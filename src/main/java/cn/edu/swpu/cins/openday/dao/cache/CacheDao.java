@@ -14,13 +14,9 @@ public class CacheDao {
 		this.redisTemplate = redisTemplate;
 	}
 
-	public boolean existField(String key, String field) {
-		return redisTemplate.opsForHash().hasKey(key, field);
-	}
-
 	@Transactional
 	public boolean saveEntry(String key, String field, Object value) {
-		redisTemplate.opsForHash().put(key, field, value);
+		redisTemplate.opsForHash().putIfAbsent(key, field, value);
 		return true;
 	}
 }

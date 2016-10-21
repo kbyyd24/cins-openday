@@ -35,15 +35,14 @@ public class UserDao {
 		HashMap<String, String> queryMap = new HashMap<>(4);
 		queryMap.put("username", signUpUser.getUsername());
 		queryMap.put("mail", signUpUser.getMail());
-		List<User> ret =
-						jdbcOperations.query(
-										SELECT_BY_USERNAME_OR_MAIL,
-										queryMap,
-										(rs, rowNum) -> new User(
-														rs.getInt("id"),
-														rs.getString("username"),
-														rs.getString("mail")
-										));
+		List<User> ret = jdbcOperations.query(
+						SELECT_BY_USERNAME_OR_MAIL,
+						queryMap,
+						(rs, rowNum) -> new User(
+										rs.getInt("id"),
+										rs.getString("username"),
+										rs.getString("mail")
+						));
 		if (ret.size() == 0) {
 			return ADD_USER_USABLE;
 		} else if (ret.size() == 2) {

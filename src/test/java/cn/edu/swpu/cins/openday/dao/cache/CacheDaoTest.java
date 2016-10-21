@@ -9,11 +9,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CacheDaoTest {
@@ -28,35 +25,17 @@ public class CacheDaoTest {
 		cacheDao = new CacheDao(redisTemplate);
 	}
 
-	String key = "authentication";
-	String field = "mail@mail.com";
-
-	@Test
-	public void test_existField_return_false() throws Exception {
-		HashOperations<Object, Object, Object> mockOps = Mockito.mock(HashOperations.class);
-		when(redisTemplate.opsForHash()).thenReturn(mockOps);
-		when(mockOps.hasKey(key, field)).thenReturn(false);
-		boolean ret = cacheDao.existField(key, field);
-		assertFalse(ret);
-	}
-
-	@Test
-	public void test_existField_return_true() throws Exception {
-		HashOperations<Object, Object, Object> mockOps = Mockito.mock(HashOperations.class);
-		when(redisTemplate.opsForHash()).thenReturn(mockOps);
-		when(mockOps.hasKey(key, field)).thenReturn(true);
-		boolean ret = cacheDao.existField(key, field);
-		assertTrue(ret);
-	}
-
 	@Test
 	public void test_saveEntry_return_true() throws Exception {
+		String key = "authentication";
+		String field = "mail@mail.com";
 		HashOperations<Object, Object, Object> mockOps = Mockito.mock(HashOperations.class);
 		when(redisTemplate.opsForHash()).thenReturn(mockOps);
 		String token = "123";
-		doNothing().when(mockOps).put(key, field, token);
-		cacheDao.saveEntry(key, field, token);
+		when(mockOps.putIfAbsent(key, field, token)).thenReturn(true);
+		boolean ret = cacheDao.saveEntry(key, field, token);
 		verify(redisTemplate).opsForHash();
-		verify(mockOps).put(key, field, token);
+		verify(mockOps).putIfAbsent(key, field, token);
+		assertTrue(ret);
 	}
 }
