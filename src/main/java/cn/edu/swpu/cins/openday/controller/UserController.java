@@ -4,9 +4,9 @@ import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
+import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
-import cn.edu.swpu.cins.openday.util.MailFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +22,13 @@ import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 public class UserController {
 	private UserService userService;
 	private MailService mailService;
+	private MailFormatService mailFormatService;
 
 	@Autowired
-	public UserController(UserService userService, MailService mailService) {
+	public UserController(UserService userService, MailService mailService, MailFormatService mailFormatService) {
 		this.userService = userService;
 		this.mailService = mailService;
+		this.mailFormatService = mailFormatService;
 	}
 
 	@PostMapping("signup")
@@ -34,8 +36,8 @@ public class UserController {
 		String token = String.valueOf(System.currentTimeMillis());
 		UserServiceResultEnum signUpResult = userService.signUp(signUpUser, token);
 		if (signUpResult == ADD_USER_SUCCESS) {
-			String subject = MailFormatUtil.getSignUpSubject(signUpUser.getUsername());
-			String text = MailFormatUtil.getSignUpContent(signUpUser.getMail(), token);
+			String subject = mailFormatService.getSignUpSubject(signUpUser.getUsername());
+			String text = mailFormatService.getSignUpContent(signUpUser.getMail(), token);
 			try {
 				mailService.send(signUpUser.getMail(), subject, text);
 			} catch (MessagingException e) {

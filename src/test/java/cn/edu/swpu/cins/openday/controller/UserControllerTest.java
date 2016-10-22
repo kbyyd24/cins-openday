@@ -4,6 +4,7 @@ import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
+import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import org.junit.Before;
@@ -28,11 +29,14 @@ public class UserControllerTest {
 	@Mock
 	private MailService mailService;
 
+	@Mock
+	private MailFormatService mailFormatService;
+
 	private UserController userController;
 
 	@Before
 	public void setUp() throws Exception {
-		userController = new UserController(userService, mailService);
+		userController = new UserController(userService, mailService, mailFormatService);
 	}
 
 	@Test
@@ -45,6 +49,8 @@ public class UserControllerTest {
 		when(userService.signUp(eq(signUpUser), anyString())).thenReturn(UserServiceResultEnum.ADD_USER_SUCCESS);
 		String subject = "subject";
 		String text = "text";
+		when(mailFormatService.getSignUpSubject(username)).thenReturn(subject);
+		when(mailFormatService.getSignUpContent(eq(mail), anyString())).thenReturn(text);
 		doNothing().when(mailService).send(mail, subject, text);
 		UserHttpResult httpResult = userController.signUp(signUpUser);
 		assertThat(httpResult.getCode(), is(UserHttpResultEnum.ADD_USER_SUCCESS.getCode()));
