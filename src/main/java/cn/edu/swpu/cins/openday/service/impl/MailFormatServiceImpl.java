@@ -1,12 +1,20 @@
 package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.service.MailFormatService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 
 @Service
 public class MailFormatServiceImpl implements MailFormatService {
+
+	@Value("${openday.server.host}")
+	private String host;
+	@Value("${openday.server.port}")
+	private int port;
+	@Value("${openday.path.user.enable}")
+	private String enablePath;
 
 	@Override
 	public String getSignUpSubject(String username) {
@@ -20,10 +28,7 @@ public class MailFormatServiceImpl implements MailFormatService {
 		Base64.Encoder encoder = Base64.getUrlEncoder();
 		String baseMail = encoder.encodeToString(mail.getBytes());
 		String baseToken = encoder.encodeToString(token.getBytes());
-		String link = "http://host/user/enable/" +
-						baseMail +
-						"/" +
-						baseToken;
+		String link = "http://"+ host + ':' + port + enablePath + '/' +	baseMail + "/" + baseToken;
 		String htmlLink = "<a href='" + link + "' target='_blank'>" + link + "</a>";
 		return pervious + htmlLink;
 	}
