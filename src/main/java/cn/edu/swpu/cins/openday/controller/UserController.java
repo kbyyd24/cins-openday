@@ -4,14 +4,12 @@ import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
+import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 
@@ -64,4 +62,18 @@ public class UserController {
 		return new UserHttpResult(UserHttpResultEnum.UNKNOWN_ERROR);
 	}
 
+	@PostMapping("enable")
+	public UserHttpResult enable(@RequestBody AuthenticatingUser au) {
+		UserServiceResultEnum enableRet = userService.enable(au);
+		if (enableRet == ENABLE_TOKEN_SUCCESS) {
+			return new UserHttpResult(UserHttpResultEnum.ENABLE_TOKEN_SUCCESS);
+		}
+		if (enableRet == UserServiceResultEnum.ENABLE_TOKEN_INVALID) {
+			return new UserHttpResult(UserHttpResultEnum.ENABLE_TOKEN_INVALID);
+		}
+		if (enableRet == UserServiceResultEnum.ENABLE_TOKEN_TIMEOUT) {
+			return new UserHttpResult(UserHttpResultEnum.ENABLE_TOKEN_TIMEOUT);
+		}
+		return new UserHttpResult(UserHttpResultEnum.ENABLE_FAILED);
+	}
 }

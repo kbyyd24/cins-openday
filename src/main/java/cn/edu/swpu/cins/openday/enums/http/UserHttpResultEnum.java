@@ -7,7 +7,11 @@ public enum UserHttpResultEnum {
 	EXISTED_USERNAME(203, "username had been used, please input another"),
 	EXISTED_MALI(204, "mail had been used, please input another"),
 	UNKNOWN_ERROR(205, "add user failed with unknown error"),
-	PASSWORD_NOT_SAME(206, "please ensure your password are in the same");
+	PASSWORD_NOT_SAME(206, "please ensure your password are in the same"),
+	ENABLE_TOKEN_SUCCESS(210, "enable user success"),
+	ENABLE_TOKEN_INVALID(211, "error token"),
+	ENABLE_TOKEN_TIMEOUT(212, "token timeout"),
+	ENABLE_FAILED(213, "enable failed");
 
 	private int code;
 	private String description;

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserServiceResultEnum enable(String mail) {
+	public UserServiceResultEnum enable(AuthenticatingUser au) {
 		return null;
 	}
 

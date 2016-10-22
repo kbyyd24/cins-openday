@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 public class CacheDaoTest {
 
 	@Mock
-	private RedisTemplate<Object, Object> redisTemplate;
+	private RedisTemplate<String, Object> redisTemplate;
 
 	private CacheDao cacheDao;
 
@@ -29,7 +29,7 @@ public class CacheDaoTest {
 	public void test_saveEntry_return_true() throws Exception {
 		String key = "authentication";
 		String field = "mail@mail.com";
-		HashOperations<Object, Object, Object> mockOps = Mockito.mock(HashOperations.class);
+		HashOperations<String, Object, Object> mockOps = Mockito.mock(HashOperations.class);
 		when(redisTemplate.opsForHash()).thenReturn(mockOps);
 		String token = "123";
 		when(mockOps.putIfAbsent(key, field, token)).thenReturn(true);
