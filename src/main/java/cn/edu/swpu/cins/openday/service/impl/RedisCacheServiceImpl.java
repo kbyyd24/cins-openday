@@ -31,7 +31,11 @@ public class RedisCacheServiceImpl implements CacheService {
 
 	@Override
 	public String getEnableToken(String mail) {
-		return null;
+		Object o = cacheDao.getValue(AUTHENTICATION_KEY, mail);
+		if (o == null) {
+			return "";
+		}
+		return (String) o;
 	}
 
 	@Override
