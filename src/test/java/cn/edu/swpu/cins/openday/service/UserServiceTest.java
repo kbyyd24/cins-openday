@@ -16,9 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_USABLE;
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ENABLE_TOKEN_SUCCESS;
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ENABLE_TOKEN_TIMEOUT;
+import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.eq;
@@ -129,5 +127,19 @@ public class UserServiceTest {
 		assertThat(enableResult, is(ENABLE_TOKEN_TIMEOUT));
 		verify(cacheService).getEnableToken(eq(mail));
 		verify(clockService).getCurrentTimeMillis();
+	}
+
+	@Test
+	public void test_enable_invalid() throws Exception {
+		String mail = "mail@mail.com";
+		String baseMail = URLCoderUtil.encode(mail);
+		long nowToken = System.currentTimeMillis();
+		String token = String.valueOf(nowToken);
+		String baseToken = URLCoderUtil.encode(token);
+		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
+		when(cacheService.getEnableToken(eq(mail))).thenReturn(String.valueOf(nowToken + 1));
+		UserServiceResultEnum enableResult = userService.enable(au);
+		assertThat(enableResult, is(ENABLE_TOKEN_INVALID));
+		verify(cacheService).getEnableToken(eq(mail));
 	}
 }
