@@ -2,6 +2,7 @@ package cn.edu.swpu.cins.openday.dao.persistence;
 
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.AddUserException;
+import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class UserDao {
 	private static final String CREATE_NEW_USER =
 					"insert into user(username, password, mail) value " +
 									"(:username, :password, :mail)";
+	private static final String ENABLE_USER_BY_MAIL =
+					"UPDATE user SET enable = TRUE WHERE mail = :mail";
 
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -68,7 +71,14 @@ public class UserDao {
 		}
 	}
 
+
 	public int enable(String mail) {
-		return 0;
+		HashMap<String, String> queryMap = new HashMap<>(2);
+		queryMap.put("mail", mail);
+		try {
+			return jdbcOperations.update(ENABLE_USER_BY_MAIL, queryMap);
+		} catch (DataAccessException dae) {
+			throw new NoUserToEnableException("exception happened in UserDao when enable user: " + mail);
+		}
 	}
 }
