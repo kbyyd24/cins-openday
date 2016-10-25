@@ -24,4 +24,8 @@ public class CacheDao {
 	public Object getValue(String key, String mail) {
 		return redisTemplate.opsForHash().get(key, mail);
 	}
+
+	public long removeValue(String key, String mail) {
+		return redisTemplate.opsForHash().delete(key, mail);
+	}
 }
