@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 public class CacheDaoTest {
 
 	@Mock
-	private RedisTemplate<String, Object> redisTemplate;
+	private RedisTemplate<String, String> redisTemplate;
 
 	private CacheDao cacheDao;
 

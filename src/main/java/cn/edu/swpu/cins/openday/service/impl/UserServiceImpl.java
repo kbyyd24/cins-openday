@@ -63,20 +63,14 @@ public class UserServiceImpl implements UserService {
 	public UserServiceResultEnum enable(AuthenticatingUser au) {
 		au.setMail(URLCoderUtil.decode(au.getMail()));
 		au.setToken(URLCoderUtil.decode(au.getToken()));
-		String enableToken = cacheService.getEnableToken(au.getMail());
+		String enableToken = cacheService.getEnableTokenAndRemove(au.getMail());
 		CacheResultEnum verifyResult = verifyToken(au, enableToken);
 		if (verifyResult == CacheResultEnum.ENABLE_TOKEN_SUCCESS) {
-			if (cacheService.removeAuthToken(au.getMail()) ==
-							CacheResultEnum.REMOVE_TOKEN_SUCCESS) {
-				int line = userDao.enable(au.getMail());
-				if (line == 1) {
-					return ENABLE_TOKEN_SUCCESS;
-				} else {
-					throw new NoUserToEnableException("exception happened in mysql when enable user: " + au.getMail());
-				}
+			int line = userDao.enable(au.getMail());
+			if (line == 1) {
+				return ENABLE_TOKEN_SUCCESS;
 			} else {
-				// TODO: 16-10-25 增强鲁棒性，加入更多redis操作失败的处理
-				throw new RedisException("exception happened in redis when remove user: " + au.getMail());
+				throw new NoUserToEnableException("exception happened in mysql when enable user: " + au.getMail());
 			}
 		} else if (verifyResult == CacheResultEnum.ENABLE_TOKEN_TIMEOUT){
 			return UserServiceResultEnum.ENABLE_TOKEN_TIMEOUT;

@@ -30,16 +30,16 @@ public class RedisCacheServiceImpl implements CacheService {
 	}
 
 	@Override
-	public String getEnableToken(String mail) {
+	public String getEnableTokenAndRemove(String mail) {
 		Object o = cacheDao.getValue(AUTHENTICATION_KEY, mail);
+		removeAuthToken(mail);
 		if (o == null) {
 			return "";
 		}
 		return (String) o;
 	}
 
-	@Override
-	public CacheResultEnum removeAuthToken(String mail) {
+	private CacheResultEnum removeAuthToken(String mail) {
 		long num = cacheDao.removeValue(AUTHENTICATION_KEY, mail);
 		if (num == 1) {
 			return CacheResultEnum.REMOVE_TOKEN_SUCCESS;
