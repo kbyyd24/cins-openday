@@ -4,6 +4,8 @@ import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.CacheException;
+import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
+import cn.edu.swpu.cins.openday.exception.RedisException;
 import cn.edu.swpu.cins.openday.model.http.MailUpdater;
 import cn.edu.swpu.cins.openday.model.http.PasswordUpdater;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
@@ -54,27 +56,30 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = {NoUserToEnableException.class, RedisException.class})
 	public UserServiceResultEnum enable(AuthenticatingUser au) {
 		au.setMail(URLCoderUtil.decode(au.getMail()));
 		au.setToken(URLCoderUtil.decode(au.getToken()));
 		String enableToken = cacheService.getEnableToken(au.getMail());
 		CacheResultEnum verifyResult = verifyToken(au, enableToken);
 		if (verifyResult == CacheResultEnum.ENABLE_TOKEN_SUCCESS) {
-			CacheResultEnum removeResult = cacheService.removeAuthToken(au.getMail());
-			if (removeResult == CacheResultEnum.REMOVE_TOKEN_SUCCESS) {
+			if (cacheService.removeAuthToken(au.getMail()) ==
+							CacheResultEnum.REMOVE_TOKEN_SUCCESS) {
 				int line = userDao.enable(au.getMail());
 				if (line == 1) {
 					return ENABLE_TOKEN_SUCCESS;
 				} else {
-					// TODO: 16-10-25 处理mysql更新异常
+					throw new NoUserToEnableException("exception happened in mysql when enable user: " + au.getMail());
 				}
 			} else {
-				// TODO: 16-10-25 处理redis更新异常
+				// TODO: 16-10-25 增强鲁棒性，加入更多redis操作失败的处理
+				throw new RedisException("exception happened in redis when remove user: " + au.getMail());
 			}
+		} else if (verifyResult == CacheResultEnum.ENABLE_TOKEN_TIMEOUT){
+			return UserServiceResultEnum.ENABLE_TOKEN_TIMEOUT;
 		} else {
-			// TODO: 16-10-25 处理token验证异常
+			return UserServiceResultEnum.ENABLE_TOKEN_INVALID;
 		}
-		return null;
 	}
 
 	private CacheResultEnum verifyToken(AuthenticatingUser au, String enableToken) {
