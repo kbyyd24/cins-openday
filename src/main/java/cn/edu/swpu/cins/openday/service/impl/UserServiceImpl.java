@@ -12,6 +12,7 @@ import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
+import cn.edu.swpu.cins.openday.service.ClockService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import cn.edu.swpu.cins.openday.util.PasswordEncodeUtil;
 import cn.edu.swpu.cins.openday.util.URLCoderUtil;
@@ -25,11 +26,13 @@ import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	private CacheService cacheService;
+	private ClockService clockService;
 
 	@Autowired
-	public UserServiceImpl(UserDao userDao, CacheService cacheService) {
+	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
+		this.clockService = clockService;
 	}
 
 	@Override
@@ -85,7 +88,7 @@ public class UserServiceImpl implements UserService {
 	private CacheResultEnum verifyToken(AuthenticatingUser au, String enableToken) {
 		if (enableToken.equals(au.getToken())) {
 			long tokenTime = Long.parseLong(enableToken);
-			long now = System.currentTimeMillis();
+			long now = clockService.getCurrentTimeMillis();
 			if (now - tokenTime <= 30 * 60 * 1000) {
 				return CacheResultEnum.ENABLE_TOKEN_SUCCESS;
 			}

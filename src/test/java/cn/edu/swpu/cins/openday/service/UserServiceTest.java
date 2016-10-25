@@ -7,6 +7,7 @@ import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
 import cn.edu.swpu.cins.openday.exception.RedisException;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
 import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
 import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.junit.Before;
@@ -32,11 +33,14 @@ public class UserServiceTest {
 	@Mock
 	private CacheService cacheService;
 
+	@Mock
+	private ClockServiceImpl clockService;
+
 	private UserService userService;
 
 	@Before
 	public void setUp() throws Exception {
-		userService = new UserServiceImpl(userDao, cacheService);
+		userService = new UserServiceImpl(userDao, cacheService, clockService);
 	}
 
 	@Test
@@ -64,6 +68,7 @@ public class UserServiceTest {
 		String baseToken = URLCoderUtil.encode(token);
 		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
+		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(cacheService.removeAuthToken(eq(mail))).thenReturn(CacheResultEnum.REMOVE_TOKEN_SUCCESS);
 		when(userDao.enable(eq(mail))).thenReturn(1);
 		UserServiceResultEnum enableResult = userService.enable(au);
@@ -81,6 +86,7 @@ public class UserServiceTest {
 		String baseToken = URLCoderUtil.encode(token);
 		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
+		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(cacheService.removeAuthToken(eq(mail))).thenReturn(CacheResultEnum.REMOVE_TOKEN_SUCCESS);
 		when(userDao.enable(eq(mail))).thenReturn(0);
 		UserServiceResultEnum enableResult = userService.enable(au);
@@ -98,6 +104,7 @@ public class UserServiceTest {
 		String baseToken = URLCoderUtil.encode(token);
 		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
+		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(cacheService.removeAuthToken(eq(mail))).thenReturn(CacheResultEnum.REMOVE_TOKEN_FAILED);
 		when(userDao.enable(eq(mail))).thenReturn(1);
 		UserServiceResultEnum enableResult = userService.enable(au);
