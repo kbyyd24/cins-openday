@@ -12,6 +12,7 @@ import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import cn.edu.swpu.cins.openday.util.PasswordEncodeUtil;
+import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,39 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserServiceResultEnum enable(AuthenticatingUser au) {
+		au.setMail(URLCoderUtil.decode(au.getMail()));
+		au.setToken(URLCoderUtil.decode(au.getToken()));
+		String enableToken = cacheService.getEnableToken(au.getMail());
+		CacheResultEnum verifyResult = verifyToken(au, enableToken);
+		if (verifyResult == CacheResultEnum.ENABLE_TOKEN_SUCCESS) {
+			CacheResultEnum removeResult = cacheService.removeAuthToken(au.getMail());
+			if (removeResult == CacheResultEnum.REMOVE_TOKEN_SUCCESS) {
+				int line = userDao.enable(au.getMail());
+				if (line == 1) {
+					return ENABLE_TOKEN_SUCCESS;
+				} else {
+					// TODO: 16-10-25 处理mysql更新异常
+				}
+			} else {
+				// TODO: 16-10-25 处理redis更新异常
+			}
+		} else {
+			// TODO: 16-10-25 处理token验证异常
+		}
 		return null;
+	}
+
+	private CacheResultEnum verifyToken(AuthenticatingUser au, String enableToken) {
+		if (enableToken.equals(au.getToken())) {
+			long tokenTime = Long.parseLong(enableToken);
+			long now = System.currentTimeMillis();
+			if (now - tokenTime <= 30 * 60 * 1000) {
+				return CacheResultEnum.ENABLE_TOKEN_SUCCESS;
+			}
+			return CacheResultEnum.ENABLE_TOKEN_TIMEOUT;
+		} else {
+			return CacheResultEnum.ENABLE_TOKEN_INVALID;
+		}
 	}
 
 	@Override

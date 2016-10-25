@@ -30,7 +30,12 @@ public class RedisCacheServiceImpl implements CacheService {
 	}
 
 	@Override
-	public CacheResultEnum enableAuthingUser(AuthenticatingUser authenticatingUser) {
+	public String getEnableToken(String mail) {
+		return null;
+	}
+
+	@Override
+	public CacheResultEnum removeAuthToken(String mail) {
 		return null;
 	}
 

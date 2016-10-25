@@ -67,4 +67,8 @@ public class UserDao {
 			throw new AddUserException("exception happened when add user");
 		}
 	}
+
+	public int enable(String mail) {
+		return 0;
+	}
 }

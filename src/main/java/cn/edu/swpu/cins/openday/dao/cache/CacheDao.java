@@ -17,6 +17,7 @@ public class CacheDao {
 	@Transactional
 	public boolean saveEntry(String key, String field, Object value) {
 		redisTemplate.opsForHash().putIfAbsent(key, field, value);
+		// TODO: 16-10-25 处理失败时的验证
 		return true;
 	}
 }
