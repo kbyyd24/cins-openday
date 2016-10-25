@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class CacheDao {
-	private RedisTemplate<String, Object> redisTemplate;
+	private RedisTemplate<String, String> redisTemplate;
 
 	@Autowired
-	public CacheDao(RedisTemplate<String, Object> myRedisTemplate) {
-		this.redisTemplate = myRedisTemplate;
+	public CacheDao(RedisTemplate<String, String> stringRedisTemplate) {
+		this.redisTemplate = stringRedisTemplate;
 	}
 
 	@Transactional

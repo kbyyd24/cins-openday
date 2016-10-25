@@ -35,7 +35,7 @@ public class CacheServiceTest {
 		String mail = "mail@mail.com";
 		String token = "12";
 		AuthenticatingUser au = new AuthenticatingUser(mail, token);
-		when(cacheDao.saveEntry(anyString(), anyString(), eq(au))).thenReturn(true);
+		when(cacheDao.saveEntry(anyString(), eq(mail), eq(token))).thenReturn(true);
 		CacheResultEnum resultEnum = cacheService.saveAuthingUser(au);
 		assertThat(resultEnum, is(SAVE_SUCCESS));
 	}
