@@ -2,6 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.http.UserHttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
+import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
@@ -75,5 +76,14 @@ public class UserController {
 			return new UserHttpResult(UserHttpResultEnum.ENABLE_TOKEN_TIMEOUT);
 		}
 		return new UserHttpResult(UserHttpResultEnum.ENABLE_FAILED);
+	}
+
+	@PostMapping("signin")
+	public UserHttpResult signIn(@RequestBody SignInUser signInUser) {
+		UserServiceResultEnum signinResult = userService.signin(signInUser);
+		if (signinResult == LOGIN_SUCCESS) {
+			return new UserHttpResult(UserHttpResultEnum.LOGIN_SUCCESS);
+		}
+		return new UserHttpResult(UserHttpResultEnum.LOGIN_FAILED);
 	}
 }

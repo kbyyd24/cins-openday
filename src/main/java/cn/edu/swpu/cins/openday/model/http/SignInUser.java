@@ -5,7 +5,10 @@ public class SignInUser {
 	private String mail;
 	private String password;
 
-	public SignInUser() {}
+	public SignInUser(String mail, String password) {
+		this.mail = mail;
+		this.password = password;
+	}
 
 	public String getMail() {
 		return mail;
