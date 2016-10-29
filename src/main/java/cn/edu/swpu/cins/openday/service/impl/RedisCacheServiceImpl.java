@@ -7,6 +7,7 @@ import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RedisCacheServiceImpl implements CacheService {
@@ -48,8 +49,13 @@ public class RedisCacheServiceImpl implements CacheService {
 	}
 
 	@Override
-	public CacheResultEnum signin(UserSignInResult user) {
-		return null;
+	@Transactional
+	public CacheResultEnum signIn(UserSignInResult user) {
+		boolean ret = cacheDao.signIn(user);
+		if (ret) {
+			return CacheResultEnum.SAVE_SUCCESS;
+		}
+		return CacheResultEnum.SAVE_FAILED;
 	}
 
 	@Override

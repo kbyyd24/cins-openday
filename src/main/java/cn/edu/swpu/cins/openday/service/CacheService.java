@@ -7,6 +7,6 @@ import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 public interface CacheService {
 	CacheResultEnum saveAuthingUser(AuthenticatingUser authenticatingUser);
 	String getEnableTokenAndRemove(String mail);
-	CacheResultEnum signin(UserSignInResult user);
+	CacheResultEnum signIn(UserSignInResult user);
 	CacheResultEnum signout(int id);
 }

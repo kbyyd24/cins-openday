@@ -144,7 +144,7 @@ public class UserServiceTest {
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(true);
 		when(tokenService.generate(mail)).thenReturn(mail);
-		when(cacheService.signin(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_SUCCESS);
+		when(cacheService.signIn(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_SUCCESS);
 		UserSignInResult result = userService.signin(signInUser);
 		assertThat(result.getId(), is(id));
 		assertThat(result.getUsername(), is(username));
@@ -152,7 +152,7 @@ public class UserServiceTest {
 		assertThat(result.getStatus(), is(UserServiceResultEnum.LOGIN_SUCCESS));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
-		verify(cacheService).signin(any(UserSignInResult.class));
+		verify(cacheService).signIn(any(UserSignInResult.class));
 	}
 
 	@Test
@@ -180,7 +180,7 @@ public class UserServiceTest {
 		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.PASSWORD_NOT_SAME));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
-		verify(cacheService, times(0)).signin(any(UserSignInResult.class));
+		verify(cacheService, times(0)).signIn(any(UserSignInResult.class));
 	}
 
 	@Test
@@ -194,10 +194,10 @@ public class UserServiceTest {
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(true);
 		when(tokenService.generate(mail)).thenReturn(mail);
-		when(cacheService.signin(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_FAILED);
+		when(cacheService.signIn(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_FAILED);
 		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
-		verify(cacheService).signin(any(UserSignInResult.class));
+		verify(cacheService).signIn(any(UserSignInResult.class));
 	}
 }

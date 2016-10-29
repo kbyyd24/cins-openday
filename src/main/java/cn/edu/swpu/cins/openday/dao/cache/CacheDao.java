@@ -1,5 +1,6 @@
 package cn.edu.swpu.cins.openday.dao.cache;
 
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,5 +28,9 @@ public class CacheDao {
 
 	public long removeValue(String key, String mail) {
 		return redisTemplate.opsForHash().delete(key, mail);
+	}
+
+	public boolean signIn(UserSignInResult signInResult) {
+		return false;
 	}
 }

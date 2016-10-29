@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 		}
 		String token = tokenService.generate(user.getMail());
 		UserSignInResult result = new UserSignInResult(token, user);
-		CacheResultEnum cacheResult = cacheService.signin(result);
+		CacheResultEnum cacheResult = cacheService.signIn(result);
 		if (cacheResult == CacheResultEnum.SAVE_SUCCESS) {
 			result.setStatus(UserServiceResultEnum.LOGIN_SUCCESS);
 			return result;

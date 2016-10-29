@@ -30,6 +30,13 @@ public class UserSignInResult {
 		this.mail = user.getMail();
 	}
 
+	public UserSignInResult(String token, int id, String username, String mail) {
+		this.token = token;
+		this.id = id;
+		this.username = username;
+		this.mail = mail;
+	}
+
 	public Integer getId() {
 		return id;
 	}
