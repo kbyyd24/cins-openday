@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
 		if (!isMatch) {
 			return new UserSignInResult(UserServiceResultEnum.PASSWORD_NOT_SAME);
 		}
-		String token = tokenService.generate(user.getMail());
+		String token = tokenService.createUUID();
 		UserSignInResult result = new UserSignInResult(token, user);
 		CacheResultEnum cacheResult = cacheService.signIn(result);
 		if (cacheResult == CacheResultEnum.SAVE_SUCCESS) {

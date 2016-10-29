@@ -143,7 +143,7 @@ public class UserServiceTest {
 		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(true);
-		when(tokenService.generate(mail)).thenReturn(mail);
+		when(tokenService.createUUID()).thenReturn(mail);
 		when(cacheService.signIn(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_SUCCESS);
 		UserSignInResult result = userService.signin(signInUser);
 		assertThat(result.getId(), is(id));
@@ -193,7 +193,7 @@ public class UserServiceTest {
 		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(true);
-		when(tokenService.generate(mail)).thenReturn(mail);
+		when(tokenService.createUUID()).thenReturn(mail);
 		when(cacheService.signIn(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_FAILED);
 		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED));
 		verify(userDao).signInUser(signInUser);

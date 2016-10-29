@@ -18,9 +18,8 @@ public class TokenServiceImpl implements TokenService {
 	}
 
 	@Override
-	public String generate(String mail) {
-		mail += clockService.getCurrentTimeMillis();
-		return UUID.fromString(mail).toString().replaceAll("-", "");
+	public String createUUID() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
 }
