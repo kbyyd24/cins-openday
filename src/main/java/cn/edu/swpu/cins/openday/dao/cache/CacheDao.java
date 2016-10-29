@@ -44,7 +44,7 @@ public class CacheDao {
 	}
 
 	public void signOut(String key) {
-		redisTemplate.boundHashOps(key).expire(expireTime, TimeUnit.MICROSECONDS);
+		redisTemplate.delete(key);
 	}
 
 	public String getSignToken(String key) {
