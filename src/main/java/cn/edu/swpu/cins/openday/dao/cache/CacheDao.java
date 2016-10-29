@@ -48,6 +48,10 @@ public class CacheDao {
 	}
 
 	public String getSignToken(String key) {
-		return null;
+		Object token = redisTemplate.boundHashOps(key).get("token");
+		if (token == null) {
+			return "";
+		}
+		return (String) token;
 	}
 }
