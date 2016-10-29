@@ -6,6 +6,7 @@ import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
@@ -20,6 +21,7 @@ import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +38,7 @@ public class UserServiceTest {
 	private ClockServiceImpl clockService;
 
 	@Mock
-	private PasswordEncoderService encoderService;
+	private PasswordEncoderService passwordService;
 
 	@Mock
 	private URLCoderService urlCoderService;
@@ -45,7 +47,7 @@ public class UserServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		userService = new UserServiceImpl(userDao, cacheService, clockService, encoderService, urlCoderService);
+		userService = new UserServiceImpl(userDao, cacheService, clockService, passwordService, urlCoderService);
 	}
 
 	@Test
@@ -136,10 +138,60 @@ public class UserServiceTest {
 		String username = "kb永远的24";
 		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
-		when(encoderService.match(password, password)).thenReturn(true);
+		when(passwordService.match(password, password)).thenReturn(true);
 		when(cacheService.signin(user)).thenReturn(CacheResultEnum.SAVE_SUCCESS);
-		userService.signin(signInUser);
+		UserSignInResult result = userService.signin(signInUser);
+		assertThat(result.getId(), is(id));
+		assertThat(result.getUsername(), is(username));
+		assertThat(result.getMail(), is(mail));
+		assertThat(result.getStatus(), is(UserServiceResultEnum.LOGIN_SUCCESS));
 		verify(userDao).signInUser(signInUser);
+		verify(passwordService).match(password, password);
+		verify(cacheService).signin(user);
+	}
+
+	@Test
+	public void test_signIn_user_not_exist() throws Exception {
+		String mail = "melo@gaoyuexiang.cn";
+		String password = "MambaOut";
+		SignInUser signInUser = new SignInUser(mail, password);
+		when(userDao.signInUser(signInUser)).thenReturn(null);
+		UserSignInResult result = userService.signin(signInUser);
+		assertThat(result.getStatus(), is(UserServiceResultEnum.USER_NOT_EXIST));
+		verify(userDao).signInUser(signInUser);
+		verify(passwordService, times(0)).match(password, password);
+	}
+
+	@Test
+	public void test_signIn_user_password_error() throws Exception {
+		String mail = "melo@gaoyuexiang.cn";
+		String password = "MambaOut";
+		SignInUser signInUser = new SignInUser(mail, password);
+		int id = 1;
+		String username = "kb永远的24";
+		User user = new User(id, username, mail, password, true);
+		when(userDao.signInUser(signInUser)).thenReturn(user);
+		when(passwordService.match(password, password)).thenReturn(false);
+		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.PASSWORD_NOT_SAME));
+		verify(userDao).signInUser(signInUser);
+		verify(passwordService).match(password, password);
+		verify(cacheService, times(0)).signin(user);
+	}
+
+	@Test
+	public void test_signIn_cache_failed() throws Exception {
+		String mail = "melo@gaoyuexiang.cn";
+		String password = "MambaOut";
+		SignInUser signInUser = new SignInUser(mail, password);
+		int id = 1;
+		String username = "kb永远的24";
+		User user = new User(id, username, mail, password, true);
+		when(userDao.signInUser(signInUser)).thenReturn(user);
+		when(passwordService.match(password, password)).thenReturn(true);
+		when(cacheService.signin(user)).thenReturn(CacheResultEnum.SAVE_FAILED);
+		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED));
+		verify(userDao).signInUser(signInUser);
+		verify(passwordService).match(password, password);
 		verify(cacheService).signin(user);
 	}
 }

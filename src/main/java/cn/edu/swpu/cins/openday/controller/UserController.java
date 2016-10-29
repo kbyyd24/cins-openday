@@ -6,6 +6,7 @@ import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
@@ -79,11 +80,11 @@ public class UserController {
 	}
 
 	@PostMapping("signin")
-	public UserHttpResult signIn(@RequestBody SignInUser signInUser) {
-		UserServiceResultEnum signinResult = userService.signin(signInUser);
-		if (signinResult == LOGIN_SUCCESS) {
-			return new UserHttpResult(UserHttpResultEnum.LOGIN_SUCCESS);
+	public UserSignInResult signIn(@RequestBody SignInUser signInUser) {
+		UserSignInResult signin = userService.signin(signInUser);
+		if (signin.getStatus() != UserServiceResultEnum.LOGIN_SUCCESS) {
+			signin.setStatus(UserServiceResultEnum.LOGIN_FAILED);
 		}
-		return new UserHttpResult(UserHttpResultEnum.LOGIN_FAILED);
+		return signin;
 	}
 }

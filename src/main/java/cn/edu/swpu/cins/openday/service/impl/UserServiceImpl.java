@@ -10,7 +10,9 @@ import cn.edu.swpu.cins.openday.model.http.MailUpdater;
 import cn.edu.swpu.cins.openday.model.http.PasswordUpdater;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,16 +25,16 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	private CacheService cacheService;
 	private ClockService clockService;
-	private PasswordEncoderService encoderService;
+	private PasswordEncoderService passwordService;
 	private URLCoderService urlCoderService;
 
 	@Autowired
 	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService,
-	                       PasswordEncoderService encoderService, URLCoderService urlCoderService) {
+	                       PasswordEncoderService passwordService, URLCoderService urlCoderService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
 		this.clockService = clockService;
-		this.encoderService = encoderService;
+		this.passwordService = passwordService;
 		this.urlCoderService = urlCoderService;
 	}
 
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
 		if (!signUpUser.isPasswordValid()) {
 			return PASSWORD_NOT_SAME;
 		}
-		signUpUser.setPassword(encoderService.encode(signUpUser.getPassword()));
+		signUpUser.setPassword(passwordService.encode(signUpUser.getPassword()));
 		UserServiceResultEnum validRet = userDao.checkNewUser(signUpUser);
 		if (validRet != ADD_USER_USABLE) {
 			return validRet;
@@ -94,8 +96,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserServiceResultEnum signin(SignInUser signInUser) {
-		return null;
+	public UserSignInResult signin(SignInUser signInUser) {
+		User user = userDao.signInUser(signInUser);
+		if (user == null || user.getId() == null) {
+			return new UserSignInResult(UserServiceResultEnum.USER_NOT_EXIST);
+		}
+		boolean isMatch = passwordService.match(signInUser.getPassword(), user.getPassword());
+		if (!isMatch) {
+			return new UserSignInResult(UserServiceResultEnum.PASSWORD_NOT_SAME);
+		}
+		CacheResultEnum cacheResult = cacheService.signin(user);
+		if (cacheResult == CacheResultEnum.SAVE_SUCCESS) {
+			return new UserSignInResult(user, UserServiceResultEnum.LOGIN_SUCCESS);
+		}
+		return new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
 	}
 
 	@Override

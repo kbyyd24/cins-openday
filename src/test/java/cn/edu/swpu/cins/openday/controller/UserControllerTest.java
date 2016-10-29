@@ -5,6 +5,7 @@ import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
@@ -72,10 +73,11 @@ public class UserControllerTest {
 		String mail = "melo@gaoyuexiang.cn";
 		String password = "MambaOut";
 		SignInUser signInUser = new SignInUser(mail, password);
-		when(userService.signin(signInUser)).thenReturn(UserServiceResultEnum.LOGIN_SUCCESS);
-		UserHttpResult httpResult = userController.signIn(signInUser);
+		UserSignInResult userSignInResult = new UserSignInResult(UserServiceResultEnum.LOGIN_SUCCESS);
+		when(userService.signin(signInUser)).thenReturn(userSignInResult);
+		UserSignInResult result = userController.signIn(signInUser);
+		assertThat(result, is(userSignInResult));
 		verify(userService).signin(signInUser);
-		assertThat(httpResult.getCode(), is(UserHttpResultEnum.LOGIN_SUCCESS.getCode()));
 	}
 
 	@Test
@@ -83,9 +85,17 @@ public class UserControllerTest {
 		String mail = "melo@gaoyuexiang.cn";
 		String password = "MambaOut";
 		SignInUser signInUser = new SignInUser(mail, password);
-		when(userService.signin(signInUser)).thenReturn(UserServiceResultEnum.LOGIN_FAILED);
-		UserHttpResult httpResult = userController.signIn(signInUser);
-		verify(userService).signin(signInUser);
-		assertThat(httpResult.getCode(), is(UserHttpResultEnum.LOGIN_FAILED.getCode()));
+
+		UserSignInResult userSignInResult = new UserSignInResult(UserServiceResultEnum.USER_NOT_EXIST);
+		when(userService.signin(signInUser)).thenReturn(userSignInResult);
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
+
+		userSignInResult = new UserSignInResult(UserServiceResultEnum.PASSWORD_NOT_SAME);
+		when(userService.signin(signInUser)).thenReturn(userSignInResult);
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
+
+		userSignInResult = new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
+		when(userService.signin(signInUser)).thenReturn(userSignInResult);
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
 	}
 }
