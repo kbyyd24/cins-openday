@@ -11,9 +11,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.csrf().disable()
-			.authorizeRequests().anyRequest().permitAll()
-			.and()
-			.rememberMe().tokenValiditySeconds(2419200).key("openDayKey")
+			.authorizeRequests().mvcMatchers("/user/**").permitAll()
+			.anyRequest().authenticated()
 		;
 	}
 }
