@@ -8,7 +8,7 @@ import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.persistence.User;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
 import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
 import org.junit.Before;
@@ -64,7 +64,7 @@ public class UserServiceTest {
 		when(userDao.checkNewUser(signUpUser)).thenReturn(ADD_USER_USABLE);
 		when(userDao.signUpUser(signUpUser)).thenReturn(1);
 		String token = "123";
-		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		AuthUser au = new AuthUser(mail, token);
 		when(cacheService.saveAuthingUser(au)).thenReturn(CacheResultEnum.SAVE_SUCCESS);
 		UserServiceResultEnum userServiceResultEnum =
 						userService.signUp(signUpUser, token);
@@ -75,7 +75,7 @@ public class UserServiceTest {
 	public void test_enable_success() throws Exception {
 		String mail = "mail@mail.com";
 		String token = String.valueOf(System.currentTimeMillis());
-		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		AuthUser au = new AuthUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
@@ -91,7 +91,7 @@ public class UserServiceTest {
 	public void test_enable_NoUserToEnableException() throws Exception {
 		String mail = "mail@mail.com";
 		String token = String.valueOf(System.currentTimeMillis());
-		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		AuthUser au = new AuthUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
@@ -108,7 +108,7 @@ public class UserServiceTest {
 		String mail = "mail@mail.com";
 		long nowToken = System.currentTimeMillis();
 		String token = String.valueOf(nowToken);
-		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		AuthUser au = new AuthUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
@@ -124,7 +124,7 @@ public class UserServiceTest {
 		String mail = "mail@mail.com";
 		long nowToken = System.currentTimeMillis();
 		String token = String.valueOf(nowToken);
-		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		AuthUser au = new AuthUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableToken(eq(mail))).thenReturn(String.valueOf(nowToken + 1));

@@ -6,7 +6,7 @@ import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
@@ -62,7 +62,7 @@ public class UserControllerTest {
 	public void test_enable_success() throws Exception {
 		String baseMail = "mail@mail.com";
 		String baseToken = "123";
-		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
+		AuthUser au = new AuthUser(baseMail, baseToken);
 		when(userService.enable(au)).thenReturn(UserServiceResultEnum.ENABLE_TOKEN_SUCCESS);
 		UserHttpResult ret = userController.enable(au);
 		assertThat(ret.getCode(), is(UserHttpResultEnum.ENABLE_TOKEN_SUCCESS.getCode()));
@@ -97,5 +97,13 @@ public class UserControllerTest {
 		userSignInResult = new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
 		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
+	}
+
+	@Test
+	public void test_signOut_success() throws Exception {
+		String mail = "mail@mail.com";
+		String token = "123";
+		AuthUser au = new AuthUser(mail, token);
+
 	}
 }

@@ -3,7 +3,7 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.cache.CacheDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -24,7 +24,7 @@ public class RedisCacheServiceImpl implements CacheService {
 
 	@Override
 	@Transactional(rollbackFor = DataAccessException.class)
-	public CacheResultEnum saveAuthingUser(AuthenticatingUser au) {
+	public CacheResultEnum saveAuthingUser(AuthUser au) {
 		HashMap<String, String> entry = new HashMap<>(2);
 		entry.put("token", au.getToken());
 		cacheDao.signUp(au.getMail(), entry);

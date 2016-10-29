@@ -11,7 +11,7 @@ import cn.edu.swpu.cins.openday.model.http.PasswordUpdater;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.persistence.User;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		}
 		int line = userDao.signUpUser(signUpUser);
 		if (line == 1) {
-			CacheResultEnum cacheResultEnum = cacheService.saveAuthingUser(new AuthenticatingUser(signUpUser.getMail(), token));
+			CacheResultEnum cacheResultEnum = cacheService.saveAuthingUser(new AuthUser(signUpUser.getMail(), token));
 			if (cacheResultEnum == CacheResultEnum.SAVE_SUCCESS) {
 				return ADD_USER_SUCCESS;
 			} else {
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(rollbackFor = {NoUserToEnableException.class, RedisException.class})
-	public UserServiceResultEnum enable(AuthenticatingUser au) {
+	public UserServiceResultEnum enable(AuthUser au) {
 		au.setMail(urlCoderService.decode(au.getMail()));
 		au.setToken(urlCoderService.decode(au.getToken()));
 		String enableToken = cacheService.getEnableToken(au.getMail());
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	private CacheResultEnum verifyToken(AuthenticatingUser au, String enableToken) {
+	private CacheResultEnum verifyToken(AuthUser au, String enableToken) {
 		if (enableToken.equals(au.getToken())) {
 			long tokenTime = Long.parseLong(enableToken);
 			long now = clockService.getCurrentTimeMillis();

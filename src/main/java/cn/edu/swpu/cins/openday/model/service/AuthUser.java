@@ -1,13 +1,13 @@
 package cn.edu.swpu.cins.openday.model.service;
 
-public class AuthenticatingUser {
+public class AuthUser {
 
 	private String mail;
 	private String token;
 
-	public AuthenticatingUser() {}
+	public AuthUser() {}
 
-	public AuthenticatingUser(String mail, String token) {
+	public AuthUser(String mail, String token) {
 		this.mail = mail;
 		this.token = token;
 	}
@@ -33,7 +33,7 @@ public class AuthenticatingUser {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		AuthenticatingUser that = (AuthenticatingUser) o;
+		AuthUser that = (AuthUser) o;
 
 		if (getMail() != null ? !getMail().equals(that.getMail()) : that.getMail() != null) return false;
 		return getToken() != null ? getToken().equals(that.getToken()) : that.getToken() == null;

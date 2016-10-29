@@ -3,7 +3,7 @@ package cn.edu.swpu.cins.openday.service;
 import cn.edu.swpu.cins.openday.dao.cache.CacheDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.impl.RedisCacheServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class CacheServiceTest {
 	public void test_saveAuthingUser_success() throws Exception {
 		String mail = "mail@mail.com";
 		String token = "12";
-		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		AuthUser au = new AuthUser(mail, token);
 		doNothing().when(cacheDao).signUp(eq(mail), any(HashMap.class));
 		CacheResultEnum resultEnum = cacheService.saveAuthingUser(au);
 		assertThat(resultEnum, is(SAVE_SUCCESS));

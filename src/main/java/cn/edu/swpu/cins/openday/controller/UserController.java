@@ -5,7 +5,7 @@ import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
-import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
+import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
@@ -65,7 +65,7 @@ public class UserController {
 	}
 
 	@PostMapping("enable")
-	public UserHttpResult enable(@RequestBody AuthenticatingUser au) {
+	public UserHttpResult enable(@RequestBody AuthUser au) {
 		UserServiceResultEnum enableRet = userService.enable(au);
 		if (enableRet == ENABLE_TOKEN_SUCCESS) {
 			return new UserHttpResult(UserHttpResultEnum.ENABLE_TOKEN_SUCCESS);
