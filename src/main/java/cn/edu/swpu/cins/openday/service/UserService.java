@@ -14,5 +14,5 @@ public interface UserService {
 	UserSignInResult signin(SignInUser signInUser);
 	UserServiceResultEnum updateMail(MailUpdater mailUpdater);
 	UserServiceResultEnum updatePassword(PasswordUpdater passwordUpdater);
-
+	UserServiceResultEnum signOut(AuthUser au);
 }

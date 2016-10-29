@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class CacheDaoTest {
 
 	@Mock
-	private RedisTemplate<String, String> redisTemplate;
+	private RedisTemplate<String, Object> redisTemplate;
 
 	private CacheDao cacheDao;
 

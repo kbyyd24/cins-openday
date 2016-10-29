@@ -87,4 +87,13 @@ public class UserController {
 		}
 		return signin;
 	}
+
+	@PostMapping("signout")
+	public UserHttpResult signOut(@RequestBody AuthUser au) {
+		UserServiceResultEnum result = userService.signOut(au);
+		if (result == UserServiceResultEnum.LOGOUT_SUCCESS) {
+			return new UserHttpResult(UserHttpResultEnum.SIGNOUT_SUCCESS);
+		}
+		return new UserHttpResult(UserHttpResultEnum.SIGNOUT_FAILED);
+	}
 }

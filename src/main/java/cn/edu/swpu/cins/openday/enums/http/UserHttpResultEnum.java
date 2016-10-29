@@ -13,7 +13,9 @@ public enum UserHttpResultEnum {
 	ENABLE_TOKEN_TIMEOUT(212, "token timeout"),
 	ENABLE_FAILED(213, "enable failed"),
 	LOGIN_SUCCESS(220, "login success"),
-	LOGIN_FAILED(221, "login failed");
+	LOGIN_FAILED(221, "login failed"),
+	SIGNOUT_SUCCESS(230, "sign out success"),
+	SIGNOUT_FAILED(231, "sign out failed");
 
 	private int code;
 	private String description;

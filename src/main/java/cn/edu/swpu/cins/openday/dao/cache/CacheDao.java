@@ -16,9 +16,9 @@ public class CacheDao {
 
 	@Autowired
 	public CacheDao(RedisTemplate<String, Object> jsonRedisTemplate,
-	                @Value("${openday.redis.expire:30}") String expireTime) {
+	                @Value("${openday.redis.expire:30}") int expireTime) {
 		this.redisTemplate = jsonRedisTemplate;
-		this.expireTime = Integer.parseInt(expireTime);
+		this.expireTime = expireTime;
 	}
 
 	public void signUp(String key, HashMap<String, String> hash) {

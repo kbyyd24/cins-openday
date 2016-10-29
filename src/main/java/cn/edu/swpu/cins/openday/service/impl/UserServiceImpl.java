@@ -99,6 +99,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserServiceResultEnum signOut(AuthUser au) {
+		return null;
+	}
+
+	@Override
 	public UserSignInResult signin(SignInUser signInUser) {
 		User user = userDao.signInUser(signInUser);
 		if (user == null || user.getId() == null) {
