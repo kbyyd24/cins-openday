@@ -15,6 +15,14 @@ public class User {
 		this.mail = mail;
 	}
 
+	public User(int id, String username, String mail, String password, boolean enable) {
+		this.id = id;
+		this.username = username;
+		this.mail = mail;
+		this.password = password;
+		this.enable = enable;
+	}
+
 	public Integer getId() {
 		return id;
 	}

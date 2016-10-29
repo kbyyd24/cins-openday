@@ -3,6 +3,7 @@ package cn.edu.swpu.cins.openday.dao.persistence;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.AddUserException;
 import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
+import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,9 @@ public class UserDao {
 		} catch (DataAccessException dae) {
 			throw new NoUserToEnableException("exception happened in UserDao when enable user: " + mail);
 		}
+	}
+
+	public User signInUser(SignInUser signInUser) {
+		return null;
 	}
 }

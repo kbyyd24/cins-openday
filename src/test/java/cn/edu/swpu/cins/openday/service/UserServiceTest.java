@@ -4,10 +4,13 @@ import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
+import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
 import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
+import cn.edu.swpu.cins.openday.util.PasswordEncodeUtil;
 import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,5 +121,21 @@ public class UserServiceTest {
 		UserServiceResultEnum enableResult = userService.enable(au);
 		assertThat(enableResult, is(ENABLE_TOKEN_INVALID));
 		verify(cacheService).getEnableTokenAndRemove(eq(mail));
+	}
+
+	@Test
+	public void test_signin_success() throws Exception {
+		String mail = "melo@gaoyuexiang.cn";
+		String password = "MambaOut";
+		SignInUser signInUser = new SignInUser(mail, password);
+		int id = 1;
+		String username = "kb永远的24";
+		String realPassword = PasswordEncodeUtil.encode(password);
+		User user = new User(id, username, mail, realPassword, true);
+		when(userDao.signInUser(signInUser)).thenReturn(user);
+		when(cacheService.signin(user)).thenReturn(CacheResultEnum.SAVE_SUCCESS);
+		userService.signin(signInUser);
+		verify(userDao).signInUser(signInUser);
+		verify(cacheService).signin(user);
 	}
 }
