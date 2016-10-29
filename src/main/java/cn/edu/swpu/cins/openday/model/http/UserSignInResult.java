@@ -4,20 +4,30 @@ import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 
 public class UserSignInResult {
+	private String token;
 	private Integer id;
 	private String username;
 	private String mail;
 	private UserServiceResultEnum status;
 
 	public UserSignInResult(User user, UserServiceResultEnum status) {
-		this.id = user.getId();
-		this.username = user.getUsername();
-		this.mail = user.getMail();
+		this(user);
 		this.status = status;
 	}
 
 	public UserSignInResult(UserServiceResultEnum status) {
 		this.status = status;
+	}
+
+	public UserSignInResult(String token, User user) {
+		this(user);
+		this.token = token;
+	}
+
+	public UserSignInResult(User user) {
+		this.id = user.getId();
+		this.username = user.getUsername();
+		this.mail = user.getMail();
 	}
 
 	public Integer getId() {
@@ -38,5 +48,9 @@ public class UserSignInResult {
 
 	public void setStatus(UserServiceResultEnum status) {
 		this.status = status;
+	}
+
+	public String getToken() {
+		return token;
 	}
 }

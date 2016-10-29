@@ -27,15 +27,18 @@ public class UserServiceImpl implements UserService {
 	private ClockService clockService;
 	private PasswordEncoderService passwordService;
 	private URLCoderService urlCoderService;
+	private TokenService tokenService;
 
 	@Autowired
 	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService,
-	                       PasswordEncoderService passwordService, URLCoderService urlCoderService) {
+	                       PasswordEncoderService passwordService, URLCoderService urlCoderService,
+	                       TokenService tokenService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
 		this.clockService = clockService;
 		this.passwordService = passwordService;
 		this.urlCoderService = urlCoderService;
+		this.tokenService = tokenService;
 	}
 
 	@Override
@@ -105,9 +108,12 @@ public class UserServiceImpl implements UserService {
 		if (!isMatch) {
 			return new UserSignInResult(UserServiceResultEnum.PASSWORD_NOT_SAME);
 		}
-		CacheResultEnum cacheResult = cacheService.signin(user);
+		String token = tokenService.generate(user.getMail());
+		UserSignInResult result = new UserSignInResult(token, user);
+		CacheResultEnum cacheResult = cacheService.signin(result);
 		if (cacheResult == CacheResultEnum.SAVE_SUCCESS) {
-			return new UserSignInResult(user, UserServiceResultEnum.LOGIN_SUCCESS);
+			result.setStatus(UserServiceResultEnum.LOGIN_SUCCESS);
+			return result;
 		}
 		return new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
 	}

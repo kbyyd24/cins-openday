@@ -20,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,11 +44,14 @@ public class UserServiceTest {
 	@Mock
 	private URLCoderService urlCoderService;
 
+	@Mock
+	private TokenService tokenService;
+
 	private UserService userService;
 
 	@Before
 	public void setUp() throws Exception {
-		userService = new UserServiceImpl(userDao, cacheService, clockService, passwordService, urlCoderService);
+		userService = new UserServiceImpl(userDao, cacheService, clockService, passwordService, urlCoderService, tokenService);
 	}
 
 	@Test
@@ -139,7 +143,8 @@ public class UserServiceTest {
 		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(true);
-		when(cacheService.signin(user)).thenReturn(CacheResultEnum.SAVE_SUCCESS);
+		when(tokenService.generate(mail)).thenReturn(mail);
+		when(cacheService.signin(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_SUCCESS);
 		UserSignInResult result = userService.signin(signInUser);
 		assertThat(result.getId(), is(id));
 		assertThat(result.getUsername(), is(username));
@@ -147,7 +152,7 @@ public class UserServiceTest {
 		assertThat(result.getStatus(), is(UserServiceResultEnum.LOGIN_SUCCESS));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
-		verify(cacheService).signin(user);
+		verify(cacheService).signin(any(UserSignInResult.class));
 	}
 
 	@Test
@@ -175,7 +180,7 @@ public class UserServiceTest {
 		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.PASSWORD_NOT_SAME));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
-		verify(cacheService, times(0)).signin(user);
+		verify(cacheService, times(0)).signin(any(UserSignInResult.class));
 	}
 
 	@Test
@@ -188,10 +193,11 @@ public class UserServiceTest {
 		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(true);
-		when(cacheService.signin(user)).thenReturn(CacheResultEnum.SAVE_FAILED);
+		when(tokenService.generate(mail)).thenReturn(mail);
+		when(cacheService.signin(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_FAILED);
 		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
-		verify(cacheService).signin(user);
+		verify(cacheService).signin(any(UserSignInResult.class));
 	}
 }

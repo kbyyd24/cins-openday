@@ -2,7 +2,7 @@ package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.cache.CacheDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
-import cn.edu.swpu.cins.openday.model.persistence.User;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class RedisCacheServiceImpl implements CacheService {
 	}
 
 	@Override
-	public CacheResultEnum signin(User user) {
+	public CacheResultEnum signin(UserSignInResult user) {
 		return null;
 	}
 
