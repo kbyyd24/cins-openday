@@ -11,13 +11,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
+
 import static cn.edu.swpu.cins.openday.enums.CacheResultEnum.SAVE_SUCCESS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CacheServiceTest {
@@ -37,7 +38,7 @@ public class CacheServiceTest {
 		String mail = "mail@mail.com";
 		String token = "12";
 		AuthenticatingUser au = new AuthenticatingUser(mail, token);
-		when(cacheDao.saveEntry(anyString(), eq(mail), eq(token))).thenReturn(true);
+		doNothing().when(cacheDao).signUp(eq(mail), any(HashMap.class));
 		CacheResultEnum resultEnum = cacheService.saveAuthingUser(au);
 		assertThat(resultEnum, is(SAVE_SUCCESS));
 	}
@@ -49,9 +50,9 @@ public class CacheServiceTest {
 		String username = "username";
 		String mail = "mail@mail.com";
 		UserSignInResult signInResult = new UserSignInResult(token, id, username, mail);
-		when(cacheDao.signIn(signInResult)).thenReturn(true);
+		doNothing().when(cacheDao).signIn(eq(token), any(HashMap.class));
 		CacheResultEnum result = cacheService.signIn(signInResult);
 		assertThat(result, is(CacheResultEnum.SAVE_SUCCESS));
-		verify(cacheDao).signIn(signInResult);
+		verify(cacheDao).signIn(eq(token), any(HashMap.class));
 	}
 }

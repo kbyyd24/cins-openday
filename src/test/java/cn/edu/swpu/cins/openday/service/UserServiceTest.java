@@ -78,12 +78,12 @@ public class UserServiceTest {
 		AuthenticatingUser au = new AuthenticatingUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
-		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(token);
+		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
 		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(userDao.enable(eq(mail))).thenReturn(1);
 		UserServiceResultEnum enableResult = userService.enable(au);
 		assertThat(enableResult, is(ENABLE_TOKEN_SUCCESS));
-		verify(cacheService).getEnableTokenAndRemove(eq(mail));
+		verify(cacheService).getEnableToken(eq(mail));
 		verify(userDao).enable(eq(mail));
 	}
 
@@ -94,12 +94,12 @@ public class UserServiceTest {
 		AuthenticatingUser au = new AuthenticatingUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
-		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(token);
+		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
 		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(userDao.enable(eq(mail))).thenReturn(0);
 		UserServiceResultEnum enableResult = userService.enable(au);
 		assertThat(enableResult, is(ENABLE_TOKEN_SUCCESS));
-		verify(cacheService).getEnableTokenAndRemove(eq(mail));
+		verify(cacheService).getEnableToken(eq(mail));
 		verify(userDao).enable(eq(mail));
 	}
 
@@ -111,11 +111,11 @@ public class UserServiceTest {
 		AuthenticatingUser au = new AuthenticatingUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
-		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(token);
+		when(cacheService.getEnableToken(eq(mail))).thenReturn(token);
 		when(clockService.getCurrentTimeMillis()).thenReturn(nowToken + 31 * 60 * 1000);
 		UserServiceResultEnum enableResult = userService.enable(au);
 		assertThat(enableResult, is(ENABLE_TOKEN_TIMEOUT));
-		verify(cacheService).getEnableTokenAndRemove(eq(mail));
+		verify(cacheService).getEnableToken(eq(mail));
 		verify(clockService).getCurrentTimeMillis();
 	}
 
@@ -127,10 +127,10 @@ public class UserServiceTest {
 		AuthenticatingUser au = new AuthenticatingUser(mail, token);
 		when(urlCoderService.decode(mail)).thenReturn(mail);
 		when(urlCoderService.decode(token)).thenReturn(token);
-		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(String.valueOf(nowToken + 1));
+		when(cacheService.getEnableToken(eq(mail))).thenReturn(String.valueOf(nowToken + 1));
 		UserServiceResultEnum enableResult = userService.enable(au);
 		assertThat(enableResult, is(ENABLE_TOKEN_INVALID));
-		verify(cacheService).getEnableTokenAndRemove(eq(mail));
+		verify(cacheService).getEnableToken(eq(mail));
 	}
 
 	@Test

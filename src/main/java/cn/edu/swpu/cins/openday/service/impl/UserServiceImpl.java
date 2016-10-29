@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	public UserServiceResultEnum enable(AuthenticatingUser au) {
 		au.setMail(urlCoderService.decode(au.getMail()));
 		au.setToken(urlCoderService.decode(au.getToken()));
-		String enableToken = cacheService.getEnableTokenAndRemove(au.getMail());
+		String enableToken = cacheService.getEnableToken(au.getMail());
 		CacheResultEnum verifyResult = verifyToken(au, enableToken);
 		if (verifyResult == CacheResultEnum.ENABLE_TOKEN_SUCCESS) {
 			int line = userDao.enable(au.getMail());

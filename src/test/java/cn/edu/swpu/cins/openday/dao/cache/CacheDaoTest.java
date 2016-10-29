@@ -22,7 +22,7 @@ public class CacheDaoTest {
 
 	@Before
 	public void setUp() throws Exception {
-		cacheDao = new CacheDao(redisTemplate);
+		cacheDao = new CacheDao(redisTemplate, 30);
 	}
 
 	@Test
