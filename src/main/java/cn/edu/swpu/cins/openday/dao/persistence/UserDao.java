@@ -93,6 +93,7 @@ public class UserDao {
 		HashMap<String, String> queryMap = new HashMap<>(2);
 		queryMap.put("mail", signInUser.getMail());
 		return jdbcOperations.query(SELECT_BY_MAIL, queryMap, rs -> {
+			rs.next();
 			return new User(
 				rs.getInt("id"),
 				rs.getString("username"),
