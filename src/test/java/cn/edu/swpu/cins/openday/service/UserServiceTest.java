@@ -10,7 +10,6 @@ import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
 import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
-import cn.edu.swpu.cins.openday.util.PasswordEncodeUtil;
 import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,11 +36,14 @@ public class UserServiceTest {
 	@Mock
 	private ClockServiceImpl clockService;
 
+	@Mock
+	private PasswordEncoderService encoderService;
+
 	private UserService userService;
 
 	@Before
 	public void setUp() throws Exception {
-		userService = new UserServiceImpl(userDao, cacheService, clockService);
+		userService = new UserServiceImpl(userDao, cacheService, clockService, encoderService);
 	}
 
 	@Test
@@ -130,9 +132,9 @@ public class UserServiceTest {
 		SignInUser signInUser = new SignInUser(mail, password);
 		int id = 1;
 		String username = "kb永远的24";
-		String realPassword = PasswordEncodeUtil.encode(password);
-		User user = new User(id, username, mail, realPassword, true);
+		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
+		when(encoderService.match(password, password)).thenReturn(true);
 		when(cacheService.signin(user)).thenReturn(CacheResultEnum.SAVE_SUCCESS);
 		userService.signin(signInUser);
 		verify(userDao).signInUser(signInUser);

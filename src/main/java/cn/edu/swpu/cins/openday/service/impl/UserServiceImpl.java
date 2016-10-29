@@ -13,8 +13,8 @@ import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import cn.edu.swpu.cins.openday.service.ClockService;
+import cn.edu.swpu.cins.openday.service.PasswordEncoderService;
 import cn.edu.swpu.cins.openday.service.UserService;
-import cn.edu.swpu.cins.openday.util.PasswordEncodeUtil;
 import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,14 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	private CacheService cacheService;
 	private ClockService clockService;
+	private PasswordEncoderService encoderService;
 
 	@Autowired
-	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService) {
+	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService, PasswordEncoderService encoderService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
 		this.clockService = clockService;
+		this.encoderService = encoderService;
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
 		if (!signUpUser.isPasswordValid()) {
 			return PASSWORD_NOT_SAME;
 		}
-		signUpUser.setPassword(PasswordEncodeUtil.encode(signUpUser.getPassword()));
+		signUpUser.setPassword(encoderService.encode(signUpUser.getPassword()));
 		UserServiceResultEnum validRet = userDao.checkNewUser(signUpUser);
 		if (validRet != ADD_USER_USABLE) {
 			return validRet;
