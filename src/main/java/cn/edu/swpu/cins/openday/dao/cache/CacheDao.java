@@ -1,6 +1,5 @@
 package cn.edu.swpu.cins.openday.dao.cache;
 
-import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundHashOperations;
@@ -20,28 +19,6 @@ public class CacheDao {
 	                @Value("${openday.redis.expire}:30") int expireTime) {
 		this.redisTemplate = stringRedisTemplate;
 		this.expireTime = expireTime;
-	}
-
-	@Deprecated
-	public boolean saveEntry(String key, String field, Object value) {
-		redisTemplate.opsForHash().putIfAbsent(key, field, value);
-		// TODO: 16-10-25 处理失败时的验证
-		return true;
-	}
-
-	@Deprecated
-	public Object getValue(String key, String mail) {
-		return redisTemplate.opsForHash().get(key, mail);
-	}
-
-	@Deprecated
-	public long removeValue(String key, String mail) {
-		return redisTemplate.opsForHash().delete(key, mail);
-	}
-
-	@Deprecated
-	public boolean signIn(UserSignInResult signInResult) {
-		return false;
 	}
 
 	public void signUp(String key, HashMap<String, String> hash) {
