@@ -11,14 +11,14 @@ import java.util.concurrent.TimeUnit;
 
 @Repository
 public class CacheDao {
-	private RedisTemplate<String, String> redisTemplate;
+	private RedisTemplate<String, Object> redisTemplate;
 	private long expireTime;
 
 	@Autowired
-	public CacheDao(RedisTemplate<String, String> stringRedisTemplate,
-	                @Value("${openday.redis.expire}:30") int expireTime) {
-		this.redisTemplate = stringRedisTemplate;
-		this.expireTime = expireTime;
+	public CacheDao(RedisTemplate<String, Object> jsonRedisTemplate,
+	                @Value("${openday.redis.expire:30}") String expireTime) {
+		this.redisTemplate = jsonRedisTemplate;
+		this.expireTime = Integer.parseInt(expireTime);
 	}
 
 	public void signUp(String key, HashMap<String, String> hash) {
