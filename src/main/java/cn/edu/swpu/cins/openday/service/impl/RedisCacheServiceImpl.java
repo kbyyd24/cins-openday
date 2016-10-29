@@ -43,7 +43,7 @@ public class RedisCacheServiceImpl implements CacheService {
 		entry.put("id", user.getId().toString());
 		entry.put("username", user.getUsername());
 		entry.put("mail", user.getMail());
-		entry.put("uuid", user.getUUID());
+		entry.put("token", user.getToken());
 //		entry.put("token", user.getToken());
 		cacheDao.signIn(user.getMail(), entry);
 		return CacheResultEnum.SAVE_SUCCESS;

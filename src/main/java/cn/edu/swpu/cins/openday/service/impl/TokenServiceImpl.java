@@ -18,7 +18,7 @@ public class TokenServiceImpl implements TokenService {
 	}
 
 	@Override
-	public String createUUID() {
+	public String createToken() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 

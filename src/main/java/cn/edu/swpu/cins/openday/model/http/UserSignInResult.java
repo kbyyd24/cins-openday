@@ -4,7 +4,7 @@ import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 
 public class UserSignInResult {
-	private String UUID;
+	private String token;
 	private Integer id;
 	private String username;
 	private String mail;
@@ -21,7 +21,7 @@ public class UserSignInResult {
 
 	public UserSignInResult(String token, User user) {
 		this(user);
-		this.UUID = token;
+		this.token = token;
 	}
 
 	public UserSignInResult(User user) {
@@ -31,7 +31,7 @@ public class UserSignInResult {
 	}
 
 	public UserSignInResult(String token, int id, String username, String mail) {
-		this.UUID = token;
+		this.token = token;
 		this.id = id;
 		this.username = username;
 		this.mail = mail;
@@ -57,7 +57,7 @@ public class UserSignInResult {
 		this.status = status;
 	}
 
-	public String getUUID() {
-		return UUID;
+	public String getToken() {
+		return token;
 	}
 }
