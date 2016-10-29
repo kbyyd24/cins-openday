@@ -44,13 +44,18 @@ public class RedisCacheServiceImpl implements CacheService {
 		entry.put("username", user.getUsername());
 		entry.put("mail", user.getMail());
 		entry.put("token", user.getToken());
-//		entry.put("token", user.getToken());
 		cacheDao.signIn(user.getMail(), entry);
 		return CacheResultEnum.SAVE_SUCCESS;
 	}
 
 	@Override
+	@Transactional(rollbackFor = DataAccessException.class)
 	public CacheResultEnum signout(AuthUser authUser) {
-		return null;
+		String signToken = cacheDao.getSignToken(authUser.getMail());
+		if (authUser.getToken().equals(signToken)) {
+			cacheDao.signOut(authUser.getMail());
+			return CacheResultEnum.REMOVE_SUCCESS;
+		}
+		return CacheResultEnum.INVALID_TOKEN;
 	}
 }

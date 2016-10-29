@@ -50,9 +50,33 @@ public class CacheServiceTest {
 		String username = "username";
 		String mail = "mail@mail.com";
 		UserSignInResult signInResult = new UserSignInResult(token, id, username, mail);
-		doNothing().when(cacheDao).signIn(eq(token), any(HashMap.class));
+		doNothing().when(cacheDao).signIn(eq(mail), any(HashMap.class));
 		CacheResultEnum result = cacheService.signIn(signInResult);
 		assertThat(result, is(CacheResultEnum.SAVE_SUCCESS));
-		verify(cacheDao).signIn(eq(token), any(HashMap.class));
+		verify(cacheDao).signIn(eq(mail), any(HashMap.class));
+	}
+
+	@Test
+	public void test_signOut_success() throws Exception {
+		String mail = "mail@mail.com";
+		String token = "123";
+		AuthUser au = new AuthUser(mail, token);
+		when(cacheDao.getSignToken(mail)).thenReturn(token);
+		doNothing().when(cacheDao).signOut(mail);
+		CacheResultEnum ret = cacheService.signout(au);
+		assertThat(ret, is(CacheResultEnum.REMOVE_SUCCESS));
+		verify(cacheDao).getSignToken(mail);
+		verify(cacheDao).signOut(mail);
+	}
+
+	@Test
+	public void test_signOut_invalid_token() throws Exception {
+		String mail = "mail@mail.com";
+		String token = "123";
+		AuthUser au = new AuthUser(mail, token);
+		when(cacheDao.getSignToken(mail)).thenReturn(mail);
+		CacheResultEnum ret = cacheService.signout(au);
+		assertThat(ret, is(CacheResultEnum.INVALID_TOKEN));
+		verify(cacheDao).getSignToken(mail);
 	}
 }
