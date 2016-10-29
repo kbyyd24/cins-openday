@@ -8,5 +8,5 @@ public interface CacheService {
 	CacheResultEnum saveAuthingUser(AuthUser authUser);
 	String getEnableToken(String mail);
 	CacheResultEnum signIn(UserSignInResult user);
-	CacheResultEnum signout(int id);
+	CacheResultEnum signout(AuthUser authUser);
 }

@@ -104,7 +104,7 @@ public class UserControllerTest {
 		String mail = "mail@mail.com";
 		String token = "123";
 		AuthUser au = new AuthUser(mail, token);
-		when(userService.signOut(au)).thenReturn(UserServiceResultEnum.LOGOUT_SUCCESS);
+		when(userService.signOut(au)).thenReturn(UserServiceResultEnum.SIGNOUT_SUCCESS);
 		UserHttpResult result = userController.signOut(au);
 		assertThat(result.getCode(), is(UserHttpResultEnum.SIGNOUT_SUCCESS.getCode()));
 		verify(userService).signOut(au);

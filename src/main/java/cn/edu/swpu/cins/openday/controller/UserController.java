@@ -91,7 +91,7 @@ public class UserController {
 	@PostMapping("signout")
 	public UserHttpResult signOut(@RequestBody AuthUser au) {
 		UserServiceResultEnum result = userService.signOut(au);
-		if (result == UserServiceResultEnum.LOGOUT_SUCCESS) {
+		if (result == UserServiceResultEnum.SIGNOUT_SUCCESS) {
 			return new UserHttpResult(UserHttpResultEnum.SIGNOUT_SUCCESS);
 		}
 		return new UserHttpResult(UserHttpResultEnum.SIGNOUT_FAILED);

@@ -50,7 +50,7 @@ public class RedisCacheServiceImpl implements CacheService {
 	}
 
 	@Override
-	public CacheResultEnum signout(int id) {
+	public CacheResultEnum signout(AuthUser authUser) {
 		return null;
 	}
 }

@@ -6,13 +6,9 @@ import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.CacheException;
 import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
 import cn.edu.swpu.cins.openday.exception.RedisException;
-import cn.edu.swpu.cins.openday.model.http.MailUpdater;
-import cn.edu.swpu.cins.openday.model.http.PasswordUpdater;
-import cn.edu.swpu.cins.openday.model.http.SignInUser;
-import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
-import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,7 +96,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserServiceResultEnum signOut(AuthUser au) {
-		return null;
+		CacheResultEnum signout = cacheService.signout(au);
+		if (signout == CacheResultEnum.REMOVE_SUCCESS) {
+			return UserServiceResultEnum.SIGNOUT_SUCCESS;
+		}
+		return UserServiceResultEnum.SIGNOUT_FAILED;
 	}
 
 	@Override

@@ -200,4 +200,26 @@ public class UserServiceTest {
 		verify(passwordService).match(password, password);
 		verify(cacheService).signIn(any(UserSignInResult.class));
 	}
+
+	@Test
+	public void test_signOut_success() throws Exception {
+		String mail = "mail@mail.com";
+		String token = "123";
+		AuthUser au = new AuthUser(mail, token);
+		when(cacheService.signout(au)).thenReturn(CacheResultEnum.REMOVE_SUCCESS);
+		UserServiceResultEnum result = userService.signOut(au);
+		assertThat(result, is(UserServiceResultEnum.SIGNOUT_SUCCESS));
+		verify(cacheService).signout(au);
+	}
+
+	@Test
+	public void test_signOut_failed() throws Exception {
+		String mail = "mail@mail.com";
+		String token = "123";
+		AuthUser au = new AuthUser(mail, token);
+		when(cacheService.signout(au)).thenReturn(CacheResultEnum.REMOVE_FAILED);
+		UserServiceResultEnum result = userService.signOut(au);
+		assertThat(result, is(UserServiceResultEnum.SIGNOUT_FAILED));
+		verify(cacheService).signout(au);
+	}
 }
