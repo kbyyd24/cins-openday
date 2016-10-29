@@ -10,7 +10,6 @@ import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
 import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
-import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,11 +38,14 @@ public class UserServiceTest {
 	@Mock
 	private PasswordEncoderService encoderService;
 
+	@Mock
+	private URLCoderService urlCoderService;
+
 	private UserService userService;
 
 	@Before
 	public void setUp() throws Exception {
-		userService = new UserServiceImpl(userDao, cacheService, clockService, encoderService);
+		userService = new UserServiceImpl(userDao, cacheService, clockService, encoderService, urlCoderService);
 	}
 
 	@Test
@@ -66,10 +68,10 @@ public class UserServiceTest {
 	@Test
 	public void test_enable_success() throws Exception {
 		String mail = "mail@mail.com";
-		String baseMail = URLCoderUtil.encode(mail);
 		String token = String.valueOf(System.currentTimeMillis());
-		String baseToken = URLCoderUtil.encode(token);
-		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
+		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		when(urlCoderService.decode(mail)).thenReturn(mail);
+		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(token);
 		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(userDao.enable(eq(mail))).thenReturn(1);
@@ -82,10 +84,10 @@ public class UserServiceTest {
 	@Test(expected = NoUserToEnableException.class)
 	public void test_enable_NoUserToEnableException() throws Exception {
 		String mail = "mail@mail.com";
-		String baseMail = URLCoderUtil.encode(mail);
 		String token = String.valueOf(System.currentTimeMillis());
-		String baseToken = URLCoderUtil.encode(token);
-		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
+		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		when(urlCoderService.decode(mail)).thenReturn(mail);
+		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(token);
 		when(clockService.getCurrentTimeMillis()).thenCallRealMethod();
 		when(userDao.enable(eq(mail))).thenReturn(0);
@@ -98,11 +100,11 @@ public class UserServiceTest {
 	@Test
 	public void test_enable_timeout() throws Exception {
 		String mail = "mail@mail.com";
-		String baseMail = URLCoderUtil.encode(mail);
 		long nowToken = System.currentTimeMillis();
 		String token = String.valueOf(nowToken);
-		String baseToken = URLCoderUtil.encode(token);
-		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
+		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		when(urlCoderService.decode(mail)).thenReturn(mail);
+		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(token);
 		when(clockService.getCurrentTimeMillis()).thenReturn(nowToken + 31 * 60 * 1000);
 		UserServiceResultEnum enableResult = userService.enable(au);
@@ -114,11 +116,11 @@ public class UserServiceTest {
 	@Test
 	public void test_enable_invalid() throws Exception {
 		String mail = "mail@mail.com";
-		String baseMail = URLCoderUtil.encode(mail);
 		long nowToken = System.currentTimeMillis();
 		String token = String.valueOf(nowToken);
-		String baseToken = URLCoderUtil.encode(token);
-		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
+		AuthenticatingUser au = new AuthenticatingUser(mail, token);
+		when(urlCoderService.decode(mail)).thenReturn(mail);
+		when(urlCoderService.decode(token)).thenReturn(token);
 		when(cacheService.getEnableTokenAndRemove(eq(mail))).thenReturn(String.valueOf(nowToken + 1));
 		UserServiceResultEnum enableResult = userService.enable(au);
 		assertThat(enableResult, is(ENABLE_TOKEN_INVALID));

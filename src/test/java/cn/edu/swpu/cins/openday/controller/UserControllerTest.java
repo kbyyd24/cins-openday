@@ -9,7 +9,6 @@ import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
 import cn.edu.swpu.cins.openday.service.UserService;
-import cn.edu.swpu.cins.openday.util.URLCoderUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -62,8 +59,8 @@ public class UserControllerTest {
 
 	@Test
 	public void test_enable_success() throws Exception {
-		String baseMail = URLCoderUtil.encode("mail@mail.com");
-		String baseToken = URLCoderUtil.encode("123");
+		String baseMail = "mail@mail.com";
+		String baseToken = "123";
 		AuthenticatingUser au = new AuthenticatingUser(baseMail, baseToken);
 		when(userService.enable(au)).thenReturn(UserServiceResultEnum.ENABLE_TOKEN_SUCCESS);
 		UserHttpResult ret = userController.enable(au);

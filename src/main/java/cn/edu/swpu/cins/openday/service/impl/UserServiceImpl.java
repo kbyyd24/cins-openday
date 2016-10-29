@@ -11,11 +11,7 @@ import cn.edu.swpu.cins.openday.model.http.PasswordUpdater;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.service.AuthenticatingUser;
-import cn.edu.swpu.cins.openday.service.CacheService;
-import cn.edu.swpu.cins.openday.service.ClockService;
-import cn.edu.swpu.cins.openday.service.PasswordEncoderService;
-import cn.edu.swpu.cins.openday.service.UserService;
-import cn.edu.swpu.cins.openday.util.URLCoderUtil;
+import cn.edu.swpu.cins.openday.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +24,16 @@ public class UserServiceImpl implements UserService {
 	private CacheService cacheService;
 	private ClockService clockService;
 	private PasswordEncoderService encoderService;
+	private URLCoderService urlCoderService;
 
 	@Autowired
-	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService, PasswordEncoderService encoderService) {
+	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService,
+	                       PasswordEncoderService encoderService, URLCoderService urlCoderService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
 		this.clockService = clockService;
 		this.encoderService = encoderService;
+		this.urlCoderService = urlCoderService;
 	}
 
 	@Override
@@ -63,8 +62,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(rollbackFor = {NoUserToEnableException.class, RedisException.class})
 	public UserServiceResultEnum enable(AuthenticatingUser au) {
-		au.setMail(URLCoderUtil.decode(au.getMail()));
-		au.setToken(URLCoderUtil.decode(au.getToken()));
+		au.setMail(urlCoderService.decode(au.getMail()));
+		au.setToken(urlCoderService.decode(au.getToken()));
 		String enableToken = cacheService.getEnableTokenAndRemove(au.getMail());
 		CacheResultEnum verifyResult = verifyToken(au, enableToken);
 		if (verifyResult == CacheResultEnum.ENABLE_TOKEN_SUCCESS) {
