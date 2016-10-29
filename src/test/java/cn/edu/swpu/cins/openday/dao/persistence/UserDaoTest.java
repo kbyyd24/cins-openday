@@ -1,12 +1,15 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
+import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.persistence.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
@@ -38,9 +41,9 @@ public class UserDaoTest {
 		String mail = "melo@gaoyuexiang.cn";
 		SignUpUser signUpUser = new SignUpUser(username, password, password, mail);
 		when(jdbcOperations.query(anyString(),
-						anyMapOf(String.class, String.class),
-						any(RowMapper.class)))
-						.thenReturn(new ArrayList<>());
+			anyMapOf(String.class, String.class),
+			any(RowMapper.class)))
+			.thenReturn(new ArrayList<>());
 		UserServiceResultEnum ret = userDao.checkNewUser(signUpUser);
 		assertThat(ret, is(ADD_USER_USABLE));
 	}
@@ -52,9 +55,24 @@ public class UserDaoTest {
 		String mail = "melo@gaoyuexiang.cn";
 		SignUpUser signUpUser = new SignUpUser(username, password, password, mail);
 		when(jdbcOperations.update(anyString(),
-						anyMapOf(String.class, String.class)))
-						.thenReturn(1);
+			anyMapOf(String.class, String.class)))
+			.thenReturn(1);
 		int ret = userDao.signUpUser(signUpUser);
 		assertThat(ret, is(1));
+	}
+
+	@Test
+	public void test_signIn_success() throws Exception {
+		String mail = "melo@gaoyuexiang.cn";
+		String password = "MambaOut";
+		SignInUser signInUser = new SignInUser(mail, password);
+		int id = 1;
+		String username = "kb永远的24";
+		User user = new User(id, username, mail, password, true);
+		when(jdbcOperations.query(anyString(),
+			anyMapOf(String.class, String.class),
+			any(ResultSetExtractor.class)))
+			.thenReturn(user);
+		assertThat(userDao.signInUser(signInUser), is(user));
 	}
 }

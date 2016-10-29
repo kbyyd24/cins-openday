@@ -8,9 +8,12 @@ import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,13 +23,16 @@ import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 public class UserDao {
 
 	private static final String SELECT_BY_USERNAME_OR_MAIL =
-					"select id, username, mail from user " +
-									"where username = :username or mail = :mail";
+		"select id, username, mail from user " +
+			"where username = :username or mail = :mail";
 	private static final String CREATE_NEW_USER =
-					"insert into user(username, password, mail) value " +
-									"(:username, :password, :mail)";
+		"insert into user(username, password, mail) value " +
+			"(:username, :password, :mail)";
 	private static final String ENABLE_USER_BY_MAIL =
-					"UPDATE user SET enable = TRUE WHERE mail = :mail";
+		"UPDATE user SET enable = TRUE WHERE mail = :mail";
+	private static final String SELECT_BY_MAIL =
+		"SELECT id, username, mail, password, enable FROM user " +
+			"WHERE mail = :mail AND enable = TRUE ";
 
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -40,13 +46,13 @@ public class UserDao {
 		queryMap.put("username", signUpUser.getUsername());
 		queryMap.put("mail", signUpUser.getMail());
 		List<User> ret = jdbcOperations.query(
-						SELECT_BY_USERNAME_OR_MAIL,
-						queryMap,
-						(rs, rowNum) -> new User(
-										rs.getInt("id"),
-										rs.getString("username"),
-										rs.getString("mail")
-						));
+			SELECT_BY_USERNAME_OR_MAIL,
+			queryMap,
+			(rs, rowNum) -> new User(
+				rs.getInt("id"),
+				rs.getString("username"),
+				rs.getString("mail")
+			));
 		if (ret.size() == 0) {
 			return ADD_USER_USABLE;
 		} else if (ret.size() == 2) {
@@ -84,6 +90,16 @@ public class UserDao {
 	}
 
 	public User signInUser(SignInUser signInUser) {
-		return null;
+		HashMap<String, String> queryMap = new HashMap<>(2);
+		queryMap.put("mail", signInUser.getMail());
+		return jdbcOperations.query(SELECT_BY_MAIL, queryMap, rs -> {
+			return new User(
+				rs.getInt("id"),
+				rs.getString("username"),
+				rs.getString("mail"),
+				rs.getString("password"),
+				rs.getBoolean("enable")
+			);
+		});
 	}
 }
