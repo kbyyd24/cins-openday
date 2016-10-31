@@ -7,6 +7,16 @@ public class Activity {
 	private String content;
 	private String img;
 	private Long createTime;
+	private Long endTime;
+
+	public Activity(Integer id, String title, String content, String img, Long create_time, Long end_time) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.img = img;
+		createTime = create_time;
+		endTime = end_time;
+	}
 
 	public Integer getId() {
 		return id;
@@ -55,8 +65,6 @@ public class Activity {
 	public void setEndTime(Long endTime) {
 		this.endTime = endTime;
 	}
-
-	private Long endTime;
 
 	public Activity() {}
 
