@@ -21,9 +21,9 @@ public class ActivityDao {
 	}
 
 	public List<Activity> getActivities(int limit, int offset) {
-		HashMap<String, String> queryMap = new HashMap<>();
-		queryMap.put("limit", String.valueOf(limit));
-		queryMap.put("offset", String.valueOf(offset));
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("limit", limit);
+		queryMap.put("offset", offset);
 		return jdbcOperations.query(
 			QUERY_ACTIVITIES,
 			queryMap,

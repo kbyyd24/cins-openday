@@ -12,6 +12,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()
 			.authorizeRequests().mvcMatchers("/user/**").permitAll()
+			.mvcMatchers("/activity/list/**").permitAll()
 			.anyRequest().authenticated()
 		;
 	}
