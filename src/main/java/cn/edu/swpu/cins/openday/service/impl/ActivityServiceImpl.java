@@ -6,7 +6,9 @@ import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import cn.edu.swpu.cins.openday.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,12 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = DataAccessException.class)
 	public ActivityServiceResultEnum addActivity(PostActivity postActivity) {
-		return null;
+		int line = activityDao.addActivity(postActivity);
+		if (line == 1) {
+			return ActivityServiceResultEnum.SAVE_SUCCESS;
+		}
+		return ActivityServiceResultEnum.SAVE_FAILED;
 	}
 }

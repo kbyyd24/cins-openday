@@ -1,6 +1,8 @@
 package cn.edu.swpu.cins.openday.service;
 
 import cn.edu.swpu.cins.openday.dao.persistence.ActivityDao;
+import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
+import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import cn.edu.swpu.cins.openday.service.impl.ActivityServiceImpl;
 import org.junit.Before;
@@ -42,5 +44,14 @@ public class ActivityServiceTest {
 		List<Activity> ret = service.getActivities(page);
 		assertThat(ret, is(activities));
 		verify(activityDao, times(1)).getActivities(limit, offset);
+	}
+
+	@Test
+	public void test_addActivity_success() throws Exception {
+		PostActivity postActivity = new PostActivity();
+		when(activityDao.addActivity(postActivity)).thenReturn(1);
+		ActivityServiceResultEnum resultEnum = service.addActivity(postActivity);
+		assertThat(resultEnum, is(ActivityServiceResultEnum.SAVE_SUCCESS));
+		verify(activityDao).addActivity(postActivity);
 	}
 }

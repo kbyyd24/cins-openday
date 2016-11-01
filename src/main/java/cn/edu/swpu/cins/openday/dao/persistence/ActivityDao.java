@@ -1,5 +1,6 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
+import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -35,5 +36,9 @@ public class ActivityDao {
 				rs.getLong("create_time"),
 				rs.getLong("end_time")
 			)));
+	}
+
+	public int addActivity(PostActivity postActivity) {
+		return 0;
 	}
 }
