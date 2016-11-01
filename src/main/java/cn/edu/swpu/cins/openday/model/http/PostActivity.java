@@ -9,6 +9,14 @@ public class PostActivity {
 
 	public PostActivity() {}
 
+	public PostActivity(String title, String content, String img, Long startTime, Long endTime) {
+		this.title = title;
+		this.content = content;
+		this.img = img;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
 	public String getTitle() {
 		return title;
 	}

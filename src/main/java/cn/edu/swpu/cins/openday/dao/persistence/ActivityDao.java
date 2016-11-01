@@ -14,6 +14,9 @@ public class ActivityDao {
 	private static final String QUERY_ACTIVITIES =
 		"SELECT id, title, content, img, create_time, end_time " +
 			"FROM activity LIMIT :limit, :offset";
+	private static final String ADD_ACTIVITY =
+		"INSERT INTO activity(title, content, img, create_time, end_time) " +
+			"VALUE (:title, :content, :img, :createTime, :endTime)";
 	private final NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -39,6 +42,12 @@ public class ActivityDao {
 	}
 
 	public int addActivity(PostActivity postActivity) {
-		return 0;
+		HashMap<String, Object> insertMap = new HashMap<>();
+		insertMap.put("title", postActivity.getTitle());
+		insertMap.put("content", postActivity.getContent());
+		insertMap.put("img", postActivity.getImg());
+		insertMap.put("startTime", postActivity.getStartTime());
+		insertMap.put("endTime", postActivity.getEndTime());
+		return jdbcOperations.update(ADD_ACTIVITY, insertMap);
 	}
 }
