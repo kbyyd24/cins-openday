@@ -58,4 +58,10 @@ public class RedisCacheServiceImpl implements CacheService {
 		}
 		return CacheResultEnum.INVALID_TOKEN;
 	}
+
+	@Override
+	public boolean checkToken(AuthUser authUser) {
+		String signToken = cacheDao.getSignToken(authUser.getMail());
+		return signToken.equals(authUser.getToken());
+	}
 }

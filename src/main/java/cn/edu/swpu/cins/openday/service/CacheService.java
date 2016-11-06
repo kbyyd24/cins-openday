@@ -9,4 +9,6 @@ public interface CacheService {
 	String getEnableToken(String mail);
 	CacheResultEnum signIn(UserSignInResult user);
 	CacheResultEnum signout(AuthUser authUser);
+
+	boolean checkToken(AuthUser authUser);
 }

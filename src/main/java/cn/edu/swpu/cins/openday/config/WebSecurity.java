@@ -11,9 +11,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.csrf().disable()
-			.authorizeRequests().mvcMatchers("/user/**").permitAll()
-			.mvcMatchers("/activity/list/**").permitAll()
-			.anyRequest().authenticated()
+			.authorizeRequests().anyRequest().permitAll()
+//			.authorizeRequests().mvcMatchers("/user/**").permitAll()
+//			.mvcMatchers("/activity/list/**").permitAll()
+//			.anyRequest().authenticated()
 		;
 	}
 }

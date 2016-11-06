@@ -46,7 +46,7 @@ public class ActivityDao {
 		insertMap.put("title", postActivity.getTitle());
 		insertMap.put("content", postActivity.getContent());
 		insertMap.put("img", postActivity.getImg());
-		insertMap.put("startTime", postActivity.getStartTime());
+		insertMap.put("createTime", postActivity.getStartTime());
 		insertMap.put("endTime", postActivity.getEndTime());
 		return jdbcOperations.update(ADD_ACTIVITY, insertMap);
 	}
