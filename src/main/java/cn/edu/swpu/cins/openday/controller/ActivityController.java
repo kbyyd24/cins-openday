@@ -1,6 +1,6 @@
 package cn.edu.swpu.cins.openday.controller;
 
-import cn.edu.swpu.cins.openday.enums.ActivityHttpResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.ActivityHttpResult;
 import cn.edu.swpu.cins.openday.model.http.PostActivity;
@@ -31,9 +31,9 @@ public class ActivityController {
 	public ActivityHttpResult addActivity(@RequestBody PostActivity activity) {
 		ActivityServiceResultEnum resultEnum = activityService.addActivity(activity);
 		if (resultEnum == ActivityServiceResultEnum.SAVE_SUCCESS) {
-			return new ActivityHttpResult(ActivityHttpResultEnum.SAVE_SUCCESS);
+			return new ActivityHttpResult(HttpResultEnum.SAVE_SUCCESS);
 		}
 		// TODO: 16-10-30 deal other failure of save
-		return new ActivityHttpResult(ActivityHttpResultEnum.SAVE_FAILED);
+		return new ActivityHttpResult(HttpResultEnum.SAVE_FAILED);
 	}
 }

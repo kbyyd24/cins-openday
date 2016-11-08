@@ -1,6 +1,6 @@
 package cn.edu.swpu.cins.openday.controller;
 
-import cn.edu.swpu.cins.openday.enums.http.MatchHttpResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
@@ -38,7 +38,7 @@ public class MatchControllerTest {
 		UpMatch upMatch = new UpMatch(matchName, detail, startTime, endTime);
 		when(matchService.addMatch(upMatch)).thenReturn(MatchServiceResultEnum.ADD_SUCCESS);
 		MatchHttpResult matchHttpResult = controller.addMatch(upMatch);
-		assertThat(matchHttpResult.getCode(), is(MatchHttpResultEnum.ADD_SUCCESS.getCode()));
+		assertThat(matchHttpResult.getCode(), is(HttpResultEnum.ADD_SUCCESS.getCode()));
 		verify(matchService).addMatch(upMatch);
 	}
 }

@@ -1,6 +1,6 @@
 package cn.edu.swpu.cins.openday.controller;
 
-import cn.edu.swpu.cins.openday.enums.ActivityHttpResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.ActivityHttpResult;
 import cn.edu.swpu.cins.openday.model.http.PostActivity;
@@ -48,7 +48,7 @@ public class ActivityControllerTest {
 		PostActivity postActivity = new PostActivity();
 		when(activityService.addActivity(postActivity)).thenReturn(ActivityServiceResultEnum.SAVE_SUCCESS);
 		ActivityHttpResult ret = controller.addActivity(postActivity);
-		assertThat(ret.getCode(), is(ActivityHttpResultEnum.SAVE_SUCCESS.getCode()));
+		assertThat(ret.getCode(), is(HttpResultEnum.SAVE_SUCCESS.getCode()));
 		verify(activityService).addActivity(postActivity);
 	}
 }

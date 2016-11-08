@@ -1,6 +1,6 @@
 package cn.edu.swpu.cins.openday.model.http;
 
-import cn.edu.swpu.cins.openday.enums.http.MatchHttpResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 
 public class MatchHttpResult {
 	private String description;
@@ -8,7 +8,7 @@ public class MatchHttpResult {
 
 	public MatchHttpResult() {}
 
-	public MatchHttpResult(MatchHttpResultEnum resultEnum) {
+	public MatchHttpResult(HttpResultEnum resultEnum) {
 		this.code = resultEnum.getCode();
 		this.description = resultEnum.getDescription();
 	}

@@ -1,12 +1,12 @@
 package cn.edu.swpu.cins.openday.model.http;
 
-import cn.edu.swpu.cins.openday.enums.ActivityHttpResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 
 public class ActivityHttpResult {
 	private int code;
 	private String description;
 
-	public ActivityHttpResult(ActivityHttpResultEnum result) {
+	public ActivityHttpResult(HttpResultEnum result) {
 		this.code = result.getCode();
 		this.description = result.getDescription();
 	}
