@@ -29,6 +29,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry
 			.addInterceptor(new UserSecurityInterceptor(cacheService))
-			.addPathPatterns("/activity/add");
+			.addPathPatterns("/activity/add", "/match/add");
 	}
 }
