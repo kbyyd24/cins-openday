@@ -3,7 +3,7 @@ package cn.edu.swpu.cins.openday.dao.persistence;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -14,10 +14,13 @@ public class MatchDao {
 	private static final String ADD_MATCH =
 		"INSERT INTO `match`(`match_name`, `detail`, `start_time`, `end_time`) " +
 			"VALUE (:matchName, :detail, :startTime, :endTime)";
-	private JdbcOperations jdbcOperations;
+	private static final String SELECT_MATCHES =
+		"SELECT `id`, `match_name`, `detail`, `start_time`, `end_time` " +
+			"FROM `match` LIMIT :limit, :offset";
+	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
-	public MatchDao(JdbcOperations jdbcOperations) {
+	public MatchDao(NamedParameterJdbcOperations jdbcOperations) {
 		this.jdbcOperations = jdbcOperations;
 	}
 
@@ -31,6 +34,18 @@ public class MatchDao {
 	}
 
 	public List<Match> getMatches(int limit, int offset) {
-		return null;
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("limit", limit);
+		queryMap.put("offset", offset);
+		return jdbcOperations.query(
+			SELECT_MATCHES,
+			queryMap,
+			(rs, rowNum) -> new Match(
+				rs.getInt("id"),
+				rs.getString("match_name"),
+				rs.getString("detail"),
+				rs.getLong("start_time"),
+				rs.getLong("end_time")
+			));
 	}
 }
