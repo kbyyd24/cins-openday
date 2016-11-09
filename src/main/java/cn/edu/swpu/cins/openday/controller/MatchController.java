@@ -4,12 +4,12 @@ import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("match")
@@ -28,5 +28,13 @@ public class MatchController {
 			return new MatchHttpResult(HttpResultEnum.ADD_SUCCESS);
 		}
 		return new MatchHttpResult(HttpResultEnum.ADD_FAILED);
+	}
+
+	@GetMapping("list/{page}")
+	public List<Match> getMatches(@PathVariable(required = false) Integer page) {
+		if (page == null || page < 1) {
+			page = 1;
+		}
+		return matchService.getMatches(page);
 	}
 }

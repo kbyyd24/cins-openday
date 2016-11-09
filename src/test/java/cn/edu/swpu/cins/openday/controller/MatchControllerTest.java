@@ -4,12 +4,16 @@ import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -40,5 +44,15 @@ public class MatchControllerTest {
 		MatchHttpResult matchHttpResult = controller.addMatch(upMatch);
 		assertThat(matchHttpResult.getCode(), is(HttpResultEnum.ADD_SUCCESS.getCode()));
 		verify(matchService).addMatch(upMatch);
+	}
+
+	@Test
+	public void test_getMatches_success() throws Exception {
+		int page = 1;
+		List<Match> matches = new ArrayList<>();
+		when(matchService.getMatches(page)).thenReturn(matches);
+		List<Match> ret = controller.getMatches(page);
+		assertThat(ret, is(matches));
+		verify(matchService).getMatches(page);
 	}
 }

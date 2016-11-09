@@ -3,11 +3,14 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -26,5 +29,10 @@ public class MatchServiceImpl implements MatchService {
 			return MatchServiceResultEnum.ADD_SUCCESS;
 		}
 		return MatchServiceResultEnum.ADD_FAILED;
+	}
+
+	@Override
+	public List<Match> getMatches(int page) {
+		return null;
 	}
 }
