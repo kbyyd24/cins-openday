@@ -3,12 +3,16 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -39,5 +43,17 @@ public class MatchServiceImplTest {
 		MatchServiceResultEnum result = service.addMatch(upMatch);
 		assertThat(result, is(MatchServiceResultEnum.ADD_SUCCESS));
 		verify(matchDao).addMatch(upMatch);
+	}
+
+	@Test
+	public void test_getMatches_success() throws Exception {
+		int page = 1;
+		int limit = 0;
+		int offset = 4;
+		List<Match> matches = new ArrayList<>();
+		when(matchDao.getMatches(limit, offset)).thenReturn(matches);
+		List<Match> ret = service.getMatches(page);
+		assertThat(ret, is(matches));
+		verify(matchDao).getMatches(limit, offset);
 	}
 }

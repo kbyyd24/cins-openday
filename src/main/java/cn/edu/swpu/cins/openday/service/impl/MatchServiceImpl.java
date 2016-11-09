@@ -10,11 +10,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MatchServiceImpl implements MatchService {
 	private MatchDao matchDao;
+	private final int offset = 4;
 
 	@Autowired
 	public MatchServiceImpl(MatchDao matchDao) {
@@ -33,6 +35,8 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public List<Match> getMatches(int page) {
-		return null;
+		int limit = (page - 1) * offset;
+		List<Match> matches = matchDao.getMatches(limit, offset);
+		return matches == null ? new ArrayList<>() : matches;
 	}
 }
