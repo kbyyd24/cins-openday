@@ -1,9 +1,10 @@
-package cn.edu.swpu.cins.openday.service;
+package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.cache.CacheDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
+import cn.edu.swpu.cins.openday.service.CacheService;
 import cn.edu.swpu.cins.openday.service.impl.RedisCacheServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CacheServiceTest {
+public class CacheServiceImplTest {
 
 	@Mock
 	private CacheDao cacheDao;

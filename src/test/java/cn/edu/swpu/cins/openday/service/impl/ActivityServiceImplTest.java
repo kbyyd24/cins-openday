@@ -1,9 +1,10 @@
-package cn.edu.swpu.cins.openday.service;
+package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.ActivityDao;
 import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
+import cn.edu.swpu.cins.openday.service.ActivityService;
 import cn.edu.swpu.cins.openday.service.impl.ActivityServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ActivityServiceTest {
+public class ActivityServiceImplTest {
 
 	@Mock
 	private ActivityDao activityDao;

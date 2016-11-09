@@ -1,4 +1,4 @@
-package cn.edu.swpu.cins.openday.service;
+package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
@@ -9,6 +9,7 @@ import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
+import cn.edu.swpu.cins.openday.service.*;
 import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
 import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
 import org.junit.Before;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserServiceTest {
+public class UserServiceImplTest {
 
 	@Mock
 	private UserDao userDao;

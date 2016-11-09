@@ -1,9 +1,9 @@
-package cn.edu.swpu.cins.openday.service;
+package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
-import cn.edu.swpu.cins.openday.service.impl.MatchServiceImpl;
+import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MatchServiceTest {
+public class MatchServiceImplTest {
 	
 	@Mock
 	private MatchDao matchDao;
