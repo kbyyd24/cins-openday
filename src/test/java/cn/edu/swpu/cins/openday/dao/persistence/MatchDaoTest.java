@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
@@ -54,5 +55,15 @@ public class MatchDaoTest {
 		List<Match> ret = dao.getMatches(limit, offset);
 		assertThat(ret, is(matches));
 		verify(jdbcOperations).query(eq(sql), anyMap(), any(RowMapper.class));
+	}
+
+	@Test
+	public void test_getDataSet_success() throws Exception {
+		int id = 1;
+		Match match = mock(Match.class);
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(match);
+		Match dataSet = dao.getDataSet(id);
+		assertThat(dataSet, is(match));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
 }

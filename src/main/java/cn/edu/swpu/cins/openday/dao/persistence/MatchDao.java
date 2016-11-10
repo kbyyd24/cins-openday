@@ -17,6 +17,9 @@ public class MatchDao {
 	private static final String SELECT_MATCHES =
 		"SELECT `id`, `match_name`, `detail`, `start_time`, `end_time` " +
 			"FROM `match` LIMIT :limit, :offset";
+	private static final String SELECT_DATA_SET =
+		"select `data_link`, `data_password` " +
+			"from `match` where `id` = :id";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -50,6 +53,13 @@ public class MatchDao {
 	}
 
 	public Match getDataSet(int id) {
-		return null;
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("id", id);
+		return jdbcOperations.query(
+			SELECT_DATA_SET,
+			queryMap,
+			rs -> {
+			return new Match(rs.getString("data_link"), rs.getString("data_password"));
+		});
 	}
 }
