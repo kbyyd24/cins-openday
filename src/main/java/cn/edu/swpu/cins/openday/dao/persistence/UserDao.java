@@ -33,6 +33,9 @@ public class UserDao {
 	private static final String SELECT_BY_MAIL =
 		"SELECT id, username, mail, password, enable FROM user " +
 			"WHERE mail = :mail AND enable = TRUE ";
+	private static final String SELECT_ID =
+		"select id from user " +
+			"where mail = :mail";
 
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -105,6 +108,13 @@ public class UserDao {
 	}
 
 	public Integer getId(String mail) {
-		return null;
+		HashMap<String, String> queryMap = new HashMap<>();
+		queryMap.put("mail", mail);
+		return jdbcOperations.query(
+			SELECT_ID,
+			queryMap,
+			rs -> {
+			return rs.getInt("id");
+		});
 	}
 }

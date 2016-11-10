@@ -19,6 +19,7 @@ import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_U
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -74,5 +75,17 @@ public class UserDaoTest {
 			any(ResultSetExtractor.class)))
 			.thenReturn(user);
 		assertThat(userDao.signInUser(signInUser), is(user));
+	}
+
+	@Test
+	public void test_getId_success() throws Exception {
+		String sql = "select id from user " +
+			"where mail = :mail";
+		int id = 1;
+		when(jdbcOperations.query(eq(sql), anyMap(), any(ResultSetExtractor.class))).thenReturn(id);
+		String mail = "mail";
+		Integer ret = userDao.getId(mail);
+		assertThat(ret, is(id));
+		verify(jdbcOperations).query(eq(sql), anyMap(), any(ResultSetExtractor.class));
 	}
 }
