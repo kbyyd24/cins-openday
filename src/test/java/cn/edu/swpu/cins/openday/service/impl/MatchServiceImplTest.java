@@ -10,6 +10,7 @@ import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
+import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,10 +77,15 @@ public class MatchServiceImplTest {
 	public void test_joinMatch_success() throws Exception {
 		String mail = "mail@mail.com";
 		MatchRegister matchRegister = new MatchRegister();
-		matchRegister.setMail(mail);
+		matchRegister.setMail1(mail);
+		matchRegister.setMail2(mail);
 		int id = 1;
 		matchRegister.setMatchId(id);
-		when(userDao.getId(mail)).thenReturn(id);
+		List<User> users = new ArrayList<>();
+		User user = new User(id);
+		users.add(user);
+		users.add(user);
+		when(userDao.getIds(mail, mail)).thenReturn(users);
 		when(groupDao.addGroup(any(Group.class))).thenReturn(1);
 		when(groupDao.getGroupId(any(Group.class))).thenReturn(id);
 		when(registrationDao.addRegistration(any(Registration.class))).thenReturn(1);
@@ -87,7 +93,7 @@ public class MatchServiceImplTest {
 		when(matchDao.getDataSet(id)).thenReturn(match);
 		Match ret = service.joinMatch(matchRegister);
 		assertThat(ret, is(match));
-		verify(userDao).getId(mail);
+		verify(userDao).getIds(mail, mail);
 		verify(groupDao).addGroup(any(Group.class));
 		verify(groupDao).getGroupId(any(Group.class));
 		verify(registrationDao).addRegistration(any(Registration.class));

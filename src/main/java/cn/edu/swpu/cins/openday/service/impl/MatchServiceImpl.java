@@ -5,15 +5,13 @@ import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
 import cn.edu.swpu.cins.openday.dao.persistence.RegistrationDao;
 import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
-import cn.edu.swpu.cins.openday.exception.GroupException;
-import cn.edu.swpu.cins.openday.exception.NoSuchUserException;
-import cn.edu.swpu.cins.openday.exception.OpenDayException;
-import cn.edu.swpu.cins.openday.exception.RegistrationException;
+import cn.edu.swpu.cins.openday.exception.*;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
+import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -60,10 +58,14 @@ public class MatchServiceImpl implements MatchService {
 	@Override
 	@Transactional(rollbackFor = {DataAccessException.class, SQLException.class, OpenDayException.class})
 	public Match joinMatch(MatchRegister matchRegister) {
-		Integer userId = userDao.getId(matchRegister.getMail());
-		if (userId == null) {
-			throw new NoSuchUserException("no such user: " + matchRegister.getMail());
+		List<User> users = userDao.getIds(matchRegister.getMail1(), matchRegister.getMail2());
+		if (users.size() < 2) {
+			throw new UserException("cannot search two users");
 		}
+		users.forEach(user -> {
+			if (user.getId() == null)
+				throw new NoSuchUserException("no such user: " + user.getMail());
+		});
 		Group group = new Group(matchRegister.getGroupName(), matchRegister.getMatchId());
 		int line = groupDao.addGroup(group);
 		if (line != 1) {
@@ -73,7 +75,7 @@ public class MatchServiceImpl implements MatchService {
 		if (groupId == null) {
 			throw new GroupException("get group failed");
 		}
-		Registration registration = new Registration(matchRegister.getMatchId(), userId, groupId);
+		Registration registration = new Registration(matchRegister.getMatchId(), users, groupId);
 		line = registrationDao.addRegistration(registration);
 		if (line != 1) {
 			throw new RegistrationException("join match error");

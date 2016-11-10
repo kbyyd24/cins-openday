@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,11 +30,9 @@ public class RegistrationDaoTest {
 	@Test
 	public void test_addRegistration_success() throws Exception {
 		Registration registration = new Registration();
-		String sql = "insert into `registration`(match_id, user_id, group_id) " +
-			"value (:matchId, :userId, :groupId)";
-		when(jdbcOperations.update(eq(sql), anyMap())).thenReturn(1);
+		when(jdbcOperations.update(anyString(), anyMap())).thenReturn(1);
 		int line = dao.addRegistration(registration);
 		assertThat(line, is(1));
-		verify(jdbcOperations).update(eq(sql), anyMap());
+		verify(jdbcOperations).update(anyString(), anyMap());
 	}
 }

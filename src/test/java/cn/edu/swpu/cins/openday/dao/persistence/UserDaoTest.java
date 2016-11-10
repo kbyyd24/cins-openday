@@ -14,11 +14,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ADD_USER_USABLE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -79,13 +81,12 @@ public class UserDaoTest {
 
 	@Test
 	public void test_getId_success() throws Exception {
-		String sql = "select id from user " +
-			"where mail = :mail";
 		int id = 1;
-		when(jdbcOperations.query(eq(sql), anyMap(), any(ResultSetExtractor.class))).thenReturn(id);
-		String mail = "mail";
-		Integer ret = userDao.getId(mail);
-		assertThat(ret, is(id));
-		verify(jdbcOperations).query(eq(sql), anyMap(), any(ResultSetExtractor.class));
+		List users = mock(List.class);
+		when(jdbcOperations.query(anyString(), anyMap(), any(RowMapper.class))).thenReturn(users);
+		String mail1 = "mail";
+		List<User> ret = userDao.getIds(mail1, mail1);
+		assertThat(ret, is(users));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(RowMapper.class));
 	}
 }

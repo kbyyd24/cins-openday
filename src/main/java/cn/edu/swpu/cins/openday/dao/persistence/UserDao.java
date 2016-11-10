@@ -26,7 +26,7 @@ public class UserDao {
 		"select id, username, mail from user " +
 			"where username = :username or mail = :mail";
 	private static final String CREATE_NEW_USER =
-		"insert into user(username, password, mail) value " +
+		"INSERT INTO user(username, password, mail) VALUE " +
 			"(:username, :password, :mail)";
 	private static final String ENABLE_USER_BY_MAIL =
 		"UPDATE user SET enable = TRUE WHERE mail = :mail";
@@ -34,8 +34,8 @@ public class UserDao {
 		"SELECT id, username, mail, password, enable FROM user " +
 			"WHERE mail = :mail AND enable = TRUE ";
 	private static final String SELECT_ID =
-		"select id from user " +
-			"where mail = :mail";
+		"SELECT id, mail FROM user " +
+			"WHERE mail = :mail1 OR mail = :mail2";
 
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -107,14 +107,16 @@ public class UserDao {
 		});
 	}
 
-	public Integer getId(String mail) {
+	public List<User> getIds(String mail1, String mail2) {
 		HashMap<String, String> queryMap = new HashMap<>();
-		queryMap.put("mail", mail);
+		queryMap.put("mail1", mail1);
+		queryMap.put("mail2", mail2);
 		return jdbcOperations.query(
 			SELECT_ID,
 			queryMap,
-			rs -> {
-			return rs.getInt("id");
-		});
+			(rs, rowNum) -> new User(
+				rs.getInt("id"),
+				rs.getString("mail")
+			));
 	}
 }

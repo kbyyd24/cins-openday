@@ -23,6 +23,15 @@ public class User {
 		this.enable = enable;
 	}
 
+	public User(int id, String mail) {
+		this.id = id;
+		this.mail = mail;
+	}
+
+	public User(int id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}
