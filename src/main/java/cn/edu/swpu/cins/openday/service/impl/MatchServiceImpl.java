@@ -2,6 +2,7 @@ package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
+import cn.edu.swpu.cins.openday.model.http.MatchRegistor;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
@@ -38,5 +39,10 @@ public class MatchServiceImpl implements MatchService {
 		int limit = (page - 1) * offset;
 		List<Match> matches = matchDao.getMatches(limit, offset);
 		return matches == null ? new ArrayList<>() : matches;
+	}
+
+	@Override
+	public Match joinMatch(MatchRegistor matchRegistor) {
+		return null;
 	}
 }

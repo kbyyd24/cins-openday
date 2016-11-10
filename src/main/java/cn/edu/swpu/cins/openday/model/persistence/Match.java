@@ -14,4 +14,6 @@ public class Match {
 		startTime = start_time;
 		endTime = end_time;
 	}
+
+	public Match() {}
 }
