@@ -8,6 +8,12 @@ public class Registration {
 
 	public Registration() {}
 
+	public Registration(Integer matchId, Integer userId, Integer groupId) {
+		this.matchId = matchId;
+		this.userId = userId;
+		this.groupId = groupId;
+	}
+
 	public Integer getMatchId() {
 		return matchId;
 	}

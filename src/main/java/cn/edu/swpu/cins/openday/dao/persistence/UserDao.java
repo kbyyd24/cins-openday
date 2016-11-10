@@ -103,4 +103,8 @@ public class UserDao {
 			);
 		});
 	}
+
+	public Integer getId(String mail) {
+		return null;
+	}
 }

@@ -48,4 +48,8 @@ public class MatchDao {
 				rs.getLong("end_time")
 			));
 	}
+
+	public Match getDataSet(int id) {
+		return null;
+	}
 }

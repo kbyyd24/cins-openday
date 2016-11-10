@@ -14,6 +14,11 @@ public class Group {
 		this.matchId = matchId;
 	}
 
+	public Group(String groupName, Integer matchId) {
+		this.groupName = groupName;
+		this.matchId = matchId;
+	}
+
 	public Integer getId() {
 		return id;
 	}
