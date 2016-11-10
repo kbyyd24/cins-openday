@@ -21,11 +21,7 @@ CREATE TABLE IF NOT EXISTS `activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `title` varchar(255) NOT NULL COMMENT 'activity title',
   `content` varchar(255) NOT NULL COMMENT 'activity content',
-  `img` varchar(255) NOT NULL COMMENT 'activity img location',
-  `create_time` bigint NOT NULL COMMENT 'begin time',
-  `end_time` bigint NOT NULL COMMENT 'end time',
-  PRIMARY KEY (`id`),
-  INDEX `activity_end_time_idx` (`end_time` ASC) USING BTREE
+  PRIMARY KEY (`id`)
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;
 
 CREATE TABLE IF NOT EXISTS `match` (
@@ -43,13 +39,14 @@ CREATE TABLE IF NOT EXISTS `match` (
 CREATE TABLE IF NOT EXISTS registration (
   `id` int(11) NOT NULL COMMENT 'primary key',
   `match_id` int(11) NOT NULL COMMENT 'match id',
-  `user_id` int(11) NOT NULL COMMENT 'signUpUser id',
+  `user_id1` int(11) NOT NULL COMMENT 'id of user1',
+  `user_id2` int(11) NOT NULL COMMENT 'id of user2',
   `group_id` int(11) NULL COMMENT 'group id',
   PRIMARY KEY (`id`) ,
   INDEX `mugm_match_idx` (`match_id` ASC) USING BTREE,
-  INDEX `mugm_user_idx` (`user_id` ASC) USING BTREE,
+  INDEX `mugm_user_idx` (user_id1 ASC) USING BTREE,
   INDEX `mugm_group_idx` (`group_id` ASC) USING BTREE,
-  UNIQUE INDEX `mugm_uniq` (`match_id` ASC, `user_id` ASC) USING BTREE
+  UNIQUE INDEX `mugm_uniq` (`match_id` ASC, user_id1 ASC, user_id2 ASC) USING BTREE
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;
 
 CREATE TABLE IF NOT EXISTS `score` (
@@ -62,7 +59,8 @@ CREATE TABLE IF NOT EXISTS `score` (
 
 ALTER TABLE `group` ADD CONSTRAINT `group_match_ref` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`);
 ALTER TABLE registration ADD CONSTRAINT `mugm_match_ref` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE registration ADD CONSTRAINT `mugm_user_ref` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE registration ADD CONSTRAINT `mugm_user1_ref` FOREIGN KEY (user_id1) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE registration ADD CONSTRAINT `mugm_user2_ref` FOREIGN KEY (user_id2) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE registration ADD CONSTRAINT `mugm_group_ref` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE `score` ADD CONSTRAINT `score_enlist_ref` FOREIGN KEY (regist_id) REFERENCES registration (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
