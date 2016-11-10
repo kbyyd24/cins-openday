@@ -5,7 +5,7 @@ import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
 import cn.edu.swpu.cins.openday.dao.persistence.RegistrationDao;
 import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.MatchRegistor;
+import cn.edu.swpu.cins.openday.model.http.MatchRegister;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
@@ -75,17 +75,17 @@ public class MatchServiceImplTest {
 	@Test
 	public void test_joinMatch_success() throws Exception {
 		String mail = "mail@mail.com";
-		MatchRegistor matchRegistor = new MatchRegistor();
-		matchRegistor.setMail(mail);
+		MatchRegister matchRegister = new MatchRegister();
+		matchRegister.setMail(mail);
 		int id = 1;
-		matchRegistor.setMatchId(id);
+		matchRegister.setMatchId(id);
 		when(userDao.getId(mail)).thenReturn(id);
 		when(groupDao.addGroup(any(Group.class))).thenReturn(1);
 		when(groupDao.getGroupId(any(Group.class))).thenReturn(id);
 		when(registrationDao.addRegistration(any(Registration.class))).thenReturn(1);
 		Match match = mock(Match.class);
 		when(matchDao.getDataSet(id)).thenReturn(match);
-		Match ret = service.joinMatch(matchRegistor);
+		Match ret = service.joinMatch(matchRegister);
 		assertThat(ret, is(match));
 		verify(userDao).getId(mail);
 		verify(groupDao).addGroup(any(Group.class));

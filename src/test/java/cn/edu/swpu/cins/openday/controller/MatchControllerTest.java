@@ -3,7 +3,7 @@ package cn.edu.swpu.cins.openday.controller;
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
-import cn.edu.swpu.cins.openday.model.http.MatchRegistor;
+import cn.edu.swpu.cins.openday.model.http.MatchRegister;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
@@ -59,11 +59,11 @@ public class MatchControllerTest {
 
 	@Test
 	public void test_joinMatch_success() throws Exception {
-		MatchRegistor matchRegistor = new MatchRegistor();
+		MatchRegister matchRegister = new MatchRegister();
 		Match match = new Match();
-		when(matchService.joinMatch(matchRegistor)).thenReturn(match);
-		Match ret = controller.joinMatch(matchRegistor);
+		when(matchService.joinMatch(matchRegister)).thenReturn(match);
+		Match ret = controller.joinMatch(matchRegister);
 		assertThat(ret, is(match));
-		verify(matchService).joinMatch(matchRegistor);
+		verify(matchService).joinMatch(matchRegister);
 	}
 }

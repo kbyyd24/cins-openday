@@ -9,7 +9,7 @@ import cn.edu.swpu.cins.openday.exception.GroupException;
 import cn.edu.swpu.cins.openday.exception.NoSuchUserException;
 import cn.edu.swpu.cins.openday.exception.OpenDayException;
 import cn.edu.swpu.cins.openday.exception.RegistrationException;
-import cn.edu.swpu.cins.openday.model.http.MatchRegistor;
+import cn.edu.swpu.cins.openday.model.http.MatchRegister;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
@@ -59,12 +59,12 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	@Transactional(rollbackFor = {DataAccessException.class, SQLException.class, OpenDayException.class})
-	public Match joinMatch(MatchRegistor matchRegistor) {
-		Integer userId = userDao.getId(matchRegistor.getMail());
+	public Match joinMatch(MatchRegister matchRegister) {
+		Integer userId = userDao.getId(matchRegister.getMail());
 		if (userId == null) {
-			throw new NoSuchUserException("no such user: " + matchRegistor.getMail());
+			throw new NoSuchUserException("no such user: " + matchRegister.getMail());
 		}
-		Group group = new Group(matchRegistor.getGroupName(), matchRegistor.getMatchId());
+		Group group = new Group(matchRegister.getGroupName(), matchRegister.getMatchId());
 		int line = groupDao.addGroup(group);
 		if (line != 1) {
 			throw new GroupException("add group error");
@@ -73,11 +73,11 @@ public class MatchServiceImpl implements MatchService {
 		if (groupId == null) {
 			throw new GroupException("get group failed");
 		}
-		Registration registration = new Registration(matchRegistor.getMatchId(), userId, groupId);
+		Registration registration = new Registration(matchRegister.getMatchId(), userId, groupId);
 		line = registrationDao.addRegistration(registration);
 		if (line != 1) {
 			throw new RegistrationException("join match error");
 		}
-		return matchDao.getDataSet(matchRegistor.getMatchId());
+		return matchDao.getDataSet(matchRegister.getMatchId());
 	}
 }

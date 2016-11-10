@@ -3,7 +3,7 @@ package cn.edu.swpu.cins.openday.controller;
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
-import cn.edu.swpu.cins.openday.model.http.MatchRegistor;
+import cn.edu.swpu.cins.openday.model.http.MatchRegister;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
@@ -40,7 +40,7 @@ public class MatchController {
 	}
 
 	@PostMapping("join")
-	public Match joinMatch(@RequestBody MatchRegistor matchRegistor) {
-		return matchService.joinMatch(matchRegistor);
+	public Match joinMatch(@RequestBody MatchRegister matchRegister) {
+		return matchService.joinMatch(matchRegister);
 	}
 }

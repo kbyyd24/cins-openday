@@ -1,6 +1,6 @@
 package cn.edu.swpu.cins.openday.model.http;
 
-public class MatchRegistor {
+public class MatchRegister {
 	private String mail;
 	private Integer matchId;
 	private String groupName;
@@ -23,5 +23,9 @@ public class MatchRegistor {
 
 	public void setMatchId(int matchId) {
 		this.matchId = matchId;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 }
