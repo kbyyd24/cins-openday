@@ -41,4 +41,8 @@ public class GroupDao {
 			}
 		);
 	}
+
+	public String getGroupName(int groupId) {
+		return null;
+	}
 }

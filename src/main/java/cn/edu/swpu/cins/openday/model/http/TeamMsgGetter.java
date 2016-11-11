@@ -6,6 +6,11 @@ public class TeamMsgGetter {
 
 	public TeamMsgGetter() {}
 
+	public TeamMsgGetter(int userId, int matchId) {
+		this.userId = userId;
+		this.matchId = matchId;
+	}
+
 	public Integer getMatchId() {
 		return matchId;
 	}

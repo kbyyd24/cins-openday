@@ -3,11 +3,13 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.TeamMsgGetter;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
 import cn.edu.swpu.cins.openday.model.persistence.User;
+import cn.edu.swpu.cins.openday.model.service.TeammateMsg;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
 import org.junit.Test;
@@ -120,5 +122,42 @@ public class MatchServiceImplTest {
 		service.getRankList();
 		verify(scoreDao).getAll();
 		verify(scores).forEach(any(Consumer.class));
+	}
+
+	@Test
+	public void test_getTeamMsg_success() throws Exception {
+		int captainId = 1;
+		int matchId = 1;
+		Integer groupId = 1;
+		when(registrationDao.getGroupId(matchId, captainId)).thenReturn(groupId);
+		String groupName = "groupName";
+		when(groupDao.getGroupName(groupId)).thenReturn(groupName);
+		TeammateMsg tm = mock(TeammateMsg.class);
+		when(registrationDao.getTeammateMsg(matchId, captainId, groupId)).thenReturn(tm);
+		when(tm.getCaptain()).thenReturn(false);
+		Integer userId = 2;
+		when(tm.getId()).thenReturn(userId);
+		List users = mock(List.class);
+		when(userDao.getTeammateMsgs(captainId, userId)).thenReturn(users);
+		when(users.size()).thenReturn(2);
+		User user = mock(User.class);
+		when(users.get(anyInt())).thenReturn(user);
+		when(user.getId()).thenReturn(userId);
+		TeamMsgGetter tmg = new TeamMsgGetter(captainId, matchId);
+		service.getTeamMsg(tmg);
+
+		verify(registrationDao).getGroupId(matchId, captainId);
+		verify(groupDao).getGroupName(groupId);
+		verify(registrationDao).getTeammateMsg(matchId, captainId, groupId);
+		verify(tm, times(2)).getId();
+		verify(userDao).getTeammateMsgs(captainId, userId);
+		verify(users).size();
+		verify(users).get(0);
+		verify(user).getId();
+		verify(tm).getCaptain();
+		verify(user, times(2)).getUsername();
+		verify(user, times(2)).getMail();
+		verify(users).get(1);
+
 	}
 }

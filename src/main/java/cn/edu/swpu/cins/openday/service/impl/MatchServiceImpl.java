@@ -9,6 +9,7 @@ import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.ScoreRank;
+import cn.edu.swpu.cins.openday.model.service.TeammateMsg;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -109,8 +110,62 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public TeamMsg getTeamMsg(TeamMsgGetter teamMsgGetter) {
-		return null;
+	public TeamMsg getTeamMsg(TeamMsgGetter tmg) {
+		Integer groupId = registrationDao.getGroupId(tmg.getMatchId(), tmg.getUserId());
+		if (groupId == null) {
+			// TODO: 16-11-11 deal fault
+			return new TeamMsg();
+		}
+		String groupName = groupDao.getGroupName(groupId);
+		TeammateMsg teammateMsg = registrationDao.getTeammateMsg(tmg.getMatchId(), tmg.getUserId(), groupId);
+		List<User> users = userDao.getTeammateMsgs(tmg.getUserId(), teammateMsg.getId());
+		if (users.size() != 2) {
+			// TODO: 16-11-11 deal fault
+			return new TeamMsg();
+		}
+		User user = users.get(0);
+		TeamMsg teamMsg = new TeamMsg();
+		teamMsg.setTeamName(groupName);
+		setTeamMsg(teammateMsg, users, user, teamMsg);
+		return teamMsg;
+	}
+
+	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, User user, TeamMsg teamMsg) {
+		if (user.getId() == teammateMsg.getId()) {
+			if (teammateMsg.getCaptain()) {
+				setCaptainFirst(users, user, teamMsg);
+			} else {
+				setMemberFirst(users, user, teamMsg);
+			}
+		} else {
+			if (teammateMsg.getCaptain()) {
+				setMemberFirst(users, user, teamMsg);
+			} else {
+				setCaptainFirst(users, user, teamMsg);
+			}
+		}
+	}
+
+	private void setMemberFirst(List<User> users, User user, TeamMsg teamMsg) {
+		setMember(user, teamMsg);
+		user = users.get(1);
+		setCaptain(user, teamMsg);
+	}
+
+	private void setCaptain(User user, TeamMsg teamMsg) {
+		teamMsg.setCaptain(user.getUsername());
+		teamMsg.setCaptainMail(user.getMail());
+	}
+
+	private void setMember(User user, TeamMsg teamMsg) {
+		teamMsg.setTeamMember(user.getUsername());
+		teamMsg.setTeamMemberMail(user.getMail());
+	}
+
+	private void setCaptainFirst(List<User> users, User user, TeamMsg teamMsg) {
+		setCaptain(user, teamMsg);
+		user = users.get(1);
+		setMember(user, teamMsg);
 	}
 
 	private List<Rank> filterDuplication(List<ScoreRank> all) {

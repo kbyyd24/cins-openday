@@ -119,4 +119,8 @@ public class UserDao {
 				rs.getString("mail")
 			));
 	}
+
+	public List<User> getTeammateMsgs(int user1, int user2) {
+		return null;
+	}
 }

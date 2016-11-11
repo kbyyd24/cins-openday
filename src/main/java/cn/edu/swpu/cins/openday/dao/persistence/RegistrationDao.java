@@ -1,6 +1,7 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
+import cn.edu.swpu.cins.openday.model.service.TeammateMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,13 @@ public class RegistrationDao {
 		insertMap.put("groupId", registration.getGroupId());
 		insertMap.put("captain", registration.getCaptain());
 		return jdbcOperations.update(INSERT_REGISTRATION, insertMap);
+	}
+
+	public Integer getGroupId(int matchId, int userId) {
+		return null;
+	}
+
+	public TeammateMsg getTeammateMsg(int matchId, int userId, Integer groupId) {
+		return null;
 	}
 }
