@@ -94,14 +94,11 @@ public class MatchServiceImplTest {
 		when(groupDao.addGroup(any(Group.class))).thenReturn(1);
 		when(groupDao.getGroupId(any(Group.class))).thenReturn(id);
 		when(registrationDao.addRegistration(any(Registration.class))).thenReturn(1);
-		Match match = mock(Match.class);
-		when(matchDao.getDataSet(id)).thenReturn(match);
-		Match ret = service.joinMatch(matchRegister);
-		assertThat(ret, is(match));
+		MatchServiceResultEnum resultEnum = service.joinMatch(matchRegister);
+		assertThat(resultEnum, is(MatchServiceResultEnum.JOIN_SUCCESS));
 		verify(userDao).getIds(mail, mail);
 		verify(groupDao).addGroup(any(Group.class));
 		verify(groupDao).getGroupId(any(Group.class));
 		verify(registrationDao).addRegistration(any(Registration.class));
-		verify(matchDao).getDataSet(id);
 	}
 }

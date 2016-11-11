@@ -16,5 +16,5 @@ public interface MatchService {
 
 	Match getMatch();
 
-	Match joinMatch(MatchRegister matchRegister);
+	MatchServiceResultEnum joinMatch(MatchRegister matchRegister);
 }

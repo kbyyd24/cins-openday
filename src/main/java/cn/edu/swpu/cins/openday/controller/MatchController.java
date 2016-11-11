@@ -45,7 +45,11 @@ public class MatchController {
 	}
 
 	@PostMapping("join")
-	public Match joinMatch(@RequestBody MatchRegister matchRegister) {
-		return matchService.joinMatch(matchRegister);
+		public MatchHttpResult joinMatch(@RequestBody MatchRegister matchRegister) {
+		MatchServiceResultEnum resultEnum = matchService.joinMatch(matchRegister);
+		if (resultEnum == MatchServiceResultEnum.JOIN_SUCCESS) {
+			return new MatchHttpResult(HttpResultEnum.JOIN_SUCCESS);
+		}
+		return new MatchHttpResult(HttpResultEnum.JOIN_FAILED);
 	}
 }

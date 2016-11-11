@@ -23,7 +23,8 @@ public enum HttpResultEnum {
 	SAVE_SUCCESS(3000, "save activity success"),
 	SAVE_FAILED(3001, "save activity failed"),
 	ADD_SUCCESS(4000, "add match success"),
-	ADD_FAILED(4001, "add match failed");
+	ADD_FAILED(4001, "add match failed"),
+	JOIN_SUCCESS(4010, "join match success"), JOIN_FAILED(4011, "join match failed");
 
 	private int code;
 	private String description;

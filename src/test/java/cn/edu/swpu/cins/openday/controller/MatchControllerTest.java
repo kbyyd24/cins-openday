@@ -65,10 +65,8 @@ public class MatchControllerTest {
 	@Test
 	public void test_joinMatch_success() throws Exception {
 		MatchRegister matchRegister = new MatchRegister();
-		Match match = new Match();
-		when(matchService.joinMatch(matchRegister)).thenReturn(match);
-		Match ret = controller.joinMatch(matchRegister);
-		assertThat(ret, is(match));
+		when(matchService.joinMatch(matchRegister)).thenReturn(MatchServiceResultEnum.JOIN_SUCCESS);
+		controller.joinMatch(matchRegister);
 		verify(matchService).joinMatch(matchRegister);
 	}
 }

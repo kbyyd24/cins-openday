@@ -62,7 +62,7 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	@Transactional(rollbackFor = {DataAccessException.class, SQLException.class, OpenDayException.class})
-	public Match joinMatch(MatchRegister matchRegister) {
+	public MatchServiceResultEnum joinMatch(MatchRegister matchRegister) {
 		List<User> users = userDao.getIds(matchRegister.getMail1(), matchRegister.getMail2());
 		if (users.size() < 2) {
 			throw new UserException("cannot search two users");
@@ -85,6 +85,6 @@ public class MatchServiceImpl implements MatchService {
 		if (line != 1) {
 			throw new RegistrationException("join match error");
 		}
-		return matchDao.getDataSet(matchRegister.getMatchId());
+		return MatchServiceResultEnum.JOIN_SUCCESS;
 	}
 }
