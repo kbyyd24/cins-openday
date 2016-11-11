@@ -1,9 +1,7 @@
 package cn.edu.swpu.cins.openday.service;
 
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.MatchRegister;
-import cn.edu.swpu.cins.openday.model.http.RankResult;
-import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +20,6 @@ public interface MatchService {
 	Match getDataSet(int id);
 
 	RankResult getRankList();
+
+	TeamMsg getTeamMsg(TeamMsgGetter teamMsgGetter);
 }

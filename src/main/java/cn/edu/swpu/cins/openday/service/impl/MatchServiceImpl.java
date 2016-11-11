@@ -3,10 +3,7 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.*;
-import cn.edu.swpu.cins.openday.model.http.MatchRegister;
-import cn.edu.swpu.cins.openday.model.http.Rank;
-import cn.edu.swpu.cins.openday.model.http.RankResult;
-import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
@@ -107,6 +104,11 @@ public class MatchServiceImpl implements MatchService {
 		RankResult rankResult = new RankResult();
 		rankResult.setRankList(ranks);
 		return rankResult;
+	}
+
+	@Override
+	public TeamMsg getTeamMsg(TeamMsgGetter teamMsgGetter) {
+		return null;
 	}
 
 	private List<Rank> filterDuplication(List<ScoreRank> all) {

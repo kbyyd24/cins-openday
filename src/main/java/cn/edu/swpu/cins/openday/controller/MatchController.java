@@ -2,10 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
-import cn.edu.swpu.cins.openday.model.http.MatchRegister;
-import cn.edu.swpu.cins.openday.model.http.RankResult;
-import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +59,10 @@ public class MatchController {
 	@GetMapping("rankList")
 	public RankResult getRankList() {
 		return matchService.getRankList();
+	}
+
+	@PostMapping("team")
+	public TeamMsg getTeamMsg(@RequestBody TeamMsgGetter teamMsgGetter) {
+		return matchService.getTeamMsg(teamMsgGetter);
 	}
 }

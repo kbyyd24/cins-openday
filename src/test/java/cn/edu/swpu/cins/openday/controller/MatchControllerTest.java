@@ -2,10 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
-import cn.edu.swpu.cins.openday.model.http.MatchRegister;
-import cn.edu.swpu.cins.openday.model.http.RankResult;
-import cn.edu.swpu.cins.openday.model.http.UpMatch;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
@@ -86,5 +83,14 @@ public class MatchControllerTest {
 		when(matchService.getRankList()).thenReturn(rankResult);
 		assertThat(controller.getRankList(), is(rankResult));
 		verify(matchService).getRankList();
+	}
+
+	@Test
+	public void test_getTeamMsg() throws Exception {
+		TeamMsgGetter teamMsgGetter = mock(TeamMsgGetter.class);
+		TeamMsg teamMsg = mock(TeamMsg.class);
+		when(matchService.getTeamMsg(teamMsgGetter)).thenReturn(teamMsg);
+		assertThat(controller.getTeamMsg(teamMsgGetter), is(teamMsg));
+		verify(matchService).getTeamMsg(teamMsgGetter);
 	}
 }

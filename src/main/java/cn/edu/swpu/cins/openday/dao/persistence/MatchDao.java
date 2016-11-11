@@ -43,7 +43,6 @@ public class MatchDao {
 		return jdbcOperations.update(ADD_MATCH, insertMap);
 	}
 
-	@Deprecated
 	public List<Match> getMatches(int limit, int offset) {
 		HashMap<String, Integer> queryMap = new HashMap<>();
 		queryMap.put("limit", limit);
