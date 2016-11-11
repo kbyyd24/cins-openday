@@ -69,4 +69,12 @@ public class MatchControllerTest {
 		controller.joinMatch(matchRegister);
 		verify(matchService).joinMatch(matchRegister);
 	}
+
+	@Test
+	public void test_getDataSet_success() throws Exception {
+		Match dataSet = mock(Match.class);
+		when(matchService.getDataSet()).thenReturn(dataSet);
+		assertThat(controller.getDataSet(), is(dataSet));
+		verify(matchService).getDataSet();
+	}
 }

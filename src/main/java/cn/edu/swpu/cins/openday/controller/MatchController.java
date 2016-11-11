@@ -52,4 +52,9 @@ public class MatchController {
 		}
 		return new MatchHttpResult(HttpResultEnum.JOIN_FAILED);
 	}
+
+	@GetMapping("dataSet")
+	public Match getDataSet() {
+		return matchService.getDataSet();
+	}
 }

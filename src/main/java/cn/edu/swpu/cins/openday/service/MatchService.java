@@ -17,4 +17,6 @@ public interface MatchService {
 	Match getMatch();
 
 	MatchServiceResultEnum joinMatch(MatchRegister matchRegister);
+
+	Match getDataSet();
 }

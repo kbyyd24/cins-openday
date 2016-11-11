@@ -87,4 +87,9 @@ public class MatchServiceImpl implements MatchService {
 		}
 		return MatchServiceResultEnum.JOIN_SUCCESS;
 	}
+
+	@Override
+	public Match getDataSet() {
+		return null;
+	}
 }
