@@ -12,6 +12,18 @@ public class Match {
 	private String judgeStandard;
 	private String award;
 
+	public Match(int id, String match_name, String detail, long start_time, long end_time,
+	             String award, String judge_standard, String commit_regular) {
+		this.id = id;
+		matchName = match_name;
+		this.detail = detail;
+		startTime = start_time;
+		endTime = end_time;
+		this.award = award;
+		judgeStandard = judge_standard;
+		commitRegular = commit_regular;
+	}
+
 	public String getCommitRegular() {
 		return commitRegular;
 	}

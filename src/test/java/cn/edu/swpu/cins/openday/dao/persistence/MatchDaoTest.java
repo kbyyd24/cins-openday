@@ -56,6 +56,15 @@ public class MatchDaoTest {
 	}
 
 	@Test
+	public void test_getMatch_success() throws Exception {
+		Match match = mock(Match.class);
+		when(jdbcOperations.query(anyString(), any(ResultSetExtractor.class))).thenReturn(match);
+		Match ret = dao.getMatch();
+		assertThat(ret, is(match));
+		verify(jdbcOperations).query(anyString(), any(ResultSetExtractor.class));
+	}
+
+	@Test
 	public void test_getDataSet_success() throws Exception {
 		int id = 1;
 		Match match = mock(Match.class);
