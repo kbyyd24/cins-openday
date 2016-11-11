@@ -5,6 +5,33 @@ public class UpMatch {
 	private String detail;
 	private Long startTime;
 	private Long endTime;
+	private String judgeStandard;
+	private String commitRegular;
+	private String award;
+
+	public String getJudgeStandard() {
+		return judgeStandard;
+	}
+
+	public void setJudgeStandard(String judgeStandard) {
+		this.judgeStandard = judgeStandard;
+	}
+
+	public String getCommitRegular() {
+		return commitRegular;
+	}
+
+	public void setCommitRegular(String commitRegular) {
+		this.commitRegular = commitRegular;
+	}
+
+	public String getAward() {
+		return award;
+	}
+
+	public void setAward(String award) {
+		this.award = award;
+	}
 
 	public UpMatch() {}
 

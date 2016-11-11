@@ -8,6 +8,33 @@ public class Match {
 	private Long endTime;
 	private String dataLink;
 	private String dataPassword;
+	private String commitRegular;
+	private String judgeStandard;
+	private String award;
+
+	public String getCommitRegular() {
+		return commitRegular;
+	}
+
+	public void setCommitRegular(String commitRegular) {
+		this.commitRegular = commitRegular;
+	}
+
+	public String getJudgeStandard() {
+		return judgeStandard;
+	}
+
+	public void setJudgeStandard(String judgeStandard) {
+		this.judgeStandard = judgeStandard;
+	}
+
+	public String getAward() {
+		return award;
+	}
+
+	public void setAward(String award) {
+		this.award = award;
+	}
 
 	public Match(String data_link, String data_password) {
 		dataLink = data_link;

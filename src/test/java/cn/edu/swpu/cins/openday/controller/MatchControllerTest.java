@@ -36,11 +36,7 @@ public class MatchControllerTest {
 
 	@Test
 	public void test_addMatch_success() throws Exception {
-		String matchName = "matchName";
-		String detail = "detail";
-		Long startTime = 1L;
-		Long endTime = 1L;
-		UpMatch upMatch = new UpMatch(matchName, detail, startTime, endTime);
+		UpMatch upMatch = new UpMatch();
 		when(matchService.addMatch(upMatch)).thenReturn(MatchServiceResultEnum.ADD_SUCCESS);
 		MatchHttpResult matchHttpResult = controller.addMatch(upMatch);
 		assertThat(matchHttpResult.getCode(), is(HttpResultEnum.ADD_SUCCESS.getCode()));

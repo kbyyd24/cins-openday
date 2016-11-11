@@ -36,12 +36,10 @@ public class MatchDaoTest {
 	@Test
 	public void test_addMatch_success() throws Exception {
 		UpMatch upMatch = new UpMatch();
-		String sql = "INSERT INTO `match`(`match_name`, `detail`, `start_time`, `end_time`) " +
-			"VALUE (:matchName, :detail, :startTime, :endTime)";
-		when(jdbcOperations.update(eq(sql), anyMap())).thenReturn(1);
+		when(jdbcOperations.update(anyString(), anyMap())).thenReturn(1);
 		int line = dao.addMatch(upMatch);
 		assertThat(line, is(1));
-		verify(jdbcOperations).update(eq(sql), anyMap());
+		verify(jdbcOperations).update(anyString(), anyMap());
 	}
 
 	@Test

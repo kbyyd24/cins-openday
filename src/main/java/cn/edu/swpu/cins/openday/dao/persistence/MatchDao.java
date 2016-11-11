@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public class MatchDao {
 	private static final String ADD_MATCH =
-		"INSERT INTO `match`(`match_name`, `detail`, `start_time`, `end_time`) " +
-			"VALUE (:matchName, :detail, :startTime, :endTime)";
+		"INSERT INTO `match`(`match_name`, `detail`, `start_time`, `end_time`, `judge_standard`, `commit_regular`, `award`) " +
+			"VALUE (:matchName, :detail, :startTime, :endTime, :judgeStandard, :commitRegular, :award)";
 	private static final String SELECT_MATCHES =
 		"SELECT `id`, `match_name`, `detail`, `start_time`, `end_time` " +
 			"FROM `match` LIMIT :limit, :offset";
@@ -33,6 +33,9 @@ public class MatchDao {
 		insertMap.put("detail", upMatch.getDetail());
 		insertMap.put("startTime", upMatch.getStartTime());
 		insertMap.put("endTime", upMatch.getEndTime());
+		insertMap.put("judgeStandard", upMatch.getJudgeStandard());
+		insertMap.put("commitRegular", upMatch.getCommitRegular());
+		insertMap.put("award", upMatch.getAward());
 		return jdbcOperations.update(ADD_MATCH, insertMap);
 	}
 

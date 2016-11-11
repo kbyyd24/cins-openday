@@ -50,11 +50,7 @@ public class MatchServiceImplTest {
 
 	@Test
 	public void test_addMatch_success() throws Exception {
-		String matchName = "match name";
-		String detail = "detail";
-		Long startTime = 1L;
-		Long endTime = 2L;
-		UpMatch upMatch = new UpMatch(matchName, detail, startTime, endTime);
+		UpMatch upMatch = new UpMatch();
 		when(matchDao.addMatch(upMatch)).thenReturn(1);
 		MatchServiceResultEnum result = service.addMatch(upMatch);
 		assertThat(result, is(MatchServiceResultEnum.ADD_SUCCESS));
