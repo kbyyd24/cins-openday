@@ -32,6 +32,9 @@ CREATE TABLE IF NOT EXISTS `match` (
   `end_time` bigint NOT NULL COMMENT 'end time',
   `data_link` VARCHAR(255) DEFAULT NULL COMMENT 'data set file link',
   `data_password` VARCHAR(4) DEFAULT NULL COMMENT 'password for get data set link',
+  `commit_regular` VARCHAR(255) NOT NULL COMMENT 'regular of commit',
+  `judge_standard` VARCHAR(255) NOT NULL COMMENT 'standard of judge',
+  `award` VARCHAR(255) NOT NULL COMMENT 'award of match',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `match_end_time_idx` (`end_time` ASC) USING BTREE
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;
