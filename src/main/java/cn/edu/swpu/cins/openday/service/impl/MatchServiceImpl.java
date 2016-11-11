@@ -84,9 +84,11 @@ public class MatchServiceImpl implements MatchService {
 		if (groupId == null) {
 			throw new GroupException("get group failed");
 		}
-		Registration registration = new Registration(matchRegister.getMatchId(), users, groupId);
+		Registration registration = new Registration(matchRegister.getMatchId(), users.get(0).getId(), groupId);
 		line = registrationDao.addRegistration(registration);
-		if (line != 1) {
+		registration.setUserId(users.get(1).getId());
+		line += registrationDao.addRegistration(registration);
+		if (line != 2) {
 			throw new RegistrationException("join match error");
 		}
 		return MatchServiceResultEnum.JOIN_SUCCESS;

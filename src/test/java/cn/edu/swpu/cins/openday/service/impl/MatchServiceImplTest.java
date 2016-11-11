@@ -100,7 +100,7 @@ public class MatchServiceImplTest {
 		verify(userDao).getIds(mail, mail);
 		verify(groupDao).addGroup(any(Group.class));
 		verify(groupDao).getGroupId(any(Group.class));
-		verify(registrationDao).addRegistration(any(Registration.class));
+		verify(registrationDao, times(2)).addRegistration(any(Registration.class));
 	}
 
 	@Test
