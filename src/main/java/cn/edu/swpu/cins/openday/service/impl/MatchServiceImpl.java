@@ -1,18 +1,17 @@
 package cn.edu.swpu.cins.openday.service.impl;
 
-import cn.edu.swpu.cins.openday.dao.persistence.GroupDao;
-import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
-import cn.edu.swpu.cins.openday.dao.persistence.RegistrationDao;
-import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
+import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.*;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.Rank;
 import cn.edu.swpu.cins.openday.model.http.RankResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
 import cn.edu.swpu.cins.openday.model.persistence.User;
+import cn.edu.swpu.cins.openday.model.service.ScoreRank;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -21,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -29,14 +30,16 @@ public class MatchServiceImpl implements MatchService {
 	private UserDao userDao;
 	private GroupDao groupDao;
 	private RegistrationDao registrationDao;
+	private ScoreDao scoreDao;
 	private final int offset = 4;
 
 	@Autowired
-	public MatchServiceImpl(MatchDao matchDao, UserDao userDao, GroupDao groupDao, RegistrationDao registrationDao) {
+	public MatchServiceImpl(MatchDao matchDao, UserDao userDao, GroupDao groupDao, RegistrationDao registrationDao, ScoreDao scoreDao) {
 		this.matchDao = matchDao;
 		this.userDao = userDao;
 		this.groupDao = groupDao;
 		this.registrationDao = registrationDao;
+		this.scoreDao = scoreDao;
 	}
 
 	@Override
@@ -96,6 +99,27 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public RankResult getRankList() {
-		return null;
+		List<ScoreRank> all = scoreDao.getAll();
+		List<Rank> ranks = filterDuplication(all);
+		setRank(ranks);
+		RankResult rankResult = new RankResult();
+		rankResult.setRankList(ranks);
+		return rankResult;
+	}
+
+	private List<Rank> filterDuplication(List<ScoreRank> all) {
+		HashSet<Integer> groupSet = new HashSet<>();
+		List<Rank> ranks = new LinkedList<>();
+		all.forEach(scoreRank -> {
+			if (!groupSet.add(scoreRank.getId())) {
+				ranks.add(new Rank(scoreRank));
+			}
+		});
+		return ranks;
+	}
+
+	private void setRank(List<Rank> ranks) {
+		final int[] i = {1};
+		ranks.forEach(rank -> rank.setRank(i[0]++));
 	}
 }

@@ -1,11 +1,20 @@
 package cn.edu.swpu.cins.openday.model.http;
 
+import cn.edu.swpu.cins.openday.model.service.ScoreRank;
+
 public class Rank {
 	private Integer rank;
 	private String name;
 	private Integer score;
+	private Long time;
 
 	public Rank() {}
+
+	public Rank(ScoreRank scoreRank) {
+		this.name = scoreRank.getName();
+		this.score = scoreRank.getScore();
+		this.time = scoreRank.getTime();
+	}
 
 	public Integer getRank() {
 		return rank;
@@ -29,5 +38,13 @@ public class Rank {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public Long getTime() {
+		return time;
+	}
+
+	public void setTime(Long time) {
+		this.time = time;
 	}
 }

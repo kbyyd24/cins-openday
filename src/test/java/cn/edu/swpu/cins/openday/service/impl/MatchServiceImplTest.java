@@ -1,9 +1,6 @@
 package cn.edu.swpu.cins.openday.service.impl;
 
-import cn.edu.swpu.cins.openday.dao.persistence.GroupDao;
-import cn.edu.swpu.cins.openday.dao.persistence.MatchDao;
-import cn.edu.swpu.cins.openday.dao.persistence.RegistrationDao;
-import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
+import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
@@ -20,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -41,11 +39,14 @@ public class MatchServiceImplTest {
 	@Mock
 	private RegistrationDao registrationDao;
 
+	@Mock
+	private ScoreDao scoreDao;
+
 	private MatchService service;
 
 	@Before
 	public void setUp() throws Exception {
-		service = new MatchServiceImpl(matchDao, userDao, groupDao, registrationDao);
+		service = new MatchServiceImpl(matchDao, userDao, groupDao, registrationDao, scoreDao);
 	}
 
 	@Test
@@ -109,5 +110,15 @@ public class MatchServiceImplTest {
 		when(matchDao.getDataSet(id)).thenReturn(match);
 		assertThat(service.getDataSet(id), is(match));
 		verify(matchDao).getDataSet(id);
+	}
+
+	@Test
+	public void test_getRankList_success() throws Exception {
+		List scores = mock(List.class);
+		when(scoreDao.getAll()).thenReturn(scores);
+		doNothing().when(scores).forEach(any(Consumer.class));
+		service.getRankList();
+		verify(scoreDao).getAll();
+		verify(scores).forEach(any(Consumer.class));
 	}
 }
