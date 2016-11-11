@@ -14,5 +14,7 @@ public interface MatchService {
 
 	List<Match> getMatches(int page);
 
+	Match getMatch();
+
 	Match joinMatch(MatchRegister matchRegister);
 }

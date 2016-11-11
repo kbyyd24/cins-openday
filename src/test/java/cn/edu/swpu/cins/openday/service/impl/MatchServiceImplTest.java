@@ -70,6 +70,15 @@ public class MatchServiceImplTest {
 	}
 
 	@Test
+	public void test_getMatch_success() throws Exception {
+		Match match = mock(Match.class);
+		when(matchDao.getMatch()).thenReturn(match);
+		Match ret = service.getMatch();
+		assertThat(ret, is(match));
+		verify(matchDao).getMatch();
+	}
+
+	@Test
 	public void test_joinMatch_success() throws Exception {
 		String mail = "mail@mail.com";
 		MatchRegister matchRegister = new MatchRegister();

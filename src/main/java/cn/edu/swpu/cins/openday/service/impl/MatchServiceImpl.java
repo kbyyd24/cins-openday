@@ -56,6 +56,11 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
+	public Match getMatch() {
+		return matchDao.getMatch();
+	}
+
+	@Override
 	@Transactional(rollbackFor = {DataAccessException.class, SQLException.class, OpenDayException.class})
 	public Match joinMatch(MatchRegister matchRegister) {
 		List<User> users = userDao.getIds(matchRegister.getMail1(), matchRegister.getMail2());
