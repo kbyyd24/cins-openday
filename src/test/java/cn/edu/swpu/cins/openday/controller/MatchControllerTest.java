@@ -4,6 +4,7 @@ import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.RankResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
@@ -77,5 +78,13 @@ public class MatchControllerTest {
 		when(matchService.getDataSet(id)).thenReturn(dataSet);
 		assertThat(controller.getDataSet(id), is(dataSet));
 		verify(matchService).getDataSet(id);
+	}
+
+	@Test
+	public void test_getRankList_success() throws Exception {
+		RankResult rankResult = mock(RankResult.class);
+		when(matchService.getRankList()).thenReturn(rankResult);
+		assertThat(controller.getRankList(), is(rankResult));
+		verify(matchService).getRankList();
 	}
 }

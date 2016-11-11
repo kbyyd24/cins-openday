@@ -4,6 +4,7 @@ import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchHttpResult;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.RankResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.service.MatchService;
@@ -56,5 +57,10 @@ public class MatchController {
 	@GetMapping("dataSet")
 	public Match getDataSet(@RequestParam int id) {
 		return matchService.getDataSet(id);
+	}
+
+	@GetMapping("rankList")
+	public RankResult getRankList() {
+		return matchService.getRankList();
 	}
 }

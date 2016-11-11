@@ -7,6 +7,7 @@ import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.*;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.RankResult;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
@@ -91,5 +92,10 @@ public class MatchServiceImpl implements MatchService {
 	@Override
 	public Match getDataSet(int id) {
 		return matchDao.getDataSet(id);
+	}
+
+	@Override
+	public RankResult getRankList() {
+		return null;
 	}
 }
