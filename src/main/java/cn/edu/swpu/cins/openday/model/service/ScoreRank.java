@@ -6,6 +6,15 @@ public class ScoreRank {
 	private Integer score;
 	private Long time;
 
+	public ScoreRank() {}
+
+	public ScoreRank(String groupName, int groupId, int score, long time) {
+		name = groupName;
+		id = groupId;
+		this.score = score;
+		this.time = time;
+	}
+
 	public String getName() {
 		return name;
 	}
