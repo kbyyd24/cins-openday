@@ -42,8 +42,9 @@ CREATE TABLE IF NOT EXISTS `match` (
 CREATE TABLE IF NOT EXISTS registration (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `match_id` int(11) NOT NULL COMMENT 'match id',
-  user_id int(11) NOT NULL COMMENT 'id of user1',
+  user_id int(11) NOT NULL COMMENT 'id of user',
   `group_id` int(11) NULL COMMENT 'group id',
+  captain BOOLEAN DEFAULT FALSE COMMENT 'is captain',
   PRIMARY KEY (`id`) ,
   INDEX `mugm_match_idx` (`match_id` ASC) USING BTREE,
   INDEX `mugm_user_idx` (user_id ASC) USING BTREE,

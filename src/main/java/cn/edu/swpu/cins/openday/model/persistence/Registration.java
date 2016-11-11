@@ -5,6 +5,7 @@ public class Registration {
 	private Integer matchId;
 	private Integer userId;
 	private Integer groupId;
+	private boolean captain;
 
 	public Registration() {}
 
@@ -46,4 +47,11 @@ public class Registration {
 		this.id = id;
 	}
 
+	public void setCaptain(Boolean captain) {
+		this.captain = captain;
+	}
+
+	public Boolean getCaptain() {
+		return captain;
+	}
 }

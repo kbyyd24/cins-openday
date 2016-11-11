@@ -82,7 +82,9 @@ public class MatchServiceImpl implements MatchService {
 			throw new GroupException("get group failed");
 		}
 		Registration registration = new Registration(matchRegister.getMatchId(), users.get(0).getId(), groupId);
+		registration.setCaptain(true);
 		line = registrationDao.addRegistration(registration);
+		registration.setCaptain(false);
 		registration.setUserId(users.get(1).getId());
 		line += registrationDao.addRegistration(registration);
 		if (line != 2) {

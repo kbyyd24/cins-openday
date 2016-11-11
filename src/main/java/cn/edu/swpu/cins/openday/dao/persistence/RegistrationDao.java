@@ -10,8 +10,8 @@ import java.util.HashMap;
 @Repository
 public class RegistrationDao {
 	private static final String INSERT_REGISTRATION =
-		"insert into `registration`(match_id, user_id1, group_id) " +
-			"value (:matchId, :userId, :groupId)";
+		"insert into `registration`(match_id, user_id, group_id, captain) " +
+			"value (:matchId, :userId, :groupId, :captain)";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -20,10 +20,11 @@ public class RegistrationDao {
 	}
 
 	public int addRegistration(Registration registration) {
-		HashMap<String, Integer> insertMap = new HashMap<>();
+		HashMap<String, Object> insertMap = new HashMap<>();
 		insertMap.put("matchId", registration.getMatchId());
 		insertMap.put("userId", registration.getUserId());
 		insertMap.put("groupId", registration.getGroupId());
+		insertMap.put("captain", registration.getCaptain());
 		return jdbcOperations.update(INSERT_REGISTRATION, insertMap);
 	}
 }
