@@ -89,7 +89,7 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public Match getDataSet() {
-		return null;
+	public Match getDataSet(int id) {
+		return matchDao.getDataSet(id);
 	}
 }

@@ -101,4 +101,13 @@ public class MatchServiceImplTest {
 		verify(groupDao).getGroupId(any(Group.class));
 		verify(registrationDao).addRegistration(any(Registration.class));
 	}
+
+	@Test
+	public void test_getDataSet_success() throws Exception {
+		int id = 1;
+		Match match = mock(Match.class);
+		when(matchDao.getDataSet(id)).thenReturn(match);
+		assertThat(service.getDataSet(id), is(match));
+		verify(matchDao).getDataSet(id);
+	}
 }

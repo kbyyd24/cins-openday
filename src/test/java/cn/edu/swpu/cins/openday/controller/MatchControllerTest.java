@@ -73,8 +73,9 @@ public class MatchControllerTest {
 	@Test
 	public void test_getDataSet_success() throws Exception {
 		Match dataSet = mock(Match.class);
-		when(matchService.getDataSet()).thenReturn(dataSet);
-		assertThat(controller.getDataSet(), is(dataSet));
-		verify(matchService).getDataSet();
+		int id = 1;
+		when(matchService.getDataSet(id)).thenReturn(dataSet);
+		assertThat(controller.getDataSet(id), is(dataSet));
+		verify(matchService).getDataSet(id);
 	}
 }
