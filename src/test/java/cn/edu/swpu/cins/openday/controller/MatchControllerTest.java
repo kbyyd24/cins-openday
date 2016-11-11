@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +52,14 @@ public class MatchControllerTest {
 		List<Match> ret = controller.getMatches(page);
 		assertThat(ret, is(matches));
 		verify(matchService).getMatches(page);
+	}
+
+	@Test
+	public void test_getMatch_success() throws Exception {
+		Match match = mock(Match.class);
+		when(matchService.getMatch()).thenReturn(match);
+		assertThat(controller.getMatch(), is(match));
+		verify(matchService).getMatch();
 	}
 
 	@Test

@@ -39,6 +39,11 @@ public class MatchController {
 		return matchService.getMatches(page);
 	}
 
+	@GetMapping
+	public Match getMatch() {
+		return matchService.getMatch();
+	}
+
 	@PostMapping("join")
 	public Match joinMatch(@RequestBody MatchRegister matchRegister) {
 		return matchService.joinMatch(matchRegister);
