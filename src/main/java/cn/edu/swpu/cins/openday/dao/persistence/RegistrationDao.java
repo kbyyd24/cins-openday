@@ -13,6 +13,9 @@ public class RegistrationDao {
 	private static final String INSERT_REGISTRATION =
 		"insert into `registration`(match_id, user_id, group_id, captain) " +
 			"value (:matchId, :userId, :groupId, :captain)";
+	private static final String SELECT_GROUP_ID = "" +
+		"SELECT group_id FROM `registration` " +
+		"WHERE match_id = :matchId AND user_id = :userId";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -30,7 +33,15 @@ public class RegistrationDao {
 	}
 
 	public Integer getGroupId(int matchId, int userId) {
-		return null;
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("matchId", matchId);
+		queryMap.put("userId", userId);
+		return jdbcOperations.query(
+			SELECT_GROUP_ID,
+			queryMap,
+			rs -> {
+			return rs.getInt("group_id");
+		});
 	}
 
 	public TeammateMsg getTeammateMsg(int matchId, int userId, Integer groupId) {

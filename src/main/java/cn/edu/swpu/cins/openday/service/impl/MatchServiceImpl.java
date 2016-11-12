@@ -113,24 +113,22 @@ public class MatchServiceImpl implements MatchService {
 	public TeamMsg getTeamMsg(TeamMsgGetter tmg) {
 		Integer groupId = registrationDao.getGroupId(tmg.getMatchId(), tmg.getUserId());
 		if (groupId == null) {
-			// TODO: 16-11-11 deal fault
-			return new TeamMsg();
+			throw new GroupException("no team found");
 		}
 		String groupName = groupDao.getGroupName(groupId);
 		TeammateMsg teammateMsg = registrationDao.getTeammateMsg(tmg.getMatchId(), tmg.getUserId(), groupId);
 		List<User> users = userDao.getTeammateMsgs(tmg.getUserId(), teammateMsg.getId());
 		if (users.size() != 2) {
-			// TODO: 16-11-11 deal fault
 			return new TeamMsg();
 		}
-		User user = users.get(0);
 		TeamMsg teamMsg = new TeamMsg();
 		teamMsg.setTeamName(groupName);
-		setTeamMsg(teammateMsg, users, user, teamMsg);
+		setTeamMsg(teammateMsg, users, teamMsg);
 		return teamMsg;
 	}
 
-	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, User user, TeamMsg teamMsg) {
+	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, TeamMsg teamMsg) {
+		User user = users.get(0);
 		if (user.getId() == teammateMsg.getId()) {
 			if (teammateMsg.getCaptain()) {
 				setCaptainFirst(users, user, teamMsg);

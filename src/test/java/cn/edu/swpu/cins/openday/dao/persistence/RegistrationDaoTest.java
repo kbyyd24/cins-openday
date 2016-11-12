@@ -6,10 +6,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -34,5 +36,15 @@ public class RegistrationDaoTest {
 		int line = dao.addRegistration(registration);
 		assertThat(line, is(1));
 		verify(jdbcOperations).update(anyString(), anyMap());
+	}
+
+	@Test
+	public void test_getGroupId_success() throws Exception {
+		int userId = 1;
+		int matchId = 1;
+		int groupId = 1;
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(groupId);
+		assertThat(dao.getGroupId(matchId, userId), is(groupId));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
 }
