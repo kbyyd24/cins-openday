@@ -20,18 +20,18 @@ import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	private CacheService cacheService;
-	private ClockService clockService;
+	private TimeService timeService;
 	private PasswordEncoderService passwordService;
 	private URLCoderService urlCoderService;
 	private TokenService tokenService;
 
 	@Autowired
-	public UserServiceImpl(UserDao userDao, CacheService cacheService, ClockService clockService,
+	public UserServiceImpl(UserDao userDao, CacheService cacheService, TimeService timeService,
 	                       PasswordEncoderService passwordService, URLCoderService urlCoderService,
 	                       TokenService tokenService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
-		this.clockService = clockService;
+		this.timeService = timeService;
 		this.passwordService = passwordService;
 		this.urlCoderService = urlCoderService;
 		this.tokenService = tokenService;
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 	private CacheResultEnum verifyToken(AuthUser au, String enableToken) {
 		if (enableToken.equals(au.getToken())) {
 			long tokenTime = Long.parseLong(enableToken);
-			long now = clockService.getCurrentTimeMillis();
+			long now = timeService.getCurrentTimeMillis();
 			if (now - tokenTime <= 30 * 60 * 1000) {
 				return CacheResultEnum.ENABLE_TOKEN_SUCCESS;
 			}

@@ -1,5 +1,7 @@
 package cn.edu.swpu.cins.openday.service;
 
-public interface ClockService {
+public interface TimeService {
 	long getCurrentTimeMillis();
+
+	String getDate();
 }

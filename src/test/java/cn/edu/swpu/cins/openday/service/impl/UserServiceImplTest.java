@@ -10,8 +10,6 @@ import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.*;
-import cn.edu.swpu.cins.openday.service.impl.ClockServiceImpl;
-import cn.edu.swpu.cins.openday.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +35,7 @@ public class UserServiceImplTest {
 	private CacheService cacheService;
 
 	@Mock
-	private ClockServiceImpl clockService;
+	private TimeServiceImpl clockService;
 
 	@Mock
 	private PasswordEncoderService passwordService;
