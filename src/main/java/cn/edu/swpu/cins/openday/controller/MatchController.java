@@ -8,9 +8,9 @@ import cn.edu.swpu.cins.openday.service.FileService;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -73,10 +73,11 @@ public class MatchController {
 	}
 
 	@PostMapping("upload")
-	public MatchHttpResult uploadAnswer(HttpServletRequest request) throws IOException, ServletException {
-		String mail = request.getHeader("openday-user");
+	public MatchHttpResult uploadAnswer(@RequestParam("answer") MultipartFile file,
+	                                    @RequestHeader("openday-user") String mail)
+		throws IOException, ServletException {
 		int registId = matchService.getRegistId(mail);
-		MatchServiceResultEnum saveAnswer = fileService.saveAnswer(request.getPart("answer"), registId);
+		MatchServiceResultEnum saveAnswer = fileService.saveAnswer(file, registId);
 		if (saveAnswer == MatchServiceResultEnum.SAVE_SUCCESS) {
 			return new MatchHttpResult(HttpResultEnum.SAVE_ANSWER_SUCCESS);
 		}

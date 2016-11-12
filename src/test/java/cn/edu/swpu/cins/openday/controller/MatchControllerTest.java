@@ -11,18 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MatchControllerTest {
@@ -103,18 +99,14 @@ public class MatchControllerTest {
 
 	@Test
 	public void test_uploadAnswer_success() throws Exception {
-		HttpServletRequest request = mock(HttpServletRequest.class);
-		Part part = mock(Part.class);
-		when(request.getPart(anyString())).thenReturn(part);
-		String mail = "mail";
-		when(request.getHeader(anyString())).thenReturn(mail);
 		int regisId = 1;
+		String mail = "mail";
 		when(matchService.getRegistId(mail)).thenReturn(regisId);
-		when(fileService.saveAnswer(part, regisId)).thenReturn(MatchServiceResultEnum.SAVE_SUCCESS);
-		MatchHttpResult httpResult = controller.uploadAnswer(request);
-		assertThat(httpResult.getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
-		verify(request).getPart(anyString());
-		verify(request).getHeader(anyString());
-		verify(fileService).saveAnswer(part, regisId);
+		MultipartFile multipartFile = mock(MultipartFile.class);
+		when(fileService.saveAnswer(multipartFile, regisId))
+			.thenReturn(MatchServiceResultEnum.SAVE_SUCCESS);
+		assertThat(controller.uploadAnswer(multipartFile, mail).getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
+		verify(matchService).getRegistId(mail);
+		verify(fileService).saveAnswer(multipartFile, regisId);
 	}
 }
