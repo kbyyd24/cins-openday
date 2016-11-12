@@ -4,20 +4,26 @@ import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
+import cn.edu.swpu.cins.openday.service.FileService;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("match")
 public class MatchController {
 	private MatchService matchService;
+	private FileService fileService;
 
 	@Autowired
-	public MatchController(MatchService matchService) {
+	public MatchController(MatchService matchService, FileService fileService) {
 		this.matchService = matchService;
+		this.fileService = fileService;
 	}
 
 	@PostMapping("add")
@@ -64,5 +70,16 @@ public class MatchController {
 	@PostMapping("team")
 	public TeamMsg getTeamMsg(@RequestBody TeamMsgGetter teamMsgGetter) {
 		return matchService.getTeamMsg(teamMsgGetter);
+	}
+
+	@PostMapping("upload")
+	public MatchHttpResult uploadAnswer(HttpServletRequest request) throws IOException, ServletException {
+		String mail = request.getHeader("openday-user");
+		int registId = matchService.getRegistId(mail);
+		MatchServiceResultEnum saveAnswer = fileService.saveAnswer(request.getPart("answer"), registId);
+		if (saveAnswer == MatchServiceResultEnum.SAVE_SUCCESS) {
+			return new MatchHttpResult(HttpResultEnum.SAVE_ANSWER_SUCCESS);
+		}
+		return new MatchHttpResult(HttpResultEnum.SAVE_ANSWER_FAILED);
 	}
 }

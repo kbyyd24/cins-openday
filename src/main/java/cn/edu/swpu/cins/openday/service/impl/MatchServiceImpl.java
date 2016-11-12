@@ -127,6 +127,11 @@ public class MatchServiceImpl implements MatchService {
 		return teamMsg;
 	}
 
+	@Override
+	public int getRegistId(String mail) {
+		return 0;
+	}
+
 	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, TeamMsg teamMsg) {
 		User user = users.get(0);
 		if (user.getId() == teammateMsg.getId()) {

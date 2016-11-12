@@ -20,11 +20,13 @@ public enum HttpResultEnum {
 	ENABLE_FAILED(2103, "enable failed"),
 	SIGNOUT_SUCCESS(2300, "sign out success"),
 	SIGNOUT_FAILED(2301, "sign out failed"),
-	SAVE_SUCCESS(3000, "save activity success"),
-	SAVE_FAILED(3001, "save activity failed"),
+	SAVE_ACTIVITY_SUCCESS(3000, "save activity success"),
+	SAVE_ACTIVITY_FAILED(3001, "save activity failed"),
 	ADD_SUCCESS(4000, "add match success"),
 	ADD_FAILED(4001, "add match failed"),
-	JOIN_SUCCESS(4010, "join match success"), JOIN_FAILED(4011, "join match failed");
+	JOIN_SUCCESS(4010, "join match success"),
+	JOIN_FAILED(4011, "join match failed"),
+	SAVE_ANSWER_SUCCESS(4020, "save file success"), SAVE_ANSWER_FAILED(4021, "save file failed");
 
 	private int code;
 	private String description;

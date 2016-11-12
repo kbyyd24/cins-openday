@@ -48,7 +48,7 @@ public class ActivityControllerTest {
 		PostActivity postActivity = new PostActivity();
 		when(activityService.addActivity(postActivity)).thenReturn(ActivityServiceResultEnum.SAVE_SUCCESS);
 		ActivityHttpResult ret = controller.addActivity(postActivity);
-		assertThat(ret.getCode(), is(HttpResultEnum.SAVE_SUCCESS.getCode()));
+		assertThat(ret.getCode(), is(HttpResultEnum.SAVE_ACTIVITY_SUCCESS.getCode()));
 		verify(activityService).addActivity(postActivity);
 	}
 }

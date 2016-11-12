@@ -31,9 +31,9 @@ public class ActivityController {
 	public ActivityHttpResult addActivity(@RequestBody PostActivity activity) {
 		ActivityServiceResultEnum resultEnum = activityService.addActivity(activity);
 		if (resultEnum == ActivityServiceResultEnum.SAVE_SUCCESS) {
-			return new ActivityHttpResult(HttpResultEnum.SAVE_SUCCESS);
+			return new ActivityHttpResult(HttpResultEnum.SAVE_ACTIVITY_SUCCESS);
 		}
 		// TODO: 16-10-30 deal other failure of save
-		return new ActivityHttpResult(HttpResultEnum.SAVE_FAILED);
+		return new ActivityHttpResult(HttpResultEnum.SAVE_ACTIVITY_FAILED);
 	}
 }

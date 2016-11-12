@@ -4,6 +4,7 @@ import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
+import cn.edu.swpu.cins.openday.service.FileService;
 import cn.edu.swpu.cins.openday.service.MatchService;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,11 +12,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,9 +32,12 @@ public class MatchControllerTest {
 	@Mock
 	private MatchService matchService;
 
+	@Mock
+	private FileService fileService;
+
 	@Before
 	public void setUp() throws Exception {
-		controller = new MatchController(matchService);
+		controller = new MatchController(matchService, fileService);
 	}
 
 	@Test
@@ -92,5 +99,22 @@ public class MatchControllerTest {
 		when(matchService.getTeamMsg(teamMsgGetter)).thenReturn(teamMsg);
 		assertThat(controller.getTeamMsg(teamMsgGetter), is(teamMsg));
 		verify(matchService).getTeamMsg(teamMsgGetter);
+	}
+
+	@Test
+	public void test_uploadAnswer_success() throws Exception {
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		Part part = mock(Part.class);
+		when(request.getPart(anyString())).thenReturn(part);
+		String mail = "mail";
+		when(request.getHeader(anyString())).thenReturn(mail);
+		int regisId = 1;
+		when(matchService.getRegistId(mail)).thenReturn(regisId);
+		when(fileService.saveAnswer(part, regisId)).thenReturn(MatchServiceResultEnum.SAVE_SUCCESS);
+		MatchHttpResult httpResult = controller.uploadAnswer(request);
+		assertThat(httpResult.getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
+		verify(request).getPart(anyString());
+		verify(request).getHeader(anyString());
+		verify(fileService).saveAnswer(part, regisId);
 	}
 }
