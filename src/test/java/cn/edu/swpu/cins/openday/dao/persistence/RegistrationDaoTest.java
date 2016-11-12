@@ -60,4 +60,13 @@ public class RegistrationDaoTest {
 		assertThat(dao.getTeammateMsg(matchId, userId, groupId), is(tm));
 		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
+
+	@Test
+	public void test_getRegistId_success() throws Exception {
+		int registId = 1;
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(registId);
+		String mail = "mail";
+		assertThat(dao.getRegistId(mail), is(registId));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
+	}
 }

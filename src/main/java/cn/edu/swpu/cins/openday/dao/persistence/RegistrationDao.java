@@ -19,6 +19,10 @@ public class RegistrationDao {
 	private static final String SELECT_TEAMMATE_MSG =
 		"select user_id, captain from registration " +
 		"where match_id = :matchId and group_id = :groupId and user_id != :userId";
+	private static final String SELECT_ID =
+		"SELECT id FROM registration " +
+			"WHERE user_id = " +
+			"(SELECT id FROM user WHERE mail = :mail)";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -62,6 +66,13 @@ public class RegistrationDao {
 	}
 
 	public int getRegistId(String mail) {
-		return 0;
+		HashMap<String, String> queryMap = new HashMap<>();
+		queryMap.put("mail", mail);
+		return jdbcOperations.query(
+			SELECT_ID,
+			queryMap,
+			rs -> {
+				return rs.getInt("id");
+			});
 	}
 }
