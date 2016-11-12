@@ -1,6 +1,7 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
+import cn.edu.swpu.cins.openday.model.service.TeammateMsg;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +47,17 @@ public class RegistrationDaoTest {
 		int groupId = 1;
 		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(groupId);
 		assertThat(dao.getGroupId(matchId, userId), is(groupId));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
+	}
+
+	@Test
+	public void test_getTeammateMsg_success() throws Exception {
+		TeammateMsg tm = mock(TeammateMsg.class);
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(tm);
+		int matchId = 1;
+		int userId = 1;
+		int groupId = 1;
+		assertThat(dao.getTeammateMsg(matchId, userId, groupId), is(tm));
 		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
 }

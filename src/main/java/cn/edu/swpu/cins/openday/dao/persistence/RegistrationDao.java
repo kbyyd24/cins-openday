@@ -16,6 +16,9 @@ public class RegistrationDao {
 	private static final String SELECT_GROUP_ID = "" +
 		"SELECT group_id FROM `registration` " +
 		"WHERE match_id = :matchId AND user_id = :userId";
+	private static final String SELECT_TEAMMATE_MSG =
+		"select user_id, captain from registration " +
+		"where match_id = :matchId and group_id = :groupId and user_id != :userId";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -44,7 +47,17 @@ public class RegistrationDao {
 		});
 	}
 
-	public TeammateMsg getTeammateMsg(int matchId, int userId, Integer groupId) {
-		return null;
+	public TeammateMsg getTeammateMsg(int matchId, int userId, int groupId) {
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("matchId", matchId);
+		queryMap.put("userId", userId);
+		queryMap.put("groupId", groupId);
+		return jdbcOperations.query(
+			SELECT_TEAMMATE_MSG,
+			queryMap,
+			rs -> {return new TeammateMsg(
+				rs.getInt("user_id"),
+				rs.getBoolean("captain"));
+			});
 	}
 }

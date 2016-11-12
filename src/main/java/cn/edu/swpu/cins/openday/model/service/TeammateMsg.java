@@ -6,6 +6,11 @@ public class TeammateMsg {
 
 	public TeammateMsg() {}
 
+	public TeammateMsg(int user_id, boolean captain) {
+		id = user_id;
+		this.captain = captain;
+	}
+
 	public int getId() {
 		return id;
 	}
