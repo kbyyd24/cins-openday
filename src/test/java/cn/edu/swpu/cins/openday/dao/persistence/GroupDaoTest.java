@@ -11,9 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,5 +49,14 @@ public class GroupDaoTest {
 		int groupId = dao.getGroupId(group);
 		assertThat(groupId, is(id));
 		verify(jdbcOperations).query(eq(sql), anyMap(), any(ResultSetExtractor.class));
+	}
+
+	@Test
+	public void test_getGroupName_success() throws Exception {
+		String name = "group name";
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(name);
+		int groupId = 1;
+		assertThat(dao.getGroupName(groupId), is (name));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
 }

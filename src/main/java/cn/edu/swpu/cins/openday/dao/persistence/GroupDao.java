@@ -15,6 +15,9 @@ public class GroupDao {
 	private static final String SELECT_GROUP_ID =
 		"select id from `group` " +
 			"where group_name = :groupName and match_id = :matchId";
+	private static final String SELECT_GROUP_NAME =
+		"select group_name from `group` " +
+			"where id = :groupId";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -43,6 +46,13 @@ public class GroupDao {
 	}
 
 	public String getGroupName(int groupId) {
-		return null;
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("groupId", groupId);
+		return jdbcOperations.query(
+			SELECT_GROUP_NAME,
+			queryMap,
+			rs -> {
+				return rs.getString("group_name");
+			});
 	}
 }
