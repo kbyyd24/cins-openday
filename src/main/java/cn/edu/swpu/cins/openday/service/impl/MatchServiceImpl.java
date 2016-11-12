@@ -129,7 +129,7 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public int getRegistId(String mail) {
-		return 0;
+		return registrationDao.getRegistId(mail);
 	}
 
 	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, TeamMsg teamMsg) {

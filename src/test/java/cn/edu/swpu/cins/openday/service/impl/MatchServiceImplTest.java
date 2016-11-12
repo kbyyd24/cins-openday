@@ -160,4 +160,13 @@ public class MatchServiceImplTest {
 		verify(users).get(1);
 
 	}
+
+	@Test
+	public void test_getRegistId_success() throws Exception {
+		String mail = "mail";
+		int registId = 1;
+		when(registrationDao.getRegistId(mail)).thenReturn(registId);
+		assertThat(service.getRegistId(mail), is(registId));
+		verify(registrationDao).getRegistId(mail);
+	}
 }

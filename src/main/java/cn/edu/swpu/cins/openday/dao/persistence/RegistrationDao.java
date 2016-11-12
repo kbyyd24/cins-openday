@@ -60,4 +60,8 @@ public class RegistrationDao {
 				rs.getBoolean("captain"));
 			});
 	}
+
+	public int getRegistId(String mail) {
+		return 0;
+	}
 }
