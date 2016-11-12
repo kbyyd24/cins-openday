@@ -81,12 +81,21 @@ public class UserDaoTest {
 
 	@Test
 	public void test_getId_success() throws Exception {
-		int id = 1;
 		List users = mock(List.class);
 		when(jdbcOperations.query(anyString(), anyMap(), any(RowMapper.class))).thenReturn(users);
 		String mail1 = "mail";
 		List<User> ret = userDao.getIds(mail1, mail1);
 		assertThat(ret, is(users));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(RowMapper.class));
+	}
+
+	@Test
+	public void test_getTeammateMsg_success() throws Exception {
+		List<Object> users = mock(List.class);
+		when(jdbcOperations.query(anyString(), anyMap(), any(RowMapper.class))).thenReturn(users);
+		int id1 = 1;
+		int id2 = 1;
+		assertThat(userDao.getTeammateMsgs(id1, id2), is(users));
 		verify(jdbcOperations).query(anyString(), anyMap(), any(RowMapper.class));
 	}
 }

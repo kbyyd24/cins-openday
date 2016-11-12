@@ -36,6 +36,9 @@ public class UserDao {
 	private static final String SELECT_ID =
 		"SELECT id, mail FROM user " +
 			"WHERE mail = :mail1 OR mail = :mail2";
+	private static final String SELECT_TEAMMATES =
+		"SELECT id, username, mail FROM `user` " +
+			"WHERE id = :user1 OR id = :user2";
 
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -121,6 +124,16 @@ public class UserDao {
 	}
 
 	public List<User> getTeammateMsgs(int user1, int user2) {
-		return null;
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("user1", user1);
+		queryMap.put("user2", user2);
+		return jdbcOperations.query(
+			SELECT_TEAMMATES,
+			queryMap,
+			(rs, rowNum) -> new User(
+				rs.getInt("id"),
+				rs.getString("username"),
+				rs.getString("mail"))
+		);
 	}
 }
