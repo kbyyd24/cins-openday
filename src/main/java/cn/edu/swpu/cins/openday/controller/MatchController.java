@@ -58,8 +58,8 @@ public class MatchController {
 	}
 
 	@GetMapping("dataSet")
-	public Match getDataSet(@RequestParam("matchId") int id) {
-		return matchService.getDataSet(id);
+	public Match getDataSet(@RequestHeader("open-day-match-id") int matchId) {
+		return matchService.getDataSet(matchId);
 	}
 
 	@GetMapping("rankList")
