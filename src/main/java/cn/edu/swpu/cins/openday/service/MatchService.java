@@ -23,5 +23,5 @@ public interface MatchService {
 
 	TeamMsg getTeamMsg(TeamMsgGetter teamMsgGetter);
 
-	int getRegistId(String mail);
+	int getRegistId(int matchId, int userId);
 }

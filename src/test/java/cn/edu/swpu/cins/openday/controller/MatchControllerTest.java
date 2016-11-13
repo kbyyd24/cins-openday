@@ -100,13 +100,14 @@ public class MatchControllerTest {
 	@Test
 	public void test_uploadAnswer_success() throws Exception {
 		int regisId = 1;
-		String mail = "mail";
-		when(matchService.getRegistId(mail)).thenReturn(regisId);
+		int matchId = 1;
+		int userId = 1;
+		when(matchService.getRegistId(matchId, userId)).thenReturn(regisId);
 		MultipartFile multipartFile = mock(MultipartFile.class);
 		when(fileService.saveFile(multipartFile, regisId))
 			.thenReturn(MatchServiceResultEnum.SAVE_SUCCESS);
-		assertThat(controller.uploadAnswer(multipartFile, mail).getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
-		verify(matchService).getRegistId(mail);
+		assertThat(controller.uploadAnswer(multipartFile, matchId, userId).getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
+		verify(matchService).getRegistId(matchId, userId);
 		verify(fileService).saveFile(multipartFile, regisId);
 	}
 }

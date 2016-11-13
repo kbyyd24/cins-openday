@@ -62,11 +62,12 @@ public class RegistrationDaoTest {
 	}
 
 	@Test
-	public void test_getRegistId_success() throws Exception {
-		int registId = 1;
-		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(registId);
-		String mail = "mail";
-		assertThat(dao.getRegistId(mail), is(registId));
+	public void test_getRegistration_success() throws Exception {
+		int userId = 1;
+		int matchId = 1;
+		Registration registration = mock(Registration.class);
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(registration);
+		assertThat(dao.getRegistration(matchId, userId), is(registration));
 		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
 }

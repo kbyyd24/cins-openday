@@ -163,10 +163,14 @@ public class MatchServiceImplTest {
 
 	@Test
 	public void test_getRegistId_success() throws Exception {
-		String mail = "mail";
 		int registId = 1;
-		when(registrationDao.getRegistId(mail)).thenReturn(registId);
-		assertThat(service.getRegistId(mail), is(registId));
-		verify(registrationDao).getRegistId(mail);
+		int userId = 1;
+		int matchId = 1;
+		Registration registration = mock(Registration.class);
+		when(registrationDao.getRegistration(matchId, userId)).thenReturn(registration);
+		when(registration.getId()).thenReturn(registId);
+		assertThat(service.getRegistId(matchId, userId), is(registId));
+		verify(registrationDao).getRegistration(matchId, userId);
+		verify(registration).getId();
 	}
 }

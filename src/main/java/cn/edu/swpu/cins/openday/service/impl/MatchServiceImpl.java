@@ -128,8 +128,10 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public int getRegistId(String mail) {
-		return registrationDao.getRegistId(mail);
+	public int getRegistId(int matchId, int userId) {
+		Registration registration = registrationDao.getRegistration(matchId, userId);
+		if (registration == null) return -1;
+		return registration.getId();
 	}
 
 	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, TeamMsg teamMsg) {

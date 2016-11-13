@@ -9,10 +9,14 @@ public class Registration {
 
 	public Registration() {}
 
-	public Registration(Integer matchId, int userId, Integer groupId) {
+	public Registration(int matchId, int userId, int groupId) {
 		this.matchId = matchId;
 		this.userId = userId;
 		this.groupId = groupId;
+	}
+
+	public Registration(int id) {
+		this.id = id;
 	}
 
 	public Integer getMatchId() {

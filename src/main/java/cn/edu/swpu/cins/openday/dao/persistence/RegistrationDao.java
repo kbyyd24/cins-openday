@@ -23,6 +23,9 @@ public class RegistrationDao {
 		"SELECT id FROM registration " +
 			"WHERE user_id = " +
 			"(SELECT id FROM user WHERE mail = :mail)";
+	private static final String SELECT_REGISTRATION =
+		"select id from registration " +
+			"where user_id = :userId and match_id = :matchId";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -65,14 +68,15 @@ public class RegistrationDao {
 			});
 	}
 
-	public int getRegistId(String mail) {
-		HashMap<String, String> queryMap = new HashMap<>();
-		queryMap.put("mail", mail);
+	public Registration getRegistration(int matchId, int userId) {
+		HashMap<String, Integer> queryMap = new HashMap<>();
+		queryMap.put("matchId", matchId);
+		queryMap.put("userId", userId);
 		return jdbcOperations.query(
-			SELECT_ID,
+			SELECT_REGISTRATION,
 			queryMap,
 			rs -> {
-				return rs.getInt("id");
+				return new Registration(rs.getInt("id"));
 			});
 	}
 }

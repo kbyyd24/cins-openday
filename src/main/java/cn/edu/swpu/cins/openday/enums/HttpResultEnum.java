@@ -26,7 +26,7 @@ public enum HttpResultEnum {
 	ADD_FAILED(4001, "add match failed"),
 	JOIN_SUCCESS(4010, "join match success"),
 	JOIN_FAILED(4011, "join match failed"),
-	SAVE_ANSWER_SUCCESS(4020, "save file success"), SAVE_ANSWER_FAILED(4021, "save file failed");
+	SAVE_ANSWER_SUCCESS(4020, "save file success"), SAVE_ANSWER_FAILED(4021, "save file failed"), REQUEST_DENY(4022, "deny this request");
 
 	private int code;
 	private String description;

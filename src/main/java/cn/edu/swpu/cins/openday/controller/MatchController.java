@@ -73,10 +73,15 @@ public class MatchController {
 	}
 
 	@PostMapping("upload")
-	public MatchHttpResult uploadAnswer(@RequestParam("answer") MultipartFile file,
-	                                    @RequestHeader("openday-user") String mail)
+	public MatchHttpResult uploadAnswer(@RequestPart("answer") MultipartFile file,
+	                                    @RequestHeader("open-day-user-id") int userId,
+	                                    @RequestHeader("open-day-match-id") int matchId)
 		throws IOException, ServletException {
-		int registId = matchService.getRegistId(mail);
+		int registId = matchService.getRegistId(matchId, userId);
+		if (registId == -1) {
+			// TODO: 16-11-13 return detail
+			return new MatchHttpResult(HttpResultEnum.REQUEST_DENY);
+		}
 		MatchServiceResultEnum saveAnswer = fileService.saveFile(file, registId);
 		if (saveAnswer == MatchServiceResultEnum.SAVE_SUCCESS) {
 			return new MatchHttpResult(HttpResultEnum.SAVE_ANSWER_SUCCESS);
