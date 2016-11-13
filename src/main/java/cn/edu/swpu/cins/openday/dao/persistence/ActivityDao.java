@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public class ActivityDao {
 	private static final String QUERY_ACTIVITIES =
-		"SELECT id, title, content, img, create_time, end_time " +
+		"SELECT id, title, content" +
 			"FROM activity LIMIT :limit, :offset";
 	private static final String ADD_ACTIVITY =
-		"INSERT INTO activity(title, content, img, create_time, end_time) " +
-			"VALUE (:title, :content, :img, :createTime, :endTime)";
+		"INSERT INTO activity(title, content) " +
+			"VALUE (:title, :content)";
 	private final NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -34,10 +34,7 @@ public class ActivityDao {
 			((rs, rowNum) -> new Activity(
 				rs.getInt("id"),
 				rs.getString("title"),
-				rs.getString("content"),
-				rs.getString("img"),
-				rs.getLong("create_time"),
-				rs.getLong("end_time")
+				rs.getString("content")
 			)));
 	}
 
@@ -45,9 +42,6 @@ public class ActivityDao {
 		HashMap<String, Object> insertMap = new HashMap<>();
 		insertMap.put("title", postActivity.getTitle());
 		insertMap.put("content", postActivity.getContent());
-		insertMap.put("img", postActivity.getImg());
-		insertMap.put("createTime", postActivity.getStartTime());
-		insertMap.put("endTime", postActivity.getEndTime());
 		return jdbcOperations.update(ADD_ACTIVITY, insertMap);
 	}
 }

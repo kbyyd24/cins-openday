@@ -42,12 +42,8 @@ public class ActivityDaoTest {
 
 	@Test
 	public void test_addActivity_success() throws Exception {
-		String title = "title";
-		String content = "content";
-		String img = "/img/1.jpg";
-		Long startTime = 1L;
 		Long endTime = 1L;
-		PostActivity postActivity = new PostActivity(title, content, img, startTime, endTime);
+		PostActivity postActivity = new PostActivity();
 		when(jdbcOperations.update(anyString(), anyMap())).thenReturn(1);
 		int line = dao.addActivity(postActivity);
 		assertThat(line, is(1));
