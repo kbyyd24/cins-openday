@@ -90,11 +90,12 @@ public class MatchControllerTest {
 
 	@Test
 	public void test_getTeamMsg() throws Exception {
-		TeamMsgGetter teamMsgGetter = mock(TeamMsgGetter.class);
 		TeamMsg teamMsg = mock(TeamMsg.class);
-		when(matchService.getTeamMsg(teamMsgGetter)).thenReturn(teamMsg);
-		assertThat(controller.getTeamMsg(teamMsgGetter), is(teamMsg));
-		verify(matchService).getTeamMsg(teamMsgGetter);
+		int userId = 1;
+		int matchId = 1;
+		when(matchService.getTeamMsg(matchId, userId)).thenReturn(teamMsg);
+		assertThat(controller.getTeamMsg(matchId, userId), is(teamMsg));
+		verify(matchService).getTeamMsg(matchId, userId);
 	}
 
 	@Test

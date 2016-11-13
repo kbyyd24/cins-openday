@@ -21,7 +21,8 @@ public interface MatchService {
 
 	RankResult getRankList();
 
-	TeamMsg getTeamMsg(TeamMsgGetter teamMsgGetter);
-
 	int getRegistId(int matchId, int userId);
+
+	TeamMsg getTeamMsg(int matchId, int userId);
+
 }

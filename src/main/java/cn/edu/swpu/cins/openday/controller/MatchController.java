@@ -67,9 +67,10 @@ public class MatchController {
 		return matchService.getRankList();
 	}
 
-	@PostMapping("team")
-	public TeamMsg getTeamMsg(@RequestBody TeamMsgGetter teamMsgGetter) {
-		return matchService.getTeamMsg(teamMsgGetter);
+	@GetMapping("team")
+	public TeamMsg getTeamMsg(@RequestHeader("open-day-match-id") int matchId,
+	                          @RequestHeader("open-day-user-id") int userId) {
+		return matchService.getTeamMsg(matchId, userId);
 	}
 
 	@PostMapping("upload")

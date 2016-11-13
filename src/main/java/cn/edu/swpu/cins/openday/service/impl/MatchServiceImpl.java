@@ -110,14 +110,22 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public TeamMsg getTeamMsg(TeamMsgGetter tmg) {
-		Integer groupId = registrationDao.getGroupId(tmg.getMatchId(), tmg.getUserId());
+	public int getRegistId(int matchId, int userId) {
+		Registration registration = registrationDao.getRegistration(matchId, userId);
+		if (registration == null) return -1;
+		return registration.getId();
+	}
+
+	@Override
+	public TeamMsg getTeamMsg(int matchId, int userId) {
+		Integer groupId = registrationDao.getGroupId(matchId, userId);
 		if (groupId == null) {
 			throw new GroupException("no team found");
 		}
 		String groupName = groupDao.getGroupName(groupId);
-		TeammateMsg teammateMsg = registrationDao.getTeammateMsg(tmg.getMatchId(), tmg.getUserId(), groupId);
-		List<User> users = userDao.getTeammateMsgs(tmg.getUserId(), teammateMsg.getId());
+		TeammateMsg teammateMsg =
+			registrationDao.getTeammateMsg(matchId, userId, groupId);
+		List<User> users = userDao.getTeammateMsgs(userId, teammateMsg.getId());
 		if (users.size() != 2) {
 			return new TeamMsg();
 		}
@@ -125,13 +133,6 @@ public class MatchServiceImpl implements MatchService {
 		teamMsg.setTeamName(groupName);
 		setTeamMsg(teammateMsg, users, teamMsg);
 		return teamMsg;
-	}
-
-	@Override
-	public int getRegistId(int matchId, int userId) {
-		Registration registration = registrationDao.getRegistration(matchId, userId);
-		if (registration == null) return -1;
-		return registration.getId();
 	}
 
 	private void setTeamMsg(TeammateMsg teammateMsg, List<User> users, TeamMsg teamMsg) {

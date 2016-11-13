@@ -3,7 +3,6 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
-import cn.edu.swpu.cins.openday.model.http.TeamMsgGetter;
 import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
@@ -143,8 +142,7 @@ public class MatchServiceImplTest {
 		User user = mock(User.class);
 		when(users.get(anyInt())).thenReturn(user);
 		when(user.getId()).thenReturn(userId);
-		TeamMsgGetter tmg = new TeamMsgGetter(captainId, matchId);
-		service.getTeamMsg(tmg);
+		service.getTeamMsg(matchId, captainId);
 
 		verify(registrationDao).getGroupId(matchId, captainId);
 		verify(groupDao).getGroupName(groupId);
