@@ -11,19 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class UserSecurityInterceptor implements HandlerInterceptor {
+public class MatchSecurityInterceptor implements HandlerInterceptor {
 
 	private CacheService cacheService;
 
 	@Autowired
-	public UserSecurityInterceptor(CacheService cacheService) {
+	public MatchSecurityInterceptor(CacheService cacheService) {
 		this.cacheService = cacheService;
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String mail = request.getHeader("openday-user");
-		String token = request.getHeader("openday-token");
+		String mail = request.getHeader("open-day-user");
+		String token = request.getHeader("open-day-token");
 		AuthUser authUser = new AuthUser(mail, token);
 		return cacheService.checkToken(authUser);
 	}
