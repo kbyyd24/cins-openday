@@ -26,7 +26,7 @@ public class MatchController {
 		this.fileService = fileService;
 	}
 
-	@PostMapping("add")
+//	@PostMapping("add")
 	public MatchHttpResult addMatch(@RequestBody UpMatch upMatch) {
 		MatchServiceResultEnum addResult = matchService.addMatch(upMatch);
 		if (addResult == MatchServiceResultEnum.ADD_SUCCESS) {
@@ -35,7 +35,7 @@ public class MatchController {
 		return new MatchHttpResult(HttpResultEnum.ADD_FAILED);
 	}
 
-	@GetMapping("list/{page}")
+//	@GetMapping("list/{page}")
 	public List<Match> getMatches(@PathVariable(required = false) Integer page) {
 		if (page == null || page < 1) {
 			page = 1;

@@ -27,7 +27,7 @@ public class ActivityController {
 		return activityService.getActivities(page);
 	}
 
-	@PostMapping("add")
+//	@PostMapping("add")
 	public ActivityHttpResult addActivity(@RequestBody PostActivity activity) {
 		ActivityServiceResultEnum resultEnum = activityService.addActivity(activity);
 		if (resultEnum == ActivityServiceResultEnum.SAVE_SUCCESS) {
