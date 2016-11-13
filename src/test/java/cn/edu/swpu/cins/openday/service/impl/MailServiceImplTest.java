@@ -39,7 +39,7 @@ public class MailServiceImplTest {
 		String text = "text";
 		mailService.send(to, subject, text);
 		verify(javaMailSender).createMimeMessage();
-		verify(mockMsg).setContent(eq(text), eq("text/html"));
+		verify(mockMsg).setContent(eq(text), eq("text/html;charset=utf-8"));
 		verify(javaMailSender).send(mockMsg);
 	}
 }
