@@ -1,40 +1,30 @@
 package cn.edu.swpu.cins.openday.model.http;
 
 public class MatchRegister {
-	private String mail1;
-	private String mail2;
-	private Integer matchId;
+	private String teammate;
 	private String groupName;
 
-	public String getMail1() {
-		return mail1;
+	public MatchRegister() {}
+
+	public MatchRegister(String teammate, String groupName) {
+		this.teammate = teammate;
+		this.groupName = groupName;
 	}
 
-	public Integer getMatchId() {
-		return matchId;
+	public String getTeammate() {
+		return teammate;
 	}
 
-	public void setMail1(String mail1) {
-		this.mail1 = mail1;
+	public void setTeammate(String teammate) {
+		this.teammate = teammate;
 	}
 
 	public String getGroupName() {
 		return groupName;
 	}
 
-	public void setMatchId(int matchId) {
-		this.matchId = matchId;
-	}
-
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
 
-	public String getMail2() {
-		return mail2;
-	}
-
-	public void setMail2(String mail2) {
-		this.mail2 = mail2;
-	}
 }

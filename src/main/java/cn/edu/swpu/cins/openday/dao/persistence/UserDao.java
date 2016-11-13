@@ -96,18 +96,7 @@ public class UserDao {
 	}
 
 	public User signInUser(SignInUser signInUser) {
-		HashMap<String, String> queryMap = new HashMap<>(2);
-		queryMap.put("mail", signInUser.getMail());
-		return jdbcOperations.query(SELECT_BY_MAIL, queryMap, rs -> {
-			rs.next();
-			return new User(
-				rs.getInt("id"),
-				rs.getString("username"),
-				rs.getString("mail"),
-				rs.getString("password"),
-				rs.getBoolean("enable")
-			);
-		});
+		return this.getUser(signInUser.getMail());
 	}
 
 	public List<User> getIds(String mail1, String mail2) {
@@ -135,5 +124,20 @@ public class UserDao {
 				rs.getString("username"),
 				rs.getString("mail"))
 		);
+	}
+
+	public User getUser(String mail) {
+		HashMap<String, String> queryMap = new HashMap<>();
+		queryMap.put("mail", mail);
+		return jdbcOperations.query(SELECT_BY_MAIL, queryMap, rs -> {
+			rs.next();
+			return new User(
+				rs.getInt("id"),
+				rs.getString("username"),
+				rs.getString("mail"),
+				rs.getString("password"),
+				rs.getBoolean("enable")
+			);
+		});
 	}
 }

@@ -32,7 +32,7 @@ public class GroupDao {
 		return jdbcOperations.update(INSERT_GROUP, insertMap);
 	}
 
-	public Integer getGroupId(Group group) {
+	public Group getGroupId(Group group) {
 		HashMap<String, Object> queryMap = new HashMap<>();
 		queryMap.put("groupName", group.getGroupName());
 		queryMap.put("matchId", group.getMatchId());
@@ -40,7 +40,7 @@ public class GroupDao {
 			SELECT_GROUP_ID,
 			queryMap,
 			rs -> {
-				return rs.getInt("id");
+				return new Group(rs.getInt("id"));
 			}
 		);
 	}

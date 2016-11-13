@@ -46,7 +46,7 @@ public class GroupDaoTest {
 			"where group_name = :groupName and match_id = :matchId";
 		int id = 1;
 		when(jdbcOperations.query(eq(sql), anyMap(), any(ResultSetExtractor.class))).thenReturn(id);
-		int groupId = dao.getGroupId(group);
+		int groupId = dao.getGroupId(group).getId();
 		assertThat(groupId, is(id));
 		verify(jdbcOperations).query(eq(sql), anyMap(), any(ResultSetExtractor.class));
 	}

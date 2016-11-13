@@ -66,9 +66,11 @@ public class MatchControllerTest {
 	@Test
 	public void test_joinMatch_success() throws Exception {
 		MatchRegister matchRegister = new MatchRegister();
-		when(matchService.joinMatch(matchRegister)).thenReturn(MatchServiceResultEnum.JOIN_SUCCESS);
-		controller.joinMatch(matchRegister);
-		verify(matchService).joinMatch(matchRegister);
+		int captainId = 1;
+		int matchId = 1;
+		when(matchService.joinMatch(matchRegister, captainId, matchId)).thenReturn(MatchServiceResultEnum.JOIN_SUCCESS);
+		controller.joinMatch(matchRegister, captainId, matchId);
+		verify(matchService).joinMatch(matchRegister, captainId, matchId);
 	}
 
 	@Test

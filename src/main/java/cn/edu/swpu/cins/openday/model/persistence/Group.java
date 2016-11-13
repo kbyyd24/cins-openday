@@ -19,6 +19,10 @@ public class Group {
 		this.matchId = matchId;
 	}
 
+	public Group(int id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

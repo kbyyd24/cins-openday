@@ -82,25 +82,29 @@ public class MatchServiceImplTest {
 
 	@Test
 	public void test_joinMatch_success() throws Exception {
-		String mail = "mail@mail.com";
-		MatchRegister matchRegister = new MatchRegister();
-		matchRegister.setMail1(mail);
-		matchRegister.setMail2(mail);
-		int id = 1;
-		matchRegister.setMatchId(id);
-		List<User> users = new ArrayList<>();
-		User user = new User(id);
-		users.add(user);
-		users.add(user);
-		when(userDao.getIds(mail, mail)).thenReturn(users);
-		when(groupDao.addGroup(any(Group.class))).thenReturn(1);
-		when(groupDao.getGroupId(any(Group.class))).thenReturn(id);
-		when(registrationDao.addRegistration(any(Registration.class))).thenReturn(1);
-		MatchServiceResultEnum resultEnum = service.joinMatch(matchRegister);
-		assertThat(resultEnum, is(MatchServiceResultEnum.JOIN_SUCCESS));
-		verify(userDao).getIds(mail, mail);
-		verify(groupDao).addGroup(any(Group.class));
-		verify(groupDao).getGroupId(any(Group.class));
+		String teammate = "mail";
+		User user = mock(User.class);
+		when(userDao.getUser(teammate)).thenReturn(user);
+		String username = "username";
+		when(user.getUsername()).thenReturn(username);
+		Integer line = 1;
+		when(groupDao.addGroup(any(Group.class))).thenReturn(line);
+		Group group = mock(Group.class);
+		when(groupDao.getGroupId(any(Group.class))).thenReturn(group);
+		Integer teammateId = 1;
+		when(group.getId()).thenReturn(teammateId);
+		when(registrationDao.addRegistration(any(Registration.class))).thenReturn(line);
+		String groupName = "group name";
+		MatchRegister matchRegister = new MatchRegister(teammate, groupName);
+		int captainId = 1;
+		int matchId = 1;
+		assertThat(service.joinMatch(matchRegister, captainId, matchId),
+			is(MatchServiceResultEnum.JOIN_SUCCESS));
+		verify(userDao).getUser(teammate);
+		verify(user).getUsername();
+		verify(groupDao).addGroup(any(group.getClass()));
+		verify(groupDao).getGroupId(any(group.getClass()));
+		verify(group, times(3)).getId();
 		verify(registrationDao, times(2)).addRegistration(any(Registration.class));
 	}
 

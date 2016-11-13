@@ -64,29 +64,25 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	@Transactional(rollbackFor = {DataAccessException.class, SQLException.class, OpenDayException.class})
-	public MatchServiceResultEnum joinMatch(MatchRegister matchRegister) {
-		List<User> users = userDao.getIds(matchRegister.getMail1(), matchRegister.getMail2());
-		if (users.size() < 2) {
-			throw new UserException("cannot search two users");
+	public MatchServiceResultEnum joinMatch(MatchRegister matchRegister, int captainId, int matchId) {
+		User user = userDao.getUser(matchRegister.getTeammate());
+		if (user == null || user.getUsername() == null) {
+			throw new UserException("no teammate searched");
 		}
-		users.forEach(user -> {
-			if (user.getId() == null)
-				throw new NoSuchUserException("no such user: " + user.getMail());
-		});
-		Group group = new Group(matchRegister.getGroupName(), matchRegister.getMatchId());
+		Group group = new Group(matchRegister.getGroupName(), matchId);
 		int line = groupDao.addGroup(group);
 		if (line != 1) {
-			throw new GroupException("add group error");
+			throw new GroupException("add team error");
 		}
-		Integer groupId = groupDao.getGroupId(group);
-		if (groupId == null) {
-			throw new GroupException("get group failed");
+		Group groupWithId = groupDao.getGroupId(group);
+		if (groupWithId == null || groupWithId.getId() == null || groupWithId.getId() == 0) {
+			throw new GroupException("get group id failed");
 		}
-		Registration registration = new Registration(matchRegister.getMatchId(), users.get(0).getId(), groupId);
+		Registration registration = new Registration(matchId, captainId, groupWithId.getId());
 		registration.setCaptain(true);
 		line = registrationDao.addRegistration(registration);
 		registration.setCaptain(false);
-		registration.setUserId(users.get(1).getId());
+		registration.setUserId(user.getId());
 		line += registrationDao.addRegistration(registration);
 		if (line != 2) {
 			throw new RegistrationException("join match error");

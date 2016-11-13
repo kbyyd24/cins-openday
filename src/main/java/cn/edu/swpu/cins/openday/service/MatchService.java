@@ -15,7 +15,7 @@ public interface MatchService {
 
 	Match getMatch();
 
-	MatchServiceResultEnum joinMatch(MatchRegister matchRegister);
+	MatchServiceResultEnum joinMatch(MatchRegister matchRegister, int captainId, int matchId);
 
 	Match getDataSet(int id);
 
