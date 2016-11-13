@@ -58,7 +58,7 @@ public class MatchController {
 	}
 
 	@GetMapping("dataSet")
-	public Match getDataSet(@RequestParam int id) {
+	public Match getDataSet(@RequestParam("matchId") int id) {
 		return matchService.getDataSet(id);
 	}
 
