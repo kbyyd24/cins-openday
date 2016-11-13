@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface FileService {
-	MatchServiceResultEnum saveAnswer(MultipartFile multipartFile, int registId);
+	MatchServiceResultEnum saveFile(MultipartFile multipartFile, int registId);
 }

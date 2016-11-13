@@ -103,10 +103,10 @@ public class MatchControllerTest {
 		String mail = "mail";
 		when(matchService.getRegistId(mail)).thenReturn(regisId);
 		MultipartFile multipartFile = mock(MultipartFile.class);
-		when(fileService.saveAnswer(multipartFile, regisId))
+		when(fileService.saveFile(multipartFile, regisId))
 			.thenReturn(MatchServiceResultEnum.SAVE_SUCCESS);
 		assertThat(controller.uploadAnswer(multipartFile, mail).getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
 		verify(matchService).getRegistId(mail);
-		verify(fileService).saveAnswer(multipartFile, regisId);
+		verify(fileService).saveFile(multipartFile, regisId);
 	}
 }

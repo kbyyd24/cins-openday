@@ -77,7 +77,7 @@ public class MatchController {
 	                                    @RequestHeader("openday-user") String mail)
 		throws IOException, ServletException {
 		int registId = matchService.getRegistId(mail);
-		MatchServiceResultEnum saveAnswer = fileService.saveAnswer(file, registId);
+		MatchServiceResultEnum saveAnswer = fileService.saveFile(file, registId);
 		if (saveAnswer == MatchServiceResultEnum.SAVE_SUCCESS) {
 			return new MatchHttpResult(HttpResultEnum.SAVE_ANSWER_SUCCESS);
 		}
