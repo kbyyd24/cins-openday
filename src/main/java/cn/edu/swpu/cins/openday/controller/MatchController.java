@@ -82,7 +82,6 @@ public class MatchController {
 		throws IOException, ServletException {
 		int registId = matchService.getRegistId(matchId, userId);
 		if (registId == -1) {
-			// TODO: 16-11-13 return detail
 			return new MatchHttpResult(HttpResultEnum.REQUEST_DENY);
 		}
 		MatchServiceResultEnum saveAnswer = fileService.saveFile(file, registId);

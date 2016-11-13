@@ -44,7 +44,6 @@ public class UserController {
 			try {
 				mailService.send(signUpUser.getMail(), subject, text);
 			} catch (MessagingException e) {
-				// TODO: 16-10-19 deal exception
 				e.printStackTrace();
 			}
 			return new UserHttpResult(HttpResultEnum.ADD_USER_SUCCESS);

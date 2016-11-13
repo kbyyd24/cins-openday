@@ -33,7 +33,6 @@ public class ActivityController {
 		if (resultEnum == ActivityServiceResultEnum.SAVE_SUCCESS) {
 			return new ActivityHttpResult(HttpResultEnum.SAVE_ACTIVITY_SUCCESS);
 		}
-		// TODO: 16-10-30 deal other failure of save
 		return new ActivityHttpResult(HttpResultEnum.SAVE_ACTIVITY_FAILED);
 	}
 }
