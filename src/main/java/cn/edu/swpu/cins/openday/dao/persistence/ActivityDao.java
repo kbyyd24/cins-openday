@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class ActivityDao {
 	private static final String QUERY_ACTIVITIES =
-		"SELECT id, title, content" +
+		"SELECT id, title, content " +
 			"FROM activity LIMIT :limit, :offset";
 	private static final String ADD_ACTIVITY =
 		"INSERT INTO activity(title, content) " +
