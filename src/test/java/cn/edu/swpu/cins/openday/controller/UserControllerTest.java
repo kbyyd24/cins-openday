@@ -55,7 +55,7 @@ public class UserControllerTest {
 		when(mailFormatService.getSignUpContent(eq(mail), anyString())).thenReturn(text);
 		doNothing().when(mailService).send(mail, subject, text);
 		UserHttpResult httpResult = userController.signUp(signUpUser);
-		assertThat(httpResult.getCode(), is(HttpResultEnum.ADD_USER_SUCCESS.getCode()));
+		assertThat(httpResult.getCode(), is(HttpResultEnum.SIGN_UP_USER_SUCCESS.getCode()));
 	}
 
 	@Test

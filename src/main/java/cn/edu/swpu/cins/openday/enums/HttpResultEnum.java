@@ -1,14 +1,8 @@
 package cn.edu.swpu.cins.openday.enums;
 
 public enum HttpResultEnum {
-	REQUEST_SUCCESS(200, "ok"),
-	BAD_REQUEST(400, "bad request"),
-	UNAUTHORIZED(401, "unauthorized"),
-	FORBIDDEN(403, "forbidden"),
-	NOT_FOUND(404, "not found"),
-	INTERNAL_SERVER_ERROR(500, "something wrong"),
-	ADD_USER_SUCCESS(2000, "add user success and mail have sent to your mail"),
-	ADD_USER_FAILED(2001, "add user failed, please try again later"),
+	SIGN_UP_USER_SUCCESS(2000, "add user success and mail have sent to your mail"),
+	SIGN_UP_USER_FAILED(2001, "add user failed, please try again later"),
 	EXISTED_USERNAME_AND_MAIL(2002, "username and mail had been used, please input another"),
 	EXISTED_USERNAME(2003, "username had been used, please input another"),
 	EXISTED_MALI(2004, "mail had been used, please input another"),
@@ -26,7 +20,9 @@ public enum HttpResultEnum {
 	ADD_FAILED(4001, "add match failed"),
 	JOIN_SUCCESS(4010, "join match success"),
 	JOIN_FAILED(4011, "join match failed"),
-	SAVE_ANSWER_SUCCESS(4020, "save file success"), SAVE_ANSWER_FAILED(4021, "save file failed"), REQUEST_DENY(4022, "deny this request");
+	SAVE_ANSWER_SUCCESS(4020, "save file success"),
+	SAVE_ANSWER_FAILED(4021, "save file failed"),
+	REQUEST_DENY(4022, "deny this request");
 
 	private int code;
 	private String description;

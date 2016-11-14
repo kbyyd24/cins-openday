@@ -46,14 +46,14 @@ public class UserController {
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-			return new UserHttpResult(HttpResultEnum.ADD_USER_SUCCESS);
+			return new UserHttpResult(HttpResultEnum.SIGN_UP_USER_SUCCESS);
 		}
 		return returnSignUpError(signUpResult);
 	}
 
 	private UserHttpResult returnSignUpError(UserServiceResultEnum signUpResult) {
 		if (signUpResult == ADD_USER_FAILED) {
-			return new UserHttpResult(HttpResultEnum.ADD_USER_FAILED);
+			return new UserHttpResult(HttpResultEnum.SIGN_UP_USER_FAILED);
 		} else if (signUpResult == EXISTED_USERNAME_AND_MAIL) {
 			return new UserHttpResult(HttpResultEnum.EXISTED_USERNAME_AND_MAIL);
 		} else if (signUpResult == EXISTED_USERNAME) {
