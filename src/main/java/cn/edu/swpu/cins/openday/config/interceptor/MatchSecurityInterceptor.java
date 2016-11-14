@@ -24,8 +24,16 @@ public class MatchSecurityInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String mail = request.getHeader("open-day-user");
 		String token = request.getHeader("open-day-token");
+		if (mail == null || token == null) {
+			return forbidden(response);
+		}
 		AuthUser authUser = new AuthUser(mail, token);
-		return cacheService.checkToken(authUser);
+		return cacheService.checkToken(authUser) || forbidden(response);
+	}
+
+	private boolean forbidden(HttpServletResponse response) {
+		response.setStatus(403);
+		return false;
 	}
 
 	@Override
