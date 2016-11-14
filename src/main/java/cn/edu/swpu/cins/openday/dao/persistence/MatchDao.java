@@ -21,11 +21,11 @@ public class MatchDao {
 		"select `data_link`, `data_password` " +
 			"from `match` where `id` = :id";
 	private static final String SELECT_MATCH =
-		"select " +
-			"`id`, `match_name`, `detail`, `start_time`, `end_time`, `award`, `judge_standard`, `commit_regular` " +
+		"select `id`, `match_name`, `detail`, `start_time`, `end_time`, `award`, `judge_standard`, `commit_regular` " +
 			"from `match`";
 	private NamedParameterJdbcOperations jdbcOperations;
 
+	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@Autowired
 	public MatchDao(NamedParameterJdbcOperations jdbcOperations) {
 		this.jdbcOperations = jdbcOperations;
@@ -63,16 +63,19 @@ public class MatchDao {
 		return jdbcOperations.query(
 			SELECT_MATCH,
 			rs -> {
-				return new Match(
-					rs.getInt("id"),
-					rs.getString("match_name"),
-					rs.getString("detail"),
-					rs.getLong("start_time"),
-					rs.getLong("end_time"),
-					rs.getString("award"),
-					rs.getString("judge_standard"),
-					rs.getString("commit_regular")
-				);
+				if (rs.next()) {
+					return new Match(
+						rs.getInt("id"),
+						rs.getString("match_name"),
+						rs.getString("detail"),
+						rs.getLong("start_time"),
+						rs.getLong("end_time"),
+						rs.getString("award"),
+						rs.getString("judge_standard"),
+						rs.getString("commit_regular")
+					);
+				}
+				return new Match();
 		});
 	}
 
