@@ -19,6 +19,7 @@ public class ActivityDao {
 			"VALUE (:title, :content)";
 	private final NamedParameterJdbcOperations jdbcOperations;
 
+	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@Autowired
 	public ActivityDao(NamedParameterJdbcOperations jdbcOperations) {
 		this.jdbcOperations = jdbcOperations;
