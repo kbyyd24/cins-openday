@@ -33,7 +33,7 @@ public class HttpRequestInterceptor implements HandlerInterceptor {
 		logger.info("============================ param ============================");
 		parameterMap.forEach((key, value) -> System.out.println(key + " : " + value.toString()));
 		logger.info("============================ param end ============================");
-		return false;
+		return true;
 	}
 
 	@Override

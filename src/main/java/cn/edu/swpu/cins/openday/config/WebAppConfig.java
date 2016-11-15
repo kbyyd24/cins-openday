@@ -30,7 +30,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry
 			.addInterceptor(new HttpRequestInterceptor())
-			.addPathPatterns("/*");
+			.addPathPatterns("/**");
 		registry
 			.addInterceptor(new MatchSecurityInterceptor(cacheService))
 			.addPathPatterns("/match/*");

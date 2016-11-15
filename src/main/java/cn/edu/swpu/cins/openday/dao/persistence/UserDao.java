@@ -130,14 +130,16 @@ public class UserDao {
 		HashMap<String, String> queryMap = new HashMap<>();
 		queryMap.put("mail", mail);
 		return jdbcOperations.query(SELECT_BY_MAIL, queryMap, rs -> {
-			rs.next();
-			return new User(
-				rs.getInt("id"),
-				rs.getString("username"),
-				rs.getString("mail"),
-				rs.getString("password"),
-				rs.getBoolean("enable")
-			);
+			if (rs.next()) {
+				return new User(
+					rs.getInt("id"),
+					rs.getString("username"),
+					rs.getString("mail"),
+					rs.getString("password"),
+					rs.getBoolean("enable")
+				);
+			}
+			return new User();
 		});
 	}
 }
