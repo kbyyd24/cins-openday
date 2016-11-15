@@ -1,5 +1,8 @@
 package cn.edu.swpu.cins.openday.config.interceptor;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -8,23 +11,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.Map;
 
+@Component
 public class HttpRequestInterceptor implements HandlerInterceptor {
+
+
+	private Log logger = LogFactory.getLog(HttpServletRequest.class);
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("Request URL : " + request.getRequestURL());
-		System.out.println("Method : " + request.getMethod());
+		logger.info("Request URL : " + request.getRequestURL());
+		logger.info("Method : " + request.getMethod());
 		Enumeration<String> headerNames = request.getHeaderNames();
-		System.out.println("============================ header ============================");
+		logger.info("============================ header ============================");
 		while (headerNames.hasMoreElements()) {
 			String name = headerNames.nextElement();
 			String header = request.getHeader(name);
-			System.out.println(name + " : " + header);
+			logger.info(name + " : " + header);
 		}
-		System.out.println("============================ end header ============================");
+		logger.info("============================ end header ============================");
 		Map<String, String[]> parameterMap = request.getParameterMap();
-		System.out.println("============================ param ============================");
+		logger.info("============================ param ============================");
 		parameterMap.forEach((key, value) -> System.out.println(key + " : " + value.toString()));
-		System.out.println("============================ param end ============================");
+		logger.info("============================ param end ============================");
 		return false;
 	}
 

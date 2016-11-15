@@ -1,5 +1,6 @@
 package cn.edu.swpu.cins.openday.config;
 
+import cn.edu.swpu.cins.openday.config.interceptor.HttpRequestInterceptor;
 import cn.edu.swpu.cins.openday.config.interceptor.MatchSecurityInterceptor;
 import cn.edu.swpu.cins.openday.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		registry
+			.addInterceptor(new HttpRequestInterceptor())
+			.addPathPatterns("/*");
 		registry
 			.addInterceptor(new MatchSecurityInterceptor(cacheService))
 			.addPathPatterns("/match/*");
