@@ -2,10 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.SignInUser;
-import cn.edu.swpu.cins.openday.model.http.SignUpUser;
-import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
-import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
@@ -54,7 +51,7 @@ public class UserControllerTest {
 		when(mailFormatService.getSignUpSubject(username)).thenReturn(subject);
 		when(mailFormatService.getSignUpContent(eq(mail), anyString())).thenReturn(text);
 		doNothing().when(mailService).send(mail, subject, text);
-		UserHttpResult httpResult = userController.signUp(signUpUser);
+		HttpResult httpResult = userController.signUp(signUpUser);
 		assertThat(httpResult.getCode(), is(HttpResultEnum.SIGN_UP_USER_SUCCESS.getCode()));
 	}
 
@@ -64,7 +61,7 @@ public class UserControllerTest {
 		String baseToken = "123";
 		AuthUser au = new AuthUser(baseMail, baseToken);
 		when(userService.enable(au)).thenReturn(UserServiceResultEnum.ENABLE_TOKEN_SUCCESS);
-		UserHttpResult ret = userController.enable(au);
+		HttpResult ret = userController.enable(au);
 		assertThat(ret.getCode(), is(HttpResultEnum.ENABLE_TOKEN_SUCCESS.getCode()));
 	}
 
@@ -105,7 +102,7 @@ public class UserControllerTest {
 		String token = "123";
 		AuthUser au = new AuthUser(mail, token);
 		when(userService.signOut(au)).thenReturn(UserServiceResultEnum.SIGNOUT_SUCCESS);
-		UserHttpResult result = userController.signOut(au);
+		HttpResult result = userController.signOut(au);
 		assertThat(result.getCode(), is(HttpResultEnum.SIGNOUT_SUCCESS.getCode()));
 		verify(userService).signOut(au);
 	}

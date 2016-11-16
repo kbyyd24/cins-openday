@@ -2,10 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.SignInUser;
-import cn.edu.swpu.cins.openday.model.http.SignUpUser;
-import cn.edu.swpu.cins.openday.model.http.UserHttpResult;
-import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
+import cn.edu.swpu.cins.openday.model.http.*;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
@@ -37,7 +34,7 @@ public class UserController {
 	}
 
 	@PostMapping("signup")
-	public UserHttpResult signUp(@RequestBody SignUpUser signUpUser) {
+	public HttpResult signUp(@RequestBody SignUpUser signUpUser) {
 		String token = String.valueOf(System.currentTimeMillis());
 		UserServiceResultEnum signUpResult = userService.signUp(signUpUser, token);
 		if (signUpResult == ADD_USER_SUCCESS) {
@@ -48,39 +45,39 @@ public class UserController {
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-			return new UserHttpResult(HttpResultEnum.SIGN_UP_USER_SUCCESS);
+			return new HttpResult(HttpResultEnum.SIGN_UP_USER_SUCCESS);
 		}
 		return returnSignUpError(signUpResult);
 	}
 
-	private UserHttpResult returnSignUpError(UserServiceResultEnum signUpResult) {
+	private HttpResult returnSignUpError(UserServiceResultEnum signUpResult) {
 		if (signUpResult == ADD_USER_FAILED) {
-			return new UserHttpResult(HttpResultEnum.SIGN_UP_USER_FAILED);
+			return new HttpResult(HttpResultEnum.SIGN_UP_USER_FAILED);
 		} else if (signUpResult == EXISTED_USERNAME_AND_MAIL) {
-			return new UserHttpResult(HttpResultEnum.EXISTED_USERNAME_AND_MAIL);
+			return new HttpResult(HttpResultEnum.EXISTED_USERNAME_AND_MAIL);
 		} else if (signUpResult == EXISTED_USERNAME) {
-			return new UserHttpResult(HttpResultEnum.EXISTED_USERNAME);
+			return new HttpResult(HttpResultEnum.EXISTED_USERNAME);
 		} else if (signUpResult == EXISTED_MAIL) {
-			return new UserHttpResult(HttpResultEnum.EXISTED_MALI);
+			return new HttpResult(HttpResultEnum.EXISTED_MALI);
 		} else if (signUpResult == PASSWORD_NOT_SAME) {
-			return new UserHttpResult(HttpResultEnum.PASSWORD_NOT_SAME);
+			return new HttpResult(HttpResultEnum.PASSWORD_NOT_SAME);
 		}
-		return new UserHttpResult(HttpResultEnum.UNKNOWN_ERROR);
+		return new HttpResult(HttpResultEnum.UNKNOWN_ERROR);
 	}
 
 	@PostMapping("enable")
-	public UserHttpResult enable(@RequestBody AuthUser au) {
+	public HttpResult enable(@RequestBody AuthUser au) {
 		UserServiceResultEnum enableRet = userService.enable(au);
 		if (enableRet == ENABLE_TOKEN_SUCCESS) {
-			return new UserHttpResult(HttpResultEnum.ENABLE_TOKEN_SUCCESS);
+			return new HttpResult(HttpResultEnum.ENABLE_TOKEN_SUCCESS);
 		}
 		if (enableRet == UserServiceResultEnum.ENABLE_TOKEN_INVALID) {
-			return new UserHttpResult(HttpResultEnum.ENABLE_TOKEN_INVALID);
+			return new HttpResult(HttpResultEnum.ENABLE_TOKEN_INVALID);
 		}
 		if (enableRet == UserServiceResultEnum.ENABLE_TOKEN_TIMEOUT) {
-			return new UserHttpResult(HttpResultEnum.ENABLE_TOKEN_TIMEOUT);
+			return new HttpResult(HttpResultEnum.ENABLE_TOKEN_TIMEOUT);
 		}
-		return new UserHttpResult(HttpResultEnum.ENABLE_FAILED);
+		return new HttpResult(HttpResultEnum.ENABLE_FAILED);
 	}
 
 	@PostMapping("signin")
@@ -93,11 +90,11 @@ public class UserController {
 	}
 
 	@PostMapping("signout")
-	public UserHttpResult signOut(@RequestBody AuthUser au) {
+	public HttpResult signOut(@RequestBody AuthUser au) {
 		UserServiceResultEnum result = userService.signOut(au);
 		if (result == UserServiceResultEnum.SIGNOUT_SUCCESS) {
-			return new UserHttpResult(HttpResultEnum.SIGNOUT_SUCCESS);
+			return new HttpResult(HttpResultEnum.SIGNOUT_SUCCESS);
 		}
-		return new UserHttpResult(HttpResultEnum.SIGNOUT_FAILED);
+		return new HttpResult(HttpResultEnum.SIGNOUT_FAILED);
 	}
 }

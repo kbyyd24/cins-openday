@@ -2,13 +2,15 @@ package cn.edu.swpu.cins.openday.model.http;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 
-public class UserHttpResult {
+public class HttpResult {
 	private int code;
 	private String description;
 
-	public UserHttpResult(HttpResultEnum userResultEnum) {
-		this.code = userResultEnum.getCode();
-		this.description = userResultEnum.getDescription();
+	public HttpResult() {}
+
+	public HttpResult(HttpResultEnum resultEnum) {
+		this.code = resultEnum.getCode();
+		this.description = resultEnum.getDescription();
 	}
 
 	public int getCode() {
@@ -29,7 +31,7 @@ public class UserHttpResult {
 
 	@Override
 	public String toString() {
-		return "UserHttpResult{" +
+		return "HttpResult{" +
 			"code=" + code +
 			", description='" + description + '\'' +
 			'}';
