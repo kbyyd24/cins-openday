@@ -42,13 +42,12 @@ public class GroupDaoTest {
 	@Test
 	public void test_getGroupId_success() throws Exception {
 		Group group = new Group();
-		String sql = "select id from `group` " +
-			"where group_name = :groupName and match_id = :matchId";
 		int id = 1;
-		when(jdbcOperations.query(eq(sql), anyMap(), any(ResultSetExtractor.class))).thenReturn(id);
+		group.setId(id);
+		when(jdbcOperations.query(anyString(), anyMap(), any(ResultSetExtractor.class))).thenReturn(group);
 		int groupId = dao.getGroupId(group).getId();
 		assertThat(groupId, is(id));
-		verify(jdbcOperations).query(eq(sql), anyMap(), any(ResultSetExtractor.class));
+		verify(jdbcOperations).query(anyString(), anyMap(), any(ResultSetExtractor.class));
 	}
 
 	@Test

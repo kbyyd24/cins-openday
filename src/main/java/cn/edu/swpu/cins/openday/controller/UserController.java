@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 
+import java.util.Objects;
+
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 
 @RestController
@@ -84,8 +86,8 @@ public class UserController {
 	@PostMapping("signin")
 	public UserSignInResult signIn(@RequestBody SignInUser signInUser) {
 		UserSignInResult signin = userService.signin(signInUser);
-		if (signin.getStatus() != UserServiceResultEnum.LOGIN_SUCCESS) {
-			signin.setStatus(UserServiceResultEnum.LOGIN_FAILED);
+		if (!Objects.equals(signin.getStatus(), UserServiceResultEnum.LOGIN_SUCCESS.name())) {
+			signin.setStatus(UserServiceResultEnum.LOGIN_FAILED.name());
 		}
 		return signin;
 	}

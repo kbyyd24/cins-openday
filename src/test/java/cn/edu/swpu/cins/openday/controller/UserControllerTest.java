@@ -88,15 +88,15 @@ public class UserControllerTest {
 
 		UserSignInResult userSignInResult = new UserSignInResult(UserServiceResultEnum.USER_NOT_EXIST);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
-		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED.name()));
 
 		userSignInResult = new UserSignInResult(UserServiceResultEnum.PASSWORD_NOT_SAME);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
-		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED.name()));
 
 		userSignInResult = new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
-		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED));
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED.name()));
 	}
 
 	@Test

@@ -148,7 +148,7 @@ public class UserServiceImplTest {
 		assertThat(result.getId(), is(id));
 		assertThat(result.getUsername(), is(username));
 		assertThat(result.getMail(), is(mail));
-		assertThat(result.getStatus(), is(UserServiceResultEnum.LOGIN_SUCCESS));
+		assertThat(result.getStatus(), is(UserServiceResultEnum.LOGIN_SUCCESS.name()));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
 		verify(cacheService).signIn(any(UserSignInResult.class));
@@ -161,7 +161,7 @@ public class UserServiceImplTest {
 		SignInUser signInUser = new SignInUser(mail, password);
 		when(userDao.signInUser(signInUser)).thenReturn(null);
 		UserSignInResult result = userService.signin(signInUser);
-		assertThat(result.getStatus(), is(UserServiceResultEnum.USER_NOT_EXIST));
+		assertThat(result.getStatus(), is(UserServiceResultEnum.USER_NOT_EXIST.name()));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService, times(0)).match(password, password);
 	}
@@ -176,7 +176,7 @@ public class UserServiceImplTest {
 		User user = new User(id, username, mail, password, true);
 		when(userDao.signInUser(signInUser)).thenReturn(user);
 		when(passwordService.match(password, password)).thenReturn(false);
-		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.PASSWORD_NOT_SAME));
+		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.PASSWORD_NOT_SAME.name()));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
 		verify(cacheService, times(0)).signIn(any(UserSignInResult.class));
@@ -194,7 +194,7 @@ public class UserServiceImplTest {
 		when(passwordService.match(password, password)).thenReturn(true);
 		when(tokenService.createToken()).thenReturn(mail);
 		when(cacheService.signIn(any(UserSignInResult.class))).thenReturn(CacheResultEnum.SAVE_FAILED);
-		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED));
+		assertThat(userService.signin(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED.name()));
 		verify(userDao).signInUser(signInUser);
 		verify(passwordService).match(password, password);
 		verify(cacheService).signIn(any(UserSignInResult.class));

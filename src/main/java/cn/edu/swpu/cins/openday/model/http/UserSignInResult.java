@@ -8,15 +8,15 @@ public class UserSignInResult {
 	private Integer id;
 	private String username;
 	private String mail;
-	private UserServiceResultEnum status;
+	private String status;
 
 	public UserSignInResult(User user, UserServiceResultEnum status) {
 		this(user);
-		this.status = status;
+		this.status = status.name();
 	}
 
 	public UserSignInResult(UserServiceResultEnum status) {
-		this.status = status;
+		this.status = status.name();
 	}
 
 	public UserSignInResult(String token, User user) {
@@ -49,11 +49,11 @@ public class UserSignInResult {
 		return mail;
 	}
 
-	public UserServiceResultEnum getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(UserServiceResultEnum status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

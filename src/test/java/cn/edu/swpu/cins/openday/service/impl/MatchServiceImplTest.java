@@ -3,7 +3,6 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
-import cn.edu.swpu.cins.openday.model.http.UpMatch;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
@@ -16,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -48,27 +46,6 @@ public class MatchServiceImplTest {
 	@Before
 	public void setUp() throws Exception {
 		service = new MatchServiceImpl(matchDao, userDao, groupDao, registrationDao, scoreDao);
-	}
-
-	@Test
-	public void test_addMatch_success() throws Exception {
-		UpMatch upMatch = new UpMatch();
-		when(matchDao.addMatch(upMatch)).thenReturn(1);
-		MatchServiceResultEnum result = service.addMatch(upMatch);
-		assertThat(result, is(MatchServiceResultEnum.ADD_SUCCESS));
-		verify(matchDao).addMatch(upMatch);
-	}
-
-	@Test
-	public void test_getMatches_success() throws Exception {
-		int page = 1;
-		int limit = 0;
-		int offset = 4;
-		List<Match> matches = new ArrayList<>();
-		when(matchDao.getMatches(limit, offset)).thenReturn(matches);
-		List<Match> ret = service.getMatches(page);
-		assertThat(ret, is(matches));
-		verify(matchDao).getMatches(limit, offset);
 	}
 
 	@Test

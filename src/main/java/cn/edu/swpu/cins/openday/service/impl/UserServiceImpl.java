@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
 		UserSignInResult result = new UserSignInResult(token, user);
 		CacheResultEnum cacheResult = cacheService.signIn(result);
 		if (cacheResult == CacheResultEnum.SAVE_SUCCESS) {
-			result.setStatus(UserServiceResultEnum.LOGIN_SUCCESS);
+			result.setStatus(UserServiceResultEnum.LOGIN_SUCCESS.name());
 			return result;
 		}
 		return new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
