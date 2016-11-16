@@ -1,3 +1,5 @@
+SET AUTOCOMMIT = FALSE ;
+
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `username` varchar(255) NOT NULL COMMENT 'username',
@@ -11,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `group_name` varchar(384) NOT NULL COMMENT 'group name',
+  `group_name` varchar(125) NOT NULL COMMENT 'group name',
   `match_id` int NOT NULL COMMENT 'match id',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `group_group_and_match_idx` (`group_name`, `match_id` ASC) USING BTREE
@@ -63,6 +65,8 @@ ALTER TABLE registration ADD CONSTRAINT `mugm_match_ref` FOREIGN KEY (`match_id`
 ALTER TABLE registration ADD CONSTRAINT `mugm_user_ref` FOREIGN KEY (user_id) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE registration ADD CONSTRAINT `mugm_group_ref` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE `score` ADD CONSTRAINT `score_enlist_ref` FOREIGN KEY (regist_id) REFERENCES registration (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+COMMIT ;
 
 -- # insert test data
 
