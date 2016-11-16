@@ -21,7 +21,7 @@ public class MatchDao {
 		"select `data_link`, `data_password` " +
 			"from `match` where `id` = :id";
 	private static final String SELECT_MATCH =
-		"select `id`, `match_name`, `detail`, `start_time`, `end_time`, `award`, `judge_standard`, `commit_regular` " +
+		"select `id`, `match_name`, `detail`, `time_plan`, `award`, `judge_standard`, `commit_regular` " +
 			"from `match`";
 	private NamedParameterJdbcOperations jdbcOperations;
 
@@ -31,6 +31,7 @@ public class MatchDao {
 		this.jdbcOperations = jdbcOperations;
 	}
 
+	@Deprecated
 	public int addMatch(UpMatch upMatch) {
 		HashMap<String, Object> insertMap = new HashMap<>();
 		insertMap.put("matchName", upMatch.getMatchName());
@@ -43,6 +44,7 @@ public class MatchDao {
 		return jdbcOperations.update(ADD_MATCH, insertMap);
 	}
 
+	@Deprecated
 	public List<Match> getMatches(int limit, int offset) {
 		HashMap<String, Integer> queryMap = new HashMap<>();
 		queryMap.put("limit", limit);
@@ -68,8 +70,7 @@ public class MatchDao {
 						rs.getInt("id"),
 						rs.getString("match_name"),
 						rs.getString("detail"),
-						rs.getLong("start_time"),
-						rs.getLong("end_time"),
+						rs.getString("time_plan"),
 						rs.getString("award"),
 						rs.getString("judge_standard"),
 						rs.getString("commit_regular")

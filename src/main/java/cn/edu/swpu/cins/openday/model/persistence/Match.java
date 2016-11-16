@@ -4,21 +4,19 @@ public class Match {
 	private Integer id;
 	private String matchName;
 	private String detail;
-	private Long startTime;
-	private Long endTime;
+	private String timePlan;
 	private String dataLink;
 	private String dataPassword;
 	private String commitRegular;
 	private String judgeStandard;
 	private String award;
 
-	public Match(int id, String match_name, String detail, long start_time, long end_time,
+	public Match(int id, String match_name, String detail, String timePlan,
 	             String award, String judge_standard, String commit_regular) {
 		this.id = id;
 		matchName = match_name;
 		this.detail = detail;
-		startTime = start_time;
-		endTime = end_time;
+		this.timePlan = timePlan;
 		this.award = award;
 		judgeStandard = judge_standard;
 		commitRegular = commit_regular;
@@ -77,22 +75,6 @@ public class Match {
 		this.detail = detail;
 	}
 
-	public Long getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Long startTime) {
-		this.startTime = startTime;
-	}
-
-	public Long getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Long endTime) {
-		this.endTime = endTime;
-	}
-
 	public String getDataLink() {
 		return dataLink;
 	}
@@ -113,9 +95,15 @@ public class Match {
 		this.id = id;
 		matchName = match_name;
 		this.detail = detail;
-		startTime = start_time;
-		endTime = end_time;
 	}
 
 	public Match() {}
+
+	public String getTimePlan() {
+		return timePlan;
+	}
+
+	public void setTimePlan(String timePlan) {
+		this.timePlan = timePlan;
+	}
 }
