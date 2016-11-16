@@ -27,4 +27,11 @@ public class MatchRegister {
 		this.groupName = groupName;
 	}
 
+	@Override
+	public String toString() {
+		return "MatchRegister{" +
+			"teammate='" + teammate + '\'' +
+			", groupName='" + groupName + '\'' +
+			'}';
+	}
 }

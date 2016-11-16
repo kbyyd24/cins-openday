@@ -73,4 +73,17 @@ public class UpMatch {
 	public String getMatchName() {
 		return matchName;
 	}
+
+	@Override
+	public String toString() {
+		return "UpMatch{" +
+			"matchName='" + matchName + '\'' +
+			", detail='" + detail + '\'' +
+			", startTime=" + startTime +
+			", endTime=" + endTime +
+			", judgeStandard='" + judgeStandard + '\'' +
+			", commitRegular='" + commitRegular + '\'' +
+			", award='" + award + '\'' +
+			'}';
+	}
 }

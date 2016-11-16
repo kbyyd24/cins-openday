@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
-import java.util.Map;
 
 @Component
 public class HttpRequestInterceptor implements HandlerInterceptor {
@@ -19,20 +18,17 @@ public class HttpRequestInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		logger.info("======= request begin =======");
 		logger.info("Request URL : " + request.getRequestURL());
 		logger.info("Method : " + request.getMethod());
 		Enumeration<String> headerNames = request.getHeaderNames();
-		logger.info("============================ header ============================");
+		logger.info("=== header ===");
 		while (headerNames.hasMoreElements()) {
 			String name = headerNames.nextElement();
 			String header = request.getHeader(name);
 			logger.info(name + " : " + header);
 		}
-		logger.info("============================ end header ============================");
-		Map<String, String[]> parameterMap = request.getParameterMap();
-		logger.info("============================ param ============================");
-		parameterMap.forEach((key, value) -> System.out.println(key + " : " + value.toString()));
-		logger.info("============================ param end ============================");
+		logger.info("=== end header ===");
 		return true;
 	}
 
@@ -43,6 +39,6 @@ public class HttpRequestInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+		logger.info("======= request finish =======");
 	}
 }

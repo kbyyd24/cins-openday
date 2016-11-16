@@ -46,4 +46,12 @@ public class AuthUser {
 		result = 31 * result + (getToken() != null ? getToken().hashCode() : 0);
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "AuthUser{" +
+			"mail='" + mail + '\'' +
+			", token='" + token + '\'' +
+			'}';
+	}
 }

@@ -22,4 +22,11 @@ public class PostActivity {
 		this.content = content;
 	}
 
+	@Override
+	public String toString() {
+		return "PostActivity{" +
+			"title='" + title + '\'' +
+			", content='" + content + '\'' +
+			'}';
+	}
 }

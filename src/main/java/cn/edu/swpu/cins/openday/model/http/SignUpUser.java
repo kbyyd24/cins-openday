@@ -50,4 +50,14 @@ public class SignUpUser {
 	public boolean isPasswordValid() {
 		return password.equals(repassword);
 	}
+
+	@Override
+	public String toString() {
+		return "SignUpUser{" +
+			"username='" + username + '\'' +
+			", password='" + password + '\'' +
+			", repassword='" + repassword + '\'' +
+			", mail='" + mail + '\'' +
+			'}';
+	}
 }
