@@ -98,9 +98,9 @@ public class UserServiceImpl implements UserService {
 	public UserServiceResultEnum signOut(AuthUser au) {
 		CacheResultEnum signout = cacheService.signout(au);
 		if (signout == CacheResultEnum.REMOVE_SUCCESS) {
-			return UserServiceResultEnum.SIGNOUT_SUCCESS;
+			return UserServiceResultEnum.SIGN_OUT_SUCCESS;
 		}
-		return UserServiceResultEnum.SIGNOUT_FAILED;
+		return UserServiceResultEnum.SIGN_OUT_FAILED;
 	}
 
 	@Override
@@ -123,13 +123,4 @@ public class UserServiceImpl implements UserService {
 		return new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
 	}
 
-	@Override
-	public UserServiceResultEnum updateMail(MailUpdater mailUpdater) {
-		return null;
-	}
-
-	@Override
-	public UserServiceResultEnum updatePassword(PasswordUpdater passwordUpdater) {
-		return null;
-	}
 }

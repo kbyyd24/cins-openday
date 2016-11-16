@@ -2,7 +2,10 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.*;
+import cn.edu.swpu.cins.openday.model.http.HttpResult;
+import cn.edu.swpu.cins.openday.model.http.SignInUser;
+import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.MailFormatService;
 import cn.edu.swpu.cins.openday.service.MailService;
@@ -14,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
-
-import java.util.Objects;
 
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 
@@ -82,17 +83,13 @@ public class UserController {
 
 	@PostMapping("signin")
 	public UserSignInResult signIn(@RequestBody SignInUser signInUser) {
-		UserSignInResult signin = userService.signin(signInUser);
-		if (!Objects.equals(signin.getStatus(), UserServiceResultEnum.LOGIN_SUCCESS.name())) {
-			signin.setStatus(UserServiceResultEnum.LOGIN_FAILED.name());
-		}
-		return signin;
+		return userService.signin(signInUser);
 	}
 
 	@PostMapping("signout")
 	public HttpResult signOut(@RequestBody AuthUser au) {
 		UserServiceResultEnum result = userService.signOut(au);
-		if (result == UserServiceResultEnum.SIGNOUT_SUCCESS) {
+		if (result == UserServiceResultEnum.SIGN_OUT_SUCCESS) {
 			return new HttpResult(HttpResultEnum.SIGN_OUT_SUCCESS);
 		}
 		return new HttpResult(HttpResultEnum.SIGN_OUT_FAILED);

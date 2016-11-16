@@ -207,7 +207,7 @@ public class UserServiceImplTest {
 		AuthUser au = new AuthUser(mail, token);
 		when(cacheService.signout(au)).thenReturn(CacheResultEnum.REMOVE_SUCCESS);
 		UserServiceResultEnum result = userService.signOut(au);
-		assertThat(result, is(UserServiceResultEnum.SIGNOUT_SUCCESS));
+		assertThat(result, is(UserServiceResultEnum.SIGN_OUT_SUCCESS));
 		verify(cacheService).signout(au);
 	}
 
@@ -218,7 +218,7 @@ public class UserServiceImplTest {
 		AuthUser au = new AuthUser(mail, token);
 		when(cacheService.signout(au)).thenReturn(CacheResultEnum.REMOVE_FAILED);
 		UserServiceResultEnum result = userService.signOut(au);
-		assertThat(result, is(UserServiceResultEnum.SIGNOUT_FAILED));
+		assertThat(result, is(UserServiceResultEnum.SIGN_OUT_FAILED));
 		verify(cacheService).signout(au);
 	}
 }

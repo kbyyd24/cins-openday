@@ -85,15 +85,15 @@ public class UserControllerTest {
 
 		UserSignInResult userSignInResult = new UserSignInResult(UserServiceResultEnum.USER_NOT_EXIST);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
-		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED.name()));
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.USER_NOT_EXIST.name()));
 
 		userSignInResult = new UserSignInResult(UserServiceResultEnum.PASSWORD_NOT_SAME);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
-		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED.name()));
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.PASSWORD_NOT_SAME.name()));
 
 		userSignInResult = new UserSignInResult(UserServiceResultEnum.CACHE_FAILED);
 		when(userService.signin(signInUser)).thenReturn(userSignInResult);
-		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.LOGIN_FAILED.name()));
+		assertThat(userController.signIn(signInUser).getStatus(), is(UserServiceResultEnum.CACHE_FAILED.name()));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class UserControllerTest {
 		String mail = "mail@mail.com";
 		String token = "123";
 		AuthUser au = new AuthUser(mail, token);
-		when(userService.signOut(au)).thenReturn(UserServiceResultEnum.SIGNOUT_SUCCESS);
+		when(userService.signOut(au)).thenReturn(UserServiceResultEnum.SIGN_OUT_SUCCESS);
 		HttpResult result = userController.signOut(au);
 		assertThat(result.getCode(), is(HttpResultEnum.SIGN_OUT_SUCCESS.getCode()));
 		verify(userService).signOut(au);
