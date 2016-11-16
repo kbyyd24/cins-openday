@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `username` varchar(65535) NOT NULL COMMENT 'username',
+  `username` varchar(255) NOT NULL COMMENT 'username',
   `password` char(60) NOT NULL COMMENT 'password',
   `mail` VARCHAR(65535) NOT NULL COMMENT 'email',
   `enable` BOOLEAN DEFAULT FALSE COMMENT 'account is enable',
