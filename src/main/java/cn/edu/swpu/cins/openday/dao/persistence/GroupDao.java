@@ -40,7 +40,10 @@ public class GroupDao {
 			SELECT_GROUP_ID,
 			queryMap,
 			rs -> {
-				return new Group(rs.getInt("id"));
+				if (rs.next()) {
+					return new Group(rs.getInt("id"));
+				}
+				return new Group();
 			}
 		);
 	}
@@ -52,7 +55,10 @@ public class GroupDao {
 			SELECT_GROUP_NAME,
 			queryMap,
 			rs -> {
-				return rs.getString("group_name");
+				if (rs.next()) {
+					return rs.getString("group_name");
+				}
+				return null;
 			});
 	}
 }
