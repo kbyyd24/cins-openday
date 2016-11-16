@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `username` varchar(255) NOT NULL COMMENT 'username',
+  `username` varchar(65535) NOT NULL COMMENT 'username',
   `password` char(60) NOT NULL COMMENT 'password',
-  `mail` VARCHAR(255) NOT NULL COMMENT 'email',
+  `mail` VARCHAR(65535) NOT NULL COMMENT 'email',
   `enable` BOOLEAN DEFAULT FALSE COMMENT 'account is enable',
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `user_username_idx` (`username` ASC) USING BTREE,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `group_name` varchar(255) NOT NULL COMMENT 'group name',
+  `group_name` varchar(65535) NOT NULL COMMENT 'group name',
   `match_id` int NOT NULL COMMENT 'match id',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `group_group_and_match_idx` (`group_name`, `match_id` ASC) USING BTREE
@@ -19,23 +19,23 @@ CREATE TABLE IF NOT EXISTS `group` (
 
 CREATE TABLE IF NOT EXISTS `activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `title` varchar(255) NOT NULL COMMENT 'activity title',
-  `content` varchar(255) NOT NULL COMMENT 'activity content',
+  `title` varchar(65535) NOT NULL COMMENT 'activity title',
+  `content` varchar(65535) NOT NULL COMMENT 'activity content',
   PRIMARY KEY (`id`)
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;
 
 CREATE TABLE IF NOT EXISTS `match` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `match_name` varchar(255) NOT NULL COMMENT 'name of match',
-  `detail` varchar(255) NOT NULL COMMENT 'content of match',
+  `match_name` varchar(65535) NOT NULL COMMENT 'name of match',
+  `detail` varchar(65535) NOT NULL COMMENT 'content of match',
 #   `start_time` bigint NOT NULL COMMENT 'begin time',
 #   `end_time` bigint NOT NULL COMMENT 'end time',
-  `time_plan` VARCHAR(255) NOT NULL COMMENT 'time plan',
-  `data_link` VARCHAR(255) DEFAULT NULL COMMENT 'data set file link',
+  `time_plan` VARCHAR(65535) NOT NULL COMMENT 'time plan',
+  `data_link` VARCHAR(65535) DEFAULT NULL COMMENT 'data set file link',
   `data_password` VARCHAR(4) DEFAULT NULL COMMENT 'password for get data set link',
-  `commit_regular` VARCHAR(255) NOT NULL COMMENT 'regular of commit',
-  `judge_standard` VARCHAR(255) NOT NULL COMMENT 'standard of judge',
-  `award` VARCHAR(255) NOT NULL COMMENT 'award of match',
+  `commit_regular` VARCHAR(65535) NOT NULL COMMENT 'regular of commit',
+  `judge_standard` VARCHAR(65535) NOT NULL COMMENT 'standard of judge',
+  `award` VARCHAR(65535) NOT NULL COMMENT 'award of match',
   PRIMARY KEY (`id`)
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;
 
