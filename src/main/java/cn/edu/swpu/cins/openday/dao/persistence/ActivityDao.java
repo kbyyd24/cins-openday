@@ -1,6 +1,5 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
-import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -14,9 +13,6 @@ public class ActivityDao {
 	private static final String QUERY_ACTIVITIES =
 		"SELECT id, title, content " +
 			"FROM activity LIMIT :limit, :offset";
-	private static final String ADD_ACTIVITY =
-		"INSERT INTO activity(title, content) " +
-			"VALUE (:title, :content)";
 	private final NamedParameterJdbcOperations jdbcOperations;
 
 	@SuppressWarnings("SpringJavaAutowiringInspection")
@@ -39,10 +35,4 @@ public class ActivityDao {
 			)));
 	}
 
-	public int addActivity(PostActivity postActivity) {
-		HashMap<String, Object> insertMap = new HashMap<>();
-		insertMap.put("title", postActivity.getTitle());
-		insertMap.put("content", postActivity.getContent());
-		return jdbcOperations.update(ADD_ACTIVITY, insertMap);
-	}
 }

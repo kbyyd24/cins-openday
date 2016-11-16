@@ -39,4 +39,12 @@ public class Activity {
 
 	public Activity() {}
 
+	@Override
+	public String toString() {
+		return "Activity{" +
+			"id=" + id +
+			", title='" + title + '\'' +
+			", content='" + content + '\'' +
+			'}';
+	}
 }

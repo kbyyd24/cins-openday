@@ -1,6 +1,5 @@
 package cn.edu.swpu.cins.openday.dao.persistence;
 
-import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,13 +38,4 @@ public class ActivityDaoTest {
 		assertThat(ret, is(activities));
 	}
 
-	@Test
-	public void test_addActivity_success() throws Exception {
-		Long endTime = 1L;
-		PostActivity postActivity = new PostActivity();
-		when(jdbcOperations.update(anyString(), anyMap())).thenReturn(1);
-		int line = dao.addActivity(postActivity);
-		assertThat(line, is(1));
-		verify(jdbcOperations).update(anyString(), anyMap());
-	}
 }

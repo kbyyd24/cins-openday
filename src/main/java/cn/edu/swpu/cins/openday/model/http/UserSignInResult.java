@@ -60,4 +60,15 @@ public class UserSignInResult {
 	public String getToken() {
 		return token;
 	}
+
+	@Override
+	public String toString() {
+		return "UserSignInResult{" +
+			"token='" + token + '\'' +
+			", id=" + id +
+			", username='" + username + '\'' +
+			", mail='" + mail + '\'' +
+			", status='" + status + '\'' +
+			'}';
+	}
 }

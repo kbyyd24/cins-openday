@@ -1,13 +1,12 @@
 package cn.edu.swpu.cins.openday.controller;
 
-import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
-import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.ActivityHttpResult;
-import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import cn.edu.swpu.cins.openday.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -27,12 +26,4 @@ public class ActivityController {
 		return activityService.getActivities(page);
 	}
 
-//	@PostMapping("add")
-	public ActivityHttpResult addActivity(@RequestBody PostActivity activity) {
-		ActivityServiceResultEnum resultEnum = activityService.addActivity(activity);
-		if (resultEnum == ActivityServiceResultEnum.SAVE_SUCCESS) {
-			return new ActivityHttpResult(HttpResultEnum.SAVE_ACTIVITY_SUCCESS);
-		}
-		return new ActivityHttpResult(HttpResultEnum.SAVE_ACTIVITY_FAILED);
-	}
 }

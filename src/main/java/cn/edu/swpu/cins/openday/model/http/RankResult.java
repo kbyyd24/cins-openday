@@ -35,4 +35,13 @@ public class RankResult {
 	public void setRankList(List<Rank> rankList) {
 		this.rankList = rankList;
 	}
+
+	@Override
+	public String toString() {
+		return "RankResult{" +
+			"myRank=" + myRank +
+			", myScore=" + myScore +
+			", rankList=" + rankList +
+			'}';
+	}
 }

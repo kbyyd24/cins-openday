@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class MatchServiceImpl implements MatchService {
 	private GroupDao groupDao;
 	private RegistrationDao registrationDao;
 	private ScoreDao scoreDao;
-	private final int offset = 4;
 
 	@Autowired
 	public MatchServiceImpl(MatchDao matchDao, UserDao userDao, GroupDao groupDao, RegistrationDao registrationDao, ScoreDao scoreDao) {
@@ -38,23 +36,6 @@ public class MatchServiceImpl implements MatchService {
 		this.groupDao = groupDao;
 		this.registrationDao = registrationDao;
 		this.scoreDao = scoreDao;
-	}
-
-	@Override
-	@Transactional(rollbackFor = DataAccessException.class)
-	public MatchServiceResultEnum addMatch(UpMatch upMatch) {
-		int line = matchDao.addMatch(upMatch);
-		if (line == 1) {
-			return MatchServiceResultEnum.ADD_SUCCESS;
-		}
-		return MatchServiceResultEnum.ADD_FAILED;
-	}
-
-	@Override
-	public List<Match> getMatches(int page) {
-		int limit = (page - 1) * offset;
-		List<Match> matches = matchDao.getMatches(limit, offset);
-		return matches == null ? new ArrayList<>() : matches;
 	}
 
 	@Override

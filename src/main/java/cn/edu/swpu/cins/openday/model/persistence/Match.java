@@ -106,4 +106,19 @@ public class Match {
 	public void setTimePlan(String timePlan) {
 		this.timePlan = timePlan;
 	}
+
+	@Override
+	public String toString() {
+		return "Match{" +
+			"id=" + id +
+			", matchName='" + matchName + '\'' +
+			", detail='" + detail + '\'' +
+			", timePlan='" + timePlan + '\'' +
+			", dataLink='" + dataLink + '\'' +
+			", dataPassword='" + dataPassword + '\'' +
+			", commitRegular='" + commitRegular + '\'' +
+			", judgeStandard='" + judgeStandard + '\'' +
+			", award='" + award + '\'' +
+			'}';
+	}
 }

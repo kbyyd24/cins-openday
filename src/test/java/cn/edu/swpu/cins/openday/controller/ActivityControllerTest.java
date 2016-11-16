@@ -1,9 +1,5 @@
 package cn.edu.swpu.cins.openday.controller;
 
-import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
-import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.ActivityHttpResult;
-import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import cn.edu.swpu.cins.openday.service.ActivityService;
 import org.junit.Before;
@@ -43,12 +39,4 @@ public class ActivityControllerTest {
 		verify(activityService).getActivities(page);
 	}
 
-	@Test
-	public void test_add_activity_success() throws Exception {
-		PostActivity postActivity = new PostActivity();
-		when(activityService.addActivity(postActivity)).thenReturn(ActivityServiceResultEnum.SAVE_SUCCESS);
-		ActivityHttpResult ret = controller.addActivity(postActivity);
-		assertThat(ret.getCode(), is(HttpResultEnum.SAVE_ACTIVITY_SUCCESS.getCode()));
-		verify(activityService).addActivity(postActivity);
-	}
 }

@@ -28,4 +28,12 @@ public class MatchHttpResult {
 	public void setCode(int code) {
 		this.code = code;
 	}
+
+	@Override
+	public String toString() {
+		return "MatchHttpResult{" +
+			"description='" + description + '\'' +
+			", code=" + code +
+			'}';
+	}
 }

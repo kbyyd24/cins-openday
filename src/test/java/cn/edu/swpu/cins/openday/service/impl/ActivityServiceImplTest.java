@@ -1,11 +1,8 @@
 package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.ActivityDao;
-import cn.edu.swpu.cins.openday.enums.service.ActivityServiceResultEnum;
-import cn.edu.swpu.cins.openday.model.http.PostActivity;
 import cn.edu.swpu.cins.openday.model.persistence.Activity;
 import cn.edu.swpu.cins.openday.service.ActivityService;
-import cn.edu.swpu.cins.openday.service.impl.ActivityServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +14,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ActivityServiceImplTest {
@@ -47,12 +42,4 @@ public class ActivityServiceImplTest {
 		verify(activityDao, times(1)).getActivities(limit, offset);
 	}
 
-	@Test
-	public void test_addActivity_success() throws Exception {
-		PostActivity postActivity = new PostActivity();
-		when(activityDao.addActivity(postActivity)).thenReturn(1);
-		ActivityServiceResultEnum resultEnum = service.addActivity(postActivity);
-		assertThat(resultEnum, is(ActivityServiceResultEnum.SAVE_SUCCESS));
-		verify(activityDao).addActivity(postActivity);
-	}
 }

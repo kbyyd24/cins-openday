@@ -47,4 +47,14 @@ public class Rank {
 	public void setTime(Long time) {
 		this.time = time;
 	}
+
+	@Override
+	public String toString() {
+		return "Rank{" +
+			"rank=" + rank +
+			", name='" + name + '\'' +
+			", score=" + score +
+			", time=" + time +
+			'}';
+	}
 }

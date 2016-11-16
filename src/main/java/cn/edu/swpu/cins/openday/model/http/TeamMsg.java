@@ -48,4 +48,15 @@ public class TeamMsg {
 	public void setTeamMemberMail(String teamMemberMail) {
 		this.teamMemberMail = teamMemberMail;
 	}
+
+	@Override
+	public String toString() {
+		return "TeamMsg{" +
+			"teamName='" + teamName + '\'' +
+			", captain='" + captain + '\'' +
+			", captainMail='" + captainMail + '\'' +
+			", teamMember='" + teamMember + '\'' +
+			", teamMemberMail='" + teamMemberMail + '\'' +
+			'}';
+	}
 }
