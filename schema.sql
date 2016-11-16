@@ -28,8 +28,6 @@ CREATE TABLE IF NOT EXISTS `match` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `match_name` varchar(65535) NOT NULL COMMENT 'name of match',
   `detail` varchar(65535) NOT NULL COMMENT 'content of match',
-#   `start_time` bigint NOT NULL COMMENT 'begin time',
-#   `end_time` bigint NOT NULL COMMENT 'end time',
   `time_plan` VARCHAR(65535) NOT NULL COMMENT 'time plan',
   `data_link` VARCHAR(65535) DEFAULT NULL COMMENT 'data set file link',
   `data_password` VARCHAR(4) DEFAULT NULL COMMENT 'password for get data set link',
