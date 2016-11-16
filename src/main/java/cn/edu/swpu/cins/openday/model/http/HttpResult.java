@@ -10,7 +10,7 @@ public class HttpResult {
 
 	public HttpResult(HttpResultEnum resultEnum) {
 		this.code = resultEnum.getCode();
-		this.description = resultEnum.getDescription();
+		this.description = resultEnum.name();
 	}
 
 	public int getCode() {

@@ -103,7 +103,7 @@ public class UserControllerTest {
 		AuthUser au = new AuthUser(mail, token);
 		when(userService.signOut(au)).thenReturn(UserServiceResultEnum.SIGNOUT_SUCCESS);
 		HttpResult result = userController.signOut(au);
-		assertThat(result.getCode(), is(HttpResultEnum.SIGNOUT_SUCCESS.getCode()));
+		assertThat(result.getCode(), is(HttpResultEnum.SIGN_OUT_SUCCESS.getCode()));
 		verify(userService).signOut(au);
 	}
 }

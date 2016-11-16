@@ -93,8 +93,8 @@ public class UserController {
 	public HttpResult signOut(@RequestBody AuthUser au) {
 		UserServiceResultEnum result = userService.signOut(au);
 		if (result == UserServiceResultEnum.SIGNOUT_SUCCESS) {
-			return new HttpResult(HttpResultEnum.SIGNOUT_SUCCESS);
+			return new HttpResult(HttpResultEnum.SIGN_OUT_SUCCESS);
 		}
-		return new HttpResult(HttpResultEnum.SIGNOUT_FAILED);
+		return new HttpResult(HttpResultEnum.SIGN_OUT_FAILED);
 	}
 }
