@@ -32,15 +32,6 @@ public class RegistrationDaoTest {
 	}
 
 	@Test
-	public void test_addRegistration_success() throws Exception {
-		Registration registration = new Registration();
-		when(jdbcOperations.update(anyString(), anyMap())).thenReturn(1);
-		int line = dao.addRegistration(registration);
-		assertThat(line, is(1));
-		verify(jdbcOperations).update(anyString(), anyMap());
-	}
-
-	@Test
 	public void test_getGroupId_success() throws Exception {
 		int userId = 1;
 		int matchId = 1;

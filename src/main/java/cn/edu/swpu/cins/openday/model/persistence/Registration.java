@@ -9,14 +9,15 @@ public class Registration {
 
 	public Registration() {}
 
-	public Registration(int matchId, int userId, int groupId) {
+	public Registration(int id) {
+		this.id = id;
+	}
+
+	public Registration(int matchId, int userId, int groupId, boolean captain) {
 		this.matchId = matchId;
 		this.userId = userId;
 		this.groupId = groupId;
-	}
-
-	public Registration(int id) {
-		this.id = id;
+		this.captain = captain;
 	}
 
 	public Integer getMatchId() {

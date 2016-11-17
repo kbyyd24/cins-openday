@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Repository
 public class RegistrationDao {
@@ -22,6 +23,11 @@ public class RegistrationDao {
 	private static final String SELECT_REGISTRATION =
 		"select id from registration " +
 			"where user_id = :userId and match_id = :matchId";
+	private static final String INSERT_TEAM =
+		"insert ignore into registration (match_id, user_id, group_id, captain) " +
+			"values " +
+			"(:matchId0, :userId0, :groupId0, :captain0), " +
+			"(:matchId1, :userId1, groupId1, captain1)";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
@@ -36,6 +42,18 @@ public class RegistrationDao {
 		insertMap.put("groupId", registration.getGroupId());
 		insertMap.put("captain", registration.getCaptain());
 		return jdbcOperations.update(INSERT_REGISTRATION, insertMap);
+	}
+
+	public int addTeam(List<Registration> registrations) {
+		HashMap<String, Object> insertMap = new HashMap<>();
+		for (int i = 0; i < registrations.size(); i++) {
+			Registration registration = registrations.get(i);
+			insertMap.put("matchId"+i, registration.getMatchId());
+			insertMap.put("userId"+i, registration.getUserId());
+			insertMap.put("groupId"+i, registration.getGroupId());
+			insertMap.put("captain"+i, registration.getCaptain());
+		}
+		return jdbcOperations.update(INSERT_TEAM, insertMap);
 	}
 
 	public Integer getGroupId(int matchId, int userId) {

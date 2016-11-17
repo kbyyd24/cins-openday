@@ -70,7 +70,8 @@ public class MatchServiceImplTest {
 		when(groupDao.getGroupId(any(Group.class))).thenReturn(group);
 		Integer teammateId = 1;
 		when(group.getId()).thenReturn(teammateId);
-		when(registrationDao.addRegistration(any(Registration.class))).thenReturn(line);
+		line = 2;
+		when(registrationDao.addTeam(anyListOf(Registration.class))).thenReturn(line);
 		String groupName = "group name";
 		MatchRegister matchRegister = new MatchRegister(teammate, groupName);
 		int captainId = 1;
@@ -81,8 +82,8 @@ public class MatchServiceImplTest {
 		verify(user).getUsername();
 		verify(groupDao).addGroup(any(group.getClass()));
 		verify(groupDao).getGroupId(any(group.getClass()));
-		verify(group, times(3)).getId();
-		verify(registrationDao, times(2)).addRegistration(any(Registration.class));
+		verify(group, times(4)).getId();
+		verify(registrationDao).addTeam(anyListOf(Registration.class));
 	}
 
 	@Test

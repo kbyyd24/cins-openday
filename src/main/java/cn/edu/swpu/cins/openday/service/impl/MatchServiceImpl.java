@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,12 +61,10 @@ public class MatchServiceImpl implements MatchService {
 		if (groupWithId == null || groupWithId.getId() == null || groupWithId.getId() == 0) {
 			throw new GroupException(ExceptionMsgEnum.GET_TEAM_ID_FAILED);
 		}
-		Registration registration = new Registration(matchId, captainId, groupWithId.getId());
-		registration.setCaptain(true);
-		line = registrationDao.addRegistration(registration);
-		registration.setCaptain(false);
-		registration.setUserId(user.getId());
-		line += registrationDao.addRegistration(registration);
+		ArrayList<Registration> registrations = new ArrayList<>();
+		registrations.add(new Registration(matchId, captainId, groupWithId.getId(), true));
+		registrations.add(new Registration(matchId, user.getId(), groupWithId.getId(), false));
+		line = registrationDao.addTeam(registrations);
 		if (line != 2) {
 			throw new RegistrationException(ExceptionMsgEnum.JOIN_MATCH_FAILED);
 		}
