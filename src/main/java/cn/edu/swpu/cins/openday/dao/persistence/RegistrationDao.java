@@ -61,9 +61,13 @@ public class RegistrationDao {
 		return jdbcOperations.query(
 			SELECT_TEAMMATE_MSG,
 			queryMap,
-			rs -> {return new TeammateMsg(
-				rs.getInt("user_id"),
-				rs.getBoolean("captain"));
+			rs -> {
+				if (rs.next()) {
+					return new TeammateMsg(
+						rs.getInt("user_id"),
+						rs.getBoolean("captain"));
+				}
+				return new TeammateMsg();
 			});
 	}
 
@@ -75,7 +79,10 @@ public class RegistrationDao {
 			SELECT_REGISTRATION,
 			queryMap,
 			rs -> {
-				return new Registration(rs.getInt("id"));
+				if (rs.next()) {
+					return new Registration(rs.getInt("id"));
+				}
+				return new Registration();
 			});
 	}
 }

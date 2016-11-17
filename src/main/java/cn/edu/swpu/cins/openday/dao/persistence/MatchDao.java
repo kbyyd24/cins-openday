@@ -55,7 +55,10 @@ public class MatchDao {
 			SELECT_DATA_SET,
 			queryMap,
 			rs -> {
-			return new Match(rs.getString("data_link"), rs.getString("data_password"));
+				if (rs.next()) {
+					return new Match(rs.getString("data_link"), rs.getString("data_password"));
+				}
+				return new Match();
 		});
 	}
 }
