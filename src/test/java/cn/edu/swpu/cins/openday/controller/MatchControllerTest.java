@@ -38,8 +38,10 @@ public class MatchControllerTest {
 	@Test
 	public void test_getMatch_success() throws Exception {
 		Match match = mock(Match.class);
+		Integer id = 1;
 		when(matchService.getMatch()).thenReturn(match);
-		assertThat(controller.getMatch(), is(match));
+		when(match.getId()).thenReturn(id);
+		assertThat(controller.getMatch().get("id"), is(id));
 		verify(matchService).getMatch();
 	}
 

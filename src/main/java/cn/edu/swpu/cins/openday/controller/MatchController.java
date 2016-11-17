@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("match")
@@ -26,8 +28,11 @@ public class MatchController {
 	}
 
 	@GetMapping
-	public Match getMatch() {
-		return matchService.getMatch();
+	public Map<String, Integer> getMatch() {
+		Match match = matchService.getMatch();
+		HashMap<String, Integer> ret = new HashMap<>(2);
+		ret.put("id", match.getId());
+		return ret;
 	}
 
 	@PostMapping("join")
