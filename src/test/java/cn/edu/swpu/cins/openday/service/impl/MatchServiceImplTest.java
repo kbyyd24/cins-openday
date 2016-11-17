@@ -149,7 +149,7 @@ public class MatchServiceImplTest {
 		Registration registration = mock(Registration.class);
 		when(registrationDao.getRegistration(matchId, userId)).thenReturn(registration);
 		when(registration.getId()).thenReturn(registId);
-		assertThat(service.getRegistId(matchId, userId), is(registId));
+		assertThat(service.getGroupId(matchId, userId), is(registId));
 		verify(registrationDao).getRegistration(matchId, userId);
 		verify(registration).getId();
 	}

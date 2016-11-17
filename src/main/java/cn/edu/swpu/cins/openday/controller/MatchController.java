@@ -67,11 +67,11 @@ public class MatchController {
 	                                    @RequestHeader("open-day-user-id") int userId,
 	                                    @RequestHeader("open-day-match-id") int matchId)
 		throws IOException, ServletException {
-		int registId = matchService.getRegistId(matchId, userId);
-		if (registId == -1) {
+		int groupId = matchService.getGroupId(matchId, userId);
+		if (groupId == -1) {
 			return new HttpResult(HttpResultEnum.REQUEST_DENY);
 		}
-		MatchServiceResultEnum saveAnswer = fileService.saveFile(file, registId);
+		MatchServiceResultEnum saveAnswer = fileService.saveFile(file, groupId);
 		if (saveAnswer == MatchServiceResultEnum.SAVE_SUCCESS) {
 			return new HttpResult(HttpResultEnum.SAVE_ANSWER_SUCCESS);
 		}

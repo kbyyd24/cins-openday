@@ -87,12 +87,12 @@ public class MatchControllerTest {
 		int regisId = 1;
 		int matchId = 1;
 		int userId = 1;
-		when(matchService.getRegistId(matchId, userId)).thenReturn(regisId);
+		when(matchService.getGroupId(matchId, userId)).thenReturn(regisId);
 		MultipartFile multipartFile = mock(MultipartFile.class);
 		when(fileService.saveFile(multipartFile, regisId))
 			.thenReturn(MatchServiceResultEnum.SAVE_SUCCESS);
 		assertThat(controller.uploadAnswer(multipartFile, matchId, userId).getCode(), is(HttpResultEnum.SAVE_ANSWER_SUCCESS.getCode()));
-		verify(matchService).getRegistId(matchId, userId);
+		verify(matchService).getGroupId(matchId, userId);
 		verify(fileService).saveFile(multipartFile, regisId);
 	}
 }

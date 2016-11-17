@@ -56,7 +56,7 @@ public class RegistrationDao {
 		return jdbcOperations.update(INSERT_TEAM, insertMap);
 	}
 
-	public Integer getGroupId(int matchId, int userId) {
+	public int getGroupId(int matchId, int userId) {
 		HashMap<String, Integer> queryMap = new HashMap<>();
 		queryMap.put("matchId", matchId);
 		queryMap.put("userId", userId);

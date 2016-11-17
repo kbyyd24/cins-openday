@@ -24,8 +24,8 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public MatchServiceResultEnum saveFile(MultipartFile multipartFile, int registId) {
-		String path = checkDir(registId);
+	public MatchServiceResultEnum saveFile(MultipartFile multipartFile, int groupId) {
+		String path = checkDir(groupId);
 		path += "/" + timeService.getDate();
 		File file = new File(path);
 		try {
@@ -37,8 +37,8 @@ public class FileServiceImpl implements FileService {
 		return MatchServiceResultEnum.SAVE_SUCCESS;
 	}
 
-	private String checkDir(int registId) {
-		String path = location + "/" + registId;
+	private String checkDir(int groupId) {
+		String path = location + "/" + groupId;
 		File dir = new File(path);
 		if (!dir.exists()) {
 			if (!dir.mkdirs()) {

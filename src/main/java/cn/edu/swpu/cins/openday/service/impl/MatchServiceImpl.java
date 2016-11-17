@@ -87,10 +87,8 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public int getRegistId(int matchId, int userId) {
-		Registration registration = registrationDao.getRegistration(matchId, userId);
-		if (registration == null) return -1;
-		return registration.getId();
+	public int getGroupId(int matchId, int userId) {
+		return registrationDao.getGroupId(matchId, userId);
 	}
 
 	@Override
