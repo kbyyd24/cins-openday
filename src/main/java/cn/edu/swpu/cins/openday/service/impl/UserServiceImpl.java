@@ -2,17 +2,25 @@ package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.CacheException;
 import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
+import cn.edu.swpu.cins.openday.exception.OpenDayException;
 import cn.edu.swpu.cins.openday.exception.RedisException;
-import cn.edu.swpu.cins.openday.model.http.*;
+import cn.edu.swpu.cins.openday.model.http.HttpResult;
+import cn.edu.swpu.cins.openday.model.http.SignInUser;
+import cn.edu.swpu.cins.openday.model.http.SignUpUser;
+import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.persistence.User;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.mail.MessagingException;
 
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
 
@@ -24,22 +32,61 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoderService passwordService;
 	private URLCoderService urlCoderService;
 	private TokenService tokenService;
+	private final MailFormatService mailFormatService;
+	private final MailService mailService;
 
 	@Autowired
 	public UserServiceImpl(UserDao userDao, CacheService cacheService, TimeService timeService,
 	                       PasswordEncoderService passwordService, URLCoderService urlCoderService,
-	                       TokenService tokenService) {
+	                       TokenService tokenService, MailFormatService mailFormatService,
+	                       MailService mailService) {
 		this.userDao = userDao;
 		this.cacheService = cacheService;
 		this.timeService = timeService;
 		this.passwordService = passwordService;
 		this.urlCoderService = urlCoderService;
 		this.tokenService = tokenService;
+		this.mailFormatService = mailFormatService;
+		this.mailService = mailService;
 	}
 
 	@Override
-	@Transactional(rollbackFor = CacheException.class)
-	public UserServiceResultEnum signUp(SignUpUser signUpUser, String token) {
+	@Transactional(rollbackFor = {CacheException.class, DataAccessException.class, OpenDayException.class})
+	public HttpResult signUp(SignUpUser signUpUser, String token) {
+		UserServiceResultEnum resultEnum = saveToDB(signUpUser, token);
+		if (resultEnum == ADD_USER_SUCCESS) {
+			sendMail(signUpUser, token);
+			return new HttpResult(HttpResultEnum.SIGN_UP_USER_SUCCESS);
+		}
+		return returnSignUpError(resultEnum);
+	}
+
+	private void sendMail(SignUpUser signUpUser, String token) {
+		String subject = mailFormatService.getSignUpSubject(signUpUser.getUsername());
+		String text = mailFormatService.getSignUpContent(signUpUser.getMail(), token);
+		try {
+			mailService.send(signUpUser.getMail(), subject, text);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private HttpResult returnSignUpError(UserServiceResultEnum signUpResult) {
+		if (signUpResult == ADD_USER_FAILED) {
+			return new HttpResult(HttpResultEnum.SIGN_UP_USER_FAILED);
+		} else if (signUpResult == EXISTED_USERNAME_AND_MAIL) {
+			return new HttpResult(HttpResultEnum.EXISTED_USERNAME_AND_MAIL);
+		} else if (signUpResult == EXISTED_USERNAME) {
+			return new HttpResult(HttpResultEnum.EXISTED_USERNAME);
+		} else if (signUpResult == EXISTED_MAIL) {
+			return new HttpResult(HttpResultEnum.EXISTED_MALI);
+		} else if (signUpResult == PASSWORD_NOT_SAME) {
+			return new HttpResult(HttpResultEnum.PASSWORD_NOT_SAME);
+		}
+		return new HttpResult(HttpResultEnum.UNKNOWN_ERROR);
+	}
+
+	private UserServiceResultEnum saveToDB(SignUpUser signUpUser, String token) {
 		if (!signUpUser.isPasswordValid()) {
 			return PASSWORD_NOT_SAME;
 		}

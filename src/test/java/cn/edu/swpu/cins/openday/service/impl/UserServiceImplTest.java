@@ -2,8 +2,10 @@ package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
+import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.NoUserToEnableException;
+import cn.edu.swpu.cins.openday.model.http.HttpResult;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
@@ -21,9 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
@@ -46,11 +46,18 @@ public class UserServiceImplTest {
 	@Mock
 	private TokenService tokenService;
 
+	@Mock
+	private MailFormatService mailFormatService;
+
+	@Mock
+	private MailService mailService;
+
 	private UserService userService;
 
 	@Before
 	public void setUp() throws Exception {
-		userService = new UserServiceImpl(userDao, cacheService, clockService, passwordService, urlCoderService, tokenService);
+		userService = new UserServiceImpl(userDao, cacheService, clockService,
+			passwordService, urlCoderService, tokenService, mailFormatService, mailService);
 	}
 
 	@Test
@@ -60,14 +67,23 @@ public class UserServiceImplTest {
 		String mail = "melo@gaoyuexiang.cn";
 		SignUpUser signUpUser =
 						new SignUpUser(username, password, password, mail);
+		when(passwordService.encode(password)).thenReturn(password);
 		when(userDao.checkNewUser(signUpUser)).thenReturn(ADD_USER_USABLE);
 		when(userDao.signUpUser(signUpUser)).thenReturn(1);
 		String token = "123";
 		AuthUser au = new AuthUser(mail, token);
 		when(cacheService.saveAuthingUser(au)).thenReturn(CacheResultEnum.SAVE_SUCCESS);
-		UserServiceResultEnum userServiceResultEnum =
-						userService.signUp(signUpUser, token);
-		assertThat(userServiceResultEnum, is(UserServiceResultEnum.ADD_USER_SUCCESS));
+		when(mailFormatService.getSignUpContent(mail, token)).thenReturn(mail);
+		when(mailFormatService.getSignUpSubject(username)).thenReturn(username);
+		doNothing().when(mailService).send(mail, username, mail);
+		HttpResult httpResult = userService.signUp(signUpUser, token);
+		assertThat(httpResult.getCode(), is(HttpResultEnum.SIGN_UP_USER_SUCCESS.getCode()));
+		verify(passwordService).encode(password);
+		verify(userDao).checkNewUser(signUpUser);
+		verify(userDao).signUpUser(signUpUser);
+		verify(cacheService).saveAuthingUser(au);
+		verify(mailFormatService).getSignUpContent(mail, token);
+		verify(mailService).send(mail, username, mail);
 	}
 
 	@Test

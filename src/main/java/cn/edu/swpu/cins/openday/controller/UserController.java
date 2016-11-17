@@ -7,8 +7,7 @@ import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
 import cn.edu.swpu.cins.openday.model.http.UserSignInResult;
 import cn.edu.swpu.cins.openday.model.service.AuthUser;
-import cn.edu.swpu.cins.openday.service.MailFormatService;
-import cn.edu.swpu.cins.openday.service.MailService;
+import cn.edu.swpu.cins.openday.service.TimeService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,54 +15,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
-
-import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.*;
+import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ENABLE_TOKEN_SUCCESS;
 
 @RestController
 @RequestMapping("user")
 public class UserController {
 	private UserService userService;
-	private MailService mailService;
-	private MailFormatService mailFormatService;
+	private TimeService timeService;
 
 	@Autowired
-	public UserController(UserService userService, MailService mailService, MailFormatService mailFormatService) {
+	public UserController(UserService userService, TimeService timeService) {
 		this.userService = userService;
-		this.mailService = mailService;
-		this.mailFormatService = mailFormatService;
+		this.timeService = timeService;
 	}
 
 	@PostMapping("signup")
 	public HttpResult signUp(@RequestBody SignUpUser signUpUser) {
-		String token = String.valueOf(System.currentTimeMillis());
-		UserServiceResultEnum signUpResult = userService.signUp(signUpUser, token);
-		if (signUpResult == ADD_USER_SUCCESS) {
-			String subject = mailFormatService.getSignUpSubject(signUpUser.getUsername());
-			String text = mailFormatService.getSignUpContent(signUpUser.getMail(), token);
-			try {
-				mailService.send(signUpUser.getMail(), subject, text);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-			return new HttpResult(HttpResultEnum.SIGN_UP_USER_SUCCESS);
-		}
-		return returnSignUpError(signUpResult);
-	}
-
-	private HttpResult returnSignUpError(UserServiceResultEnum signUpResult) {
-		if (signUpResult == ADD_USER_FAILED) {
-			return new HttpResult(HttpResultEnum.SIGN_UP_USER_FAILED);
-		} else if (signUpResult == EXISTED_USERNAME_AND_MAIL) {
-			return new HttpResult(HttpResultEnum.EXISTED_USERNAME_AND_MAIL);
-		} else if (signUpResult == EXISTED_USERNAME) {
-			return new HttpResult(HttpResultEnum.EXISTED_USERNAME);
-		} else if (signUpResult == EXISTED_MAIL) {
-			return new HttpResult(HttpResultEnum.EXISTED_MALI);
-		} else if (signUpResult == PASSWORD_NOT_SAME) {
-			return new HttpResult(HttpResultEnum.PASSWORD_NOT_SAME);
-		}
-		return new HttpResult(HttpResultEnum.UNKNOWN_ERROR);
+		String token = String.valueOf(timeService.getCurrentTimeMillis());
+		return userService.signUp(signUpUser, token);
 	}
 
 	@PostMapping("enable")
