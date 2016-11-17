@@ -19,10 +19,6 @@ public class RegistrationDao {
 	private static final String SELECT_TEAMMATE_MSG =
 		"select user_id, captain from registration " +
 		"where match_id = :matchId and group_id = :groupId and user_id != :userId";
-	private static final String SELECT_ID =
-		"SELECT id FROM registration " +
-			"WHERE user_id = " +
-			"(SELECT id FROM user WHERE mail = :mail)";
 	private static final String SELECT_REGISTRATION =
 		"select id from registration " +
 			"where user_id = :userId and match_id = :matchId";
@@ -50,7 +46,10 @@ public class RegistrationDao {
 			SELECT_GROUP_ID,
 			queryMap,
 			rs -> {
-			return rs.getInt("group_id");
+				if (rs.next()) {
+					return rs.getInt("group_id");
+				}
+				return -1;
 		});
 	}
 

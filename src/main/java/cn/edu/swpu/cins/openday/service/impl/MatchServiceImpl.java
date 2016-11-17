@@ -95,8 +95,8 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public TeamMsg getTeamMsg(int matchId, int userId) {
-		Integer groupId = registrationDao.getGroupId(matchId, userId);
-		if (groupId == null) {
+		int groupId = registrationDao.getGroupId(matchId, userId);
+		if (groupId == -1) {
 			throw new GroupException("no team found");
 		}
 		String groupName = groupDao.getGroupName(groupId);
