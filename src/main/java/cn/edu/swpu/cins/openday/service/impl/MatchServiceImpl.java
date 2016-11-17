@@ -1,6 +1,7 @@
 package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.*;
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.*;
 import cn.edu.swpu.cins.openday.model.http.*;
@@ -48,16 +49,16 @@ public class MatchServiceImpl implements MatchService {
 	public MatchServiceResultEnum joinMatch(MatchRegister matchRegister, int captainId, int matchId) {
 		User user = userDao.getUser(matchRegister.getTeammate());
 		if (user == null || user.getUsername() == null) {
-			throw new UserException("no teammate searched");
+			throw new UserException(ExceptionMsgEnum.NO_TEAMMATE_EXIST);
 		}
 		Group group = new Group(matchRegister.getGroupName(), matchId);
 		int line = groupDao.addGroup(group);
 		if (line != 1) {
-			throw new GroupException("add team error");
+			throw new GroupException(ExceptionMsgEnum.ADD_TEAM_ERROR);
 		}
 		Group groupWithId = groupDao.getGroupId(group);
 		if (groupWithId == null || groupWithId.getId() == null || groupWithId.getId() == 0) {
-			throw new GroupException("get group id failed");
+			throw new GroupException(ExceptionMsgEnum.GET_TEAM_ID_FAILED);
 		}
 		Registration registration = new Registration(matchId, captainId, groupWithId.getId());
 		registration.setCaptain(true);
@@ -66,7 +67,7 @@ public class MatchServiceImpl implements MatchService {
 		registration.setUserId(user.getId());
 		line += registrationDao.addRegistration(registration);
 		if (line != 2) {
-			throw new RegistrationException("join match error");
+			throw new RegistrationException(ExceptionMsgEnum.JOIN_MATCH_FAILED);
 		}
 		return MatchServiceResultEnum.JOIN_SUCCESS;
 	}
@@ -97,7 +98,7 @@ public class MatchServiceImpl implements MatchService {
 	public TeamMsg getTeamMsg(int matchId, int userId) {
 		int groupId = registrationDao.getGroupId(matchId, userId);
 		if (groupId == -1) {
-			throw new GroupException("no team found");
+			throw new GroupException(ExceptionMsgEnum.NO_TEAM_FOUND);
 		}
 		String groupName = groupDao.getGroupName(groupId);
 		TeammateMsg teammateMsg =

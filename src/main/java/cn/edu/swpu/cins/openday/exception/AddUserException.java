@@ -1,8 +1,14 @@
 package cn.edu.swpu.cins.openday.exception;
 
-public class AddUserException extends OpenDayDataException {
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
+
+public class AddUserException extends OpenDayException {
 	public AddUserException() {
 		super();
+	}
+
+	public AddUserException(ExceptionMsgEnum msgEnum) {
+		super(msgEnum);
 	}
 
 	public AddUserException(String message) {

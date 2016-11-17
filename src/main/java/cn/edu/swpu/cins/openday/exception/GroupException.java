@@ -1,8 +1,14 @@
 package cn.edu.swpu.cins.openday.exception;
 
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
+
 public class GroupException extends OpenDayException {
 	public GroupException() {
 		super();
+	}
+
+	public GroupException(ExceptionMsgEnum msgEnum) {
+		super(msgEnum);
 	}
 
 	public GroupException(String message) {

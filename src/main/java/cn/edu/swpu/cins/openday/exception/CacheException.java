@@ -1,8 +1,14 @@
 package cn.edu.swpu.cins.openday.exception;
 
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
+
 public class CacheException extends OpenDayException {
 	public CacheException() {
 		super();
+	}
+
+	public CacheException(ExceptionMsgEnum msgEnum) {
+		super(msgEnum);
 	}
 
 	public CacheException(String message) {

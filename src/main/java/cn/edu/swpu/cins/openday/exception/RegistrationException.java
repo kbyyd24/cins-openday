@@ -1,8 +1,14 @@
 package cn.edu.swpu.cins.openday.exception;
 
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
+
 public class RegistrationException extends OpenDayException{
 	public RegistrationException() {
 		super();
+	}
+
+	public RegistrationException(ExceptionMsgEnum msgEnum) {
+		super(msgEnum);
 	}
 
 	public RegistrationException(String message) {

@@ -2,6 +2,7 @@ package cn.edu.swpu.cins.openday.service.impl;
 
 import cn.edu.swpu.cins.openday.dao.persistence.UserDao;
 import cn.edu.swpu.cins.openday.enums.CacheResultEnum;
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.CacheException;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional(rollbackFor = {CacheException.class, DataAccessException.class, OpenDayException.class})
+	@Transactional(rollbackFor = {DataAccessException.class, OpenDayException.class})
 	public HttpResult signUp(SignUpUser signUpUser, String token) {
 		UserServiceResultEnum resultEnum = saveToDB(signUpUser, token);
 		if (resultEnum == ADD_USER_SUCCESS) {
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			mailService.send(signUpUser.getMail(), subject, text);
 		} catch (MessagingException e) {
-			e.printStackTrace();
+			throw new OpenDayException(ExceptionMsgEnum.SEND_MAIL_FAILED);
 		}
 	}
 
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
 			if (cacheResultEnum == CacheResultEnum.SAVE_SUCCESS) {
 				return ADD_USER_SUCCESS;
 			} else {
-				throw new CacheException("save authenticating user failed");
+				throw new CacheException(ExceptionMsgEnum.SAVE_CACHE_FAILED);
 			}
 		}
 		return ADD_USER_FAILED;
@@ -119,7 +120,7 @@ public class UserServiceImpl implements UserService {
 			if (line == 1) {
 				return ENABLE_TOKEN_SUCCESS;
 			} else {
-				throw new NoUserToEnableException("exception happened in mysql when enable user: " + au.getMail());
+				throw new NoUserToEnableException(ExceptionMsgEnum.CHECK_ENABLE_FAILED);
 			}
 		} else if (verifyResult == CacheResultEnum.ENABLE_TOKEN_TIMEOUT){
 			return UserServiceResultEnum.ENABLE_TOKEN_TIMEOUT;
