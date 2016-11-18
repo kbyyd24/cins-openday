@@ -10,7 +10,7 @@ import java.util.HashMap;
 @Repository
 public class GroupDao {
 	private static final String INSERT_GROUP =
-		"insert into `group` (group_name, match_id) " +
+		"insert ignore into `group` (group_name, match_id) " +
 			"values (:groupName, :matchId);";
 	private static final String SELECT_GROUP_ID =
 		"select id from `group` " +
