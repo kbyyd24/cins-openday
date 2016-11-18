@@ -62,7 +62,7 @@ public class UserController {
 	}
 
 	@GetMapping("online")
-	public Boolean online(@CookieValue("cookieEmailOne") String mail, @CookieValue("cookieEmailOne")String token) {
+	public Boolean online(@CookieValue("cookieEmailOne") String mail, @CookieValue("cookieToken")String token) {
 		return userService.online(mail, token);
 	}
 }
