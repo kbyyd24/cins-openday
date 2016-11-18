@@ -5,7 +5,7 @@ import cn.edu.swpu.cins.openday.model.service.ScoreRank;
 public class Rank {
 	private Integer rank;
 	private String name;
-	private Integer score;
+	private float score;
 	private Long time;
 
 	public Rank() {}
@@ -32,11 +32,11 @@ public class Rank {
 		this.name = name;
 	}
 
-	public Integer getScore() {
+	public float getScore() {
 		return score;
 	}
 
-	public void setScore(Integer score) {
+	public void setScore(float score) {
 		this.score = score;
 	}
 

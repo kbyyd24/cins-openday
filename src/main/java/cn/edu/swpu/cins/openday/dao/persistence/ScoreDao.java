@@ -13,7 +13,8 @@ public class ScoreDao {
 		"SELECT g.group_name as groupName, r.group_id as groupId, s.score as score, s.time as time " +
 			"FROM `score` AS s " +
 			"INNER JOIN `registration` AS r ON (s.regist_id = r.id) " +
-			"INNER JOIN `group` AS g ON (r.group_id = g.id)";
+			"INNER JOIN `group` AS g ON (r.group_id = g.id) " +
+			"ORDER BY score DESC ";
 	private JdbcOperations jdbcOperations;
 
 	@Autowired

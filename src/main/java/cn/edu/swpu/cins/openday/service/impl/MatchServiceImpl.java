@@ -153,7 +153,7 @@ public class MatchServiceImpl implements MatchService {
 		HashSet<Integer> groupSet = new HashSet<>();
 		List<Rank> ranks = new LinkedList<>();
 		all.forEach(scoreRank -> {
-			if (!groupSet.add(scoreRank.getId())) {
+			if (groupSet.add(scoreRank.getId())) {
 				ranks.add(new Rank(scoreRank));
 			}
 		});
