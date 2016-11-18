@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS registration (
 CREATE TABLE IF NOT EXISTS `score` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `regist_id` int(11) NOT NULL COMMENT 'registration id',
-  `score` int NOT NULL COMMENT 'signUpUser score',
+  `score` FLOAT NOT NULL COMMENT 'signUpUser score',
   `time` bigint NOT NULL COMMENT 'commit time',
   PRIMARY KEY (`id`)
 )DEFAULT CHAR SET utf8 AUTO_INCREMENT 1000;

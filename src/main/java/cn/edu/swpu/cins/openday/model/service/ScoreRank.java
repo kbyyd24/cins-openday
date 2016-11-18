@@ -3,12 +3,12 @@ package cn.edu.swpu.cins.openday.model.service;
 public class ScoreRank {
 	private String name;
 	private Integer id;
-	private Integer score;
+	private Float score;
 	private Long time;
 
 	public ScoreRank() {}
 
-	public ScoreRank(String groupName, int groupId, int score, long time) {
+	public ScoreRank(String groupName, int groupId, float score, long time) {
 		name = groupName;
 		id = groupId;
 		this.score = score;
@@ -27,11 +27,11 @@ public class ScoreRank {
 		this.id = id;
 	}
 
-	public Integer getScore() {
+	public float getScore() {
 		return score;
 	}
 
-	public void setScore(Integer score) {
+	public void setScore(float score) {
 		this.score = score;
 	}
 
