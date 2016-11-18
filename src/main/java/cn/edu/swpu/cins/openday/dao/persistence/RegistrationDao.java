@@ -27,7 +27,7 @@ public class RegistrationDao {
 		"insert ignore into registration (match_id, user_id, group_id, captain) " +
 			"values " +
 			"(:matchId0, :userId0, :groupId0, :captain0), " +
-			"(:matchId1, :userId1, groupId1, captain1)";
+			"(:matchId1, :userId1, :groupId1, :captain1)";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
