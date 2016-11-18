@@ -2,6 +2,7 @@ package cn.edu.swpu.cins.openday.controller;
 
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
+import cn.edu.swpu.cins.openday.exception.OpenDayException;
 import cn.edu.swpu.cins.openday.model.http.HttpResult;
 import cn.edu.swpu.cins.openday.model.http.SignInUser;
 import cn.edu.swpu.cins.openday.model.http.SignUpUser;
@@ -29,7 +30,11 @@ public class UserController {
 	@PostMapping("signup")
 	public HttpResult signUp(@RequestBody SignUpUser signUpUser) {
 		String token = String.valueOf(timeService.getCurrentTimeMillis());
-		return userService.signUp(signUpUser, token);
+		try {
+			return userService.signUp(signUpUser, token);
+		} catch (OpenDayException ode) {
+			return new HttpResult(HttpResultEnum.SEND_MAIL_FAILED);
+		}
 	}
 
 	@PostMapping("enable")
