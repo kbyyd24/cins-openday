@@ -33,6 +33,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 			.addPathPatterns("/**");
 		registry
 			.addInterceptor(new MatchSecurityInterceptor(cacheService))
-			.addPathPatterns("/match/*");
+			.addPathPatterns("/match/*")
+			.excludePathPatterns("/match/rankList");
 	}
 }
