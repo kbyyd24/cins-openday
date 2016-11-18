@@ -10,10 +10,7 @@ import cn.edu.swpu.cins.openday.model.service.AuthUser;
 import cn.edu.swpu.cins.openday.service.TimeService;
 import cn.edu.swpu.cins.openday.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum.ENABLE_TOKEN_SUCCESS;
 
@@ -62,5 +59,10 @@ public class UserController {
 			return new HttpResult(HttpResultEnum.SIGN_OUT_SUCCESS);
 		}
 		return new HttpResult(HttpResultEnum.SIGN_OUT_FAILED);
+	}
+
+	@GetMapping("online")
+	public Boolean online(@CookieValue("") String mail, @CookieValue("")String token) {
+		return userService.online(mail, token);
 	}
 }

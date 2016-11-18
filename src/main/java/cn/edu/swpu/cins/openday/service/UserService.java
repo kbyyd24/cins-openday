@@ -17,4 +17,5 @@ public interface UserService {
 
 	UserServiceResultEnum signOut(AuthUser au);
 
+	boolean online(String mail, String token);
 }

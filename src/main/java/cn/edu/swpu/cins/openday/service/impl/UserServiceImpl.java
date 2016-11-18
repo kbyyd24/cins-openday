@@ -152,6 +152,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean online(String mail, String token) {
+		if (mail == null) return false;
+		String enableToken = cacheService.getEnableToken(mail);
+		return !(token == null || enableToken == null) && enableToken.equals(token);
+	}
+
+	@Override
 	public UserSignInResult signin(SignInUser signInUser) {
 		User user = userDao.signInUser(signInUser);
 		if (user == null || user.getId() == null) {
