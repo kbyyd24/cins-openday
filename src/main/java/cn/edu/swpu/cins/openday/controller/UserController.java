@@ -1,5 +1,6 @@
 package cn.edu.swpu.cins.openday.controller;
 
+import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
 import cn.edu.swpu.cins.openday.enums.HttpResultEnum;
 import cn.edu.swpu.cins.openday.enums.service.UserServiceResultEnum;
 import cn.edu.swpu.cins.openday.exception.OpenDayException;
@@ -33,7 +34,14 @@ public class UserController {
 		try {
 			return userService.signUp(signUpUser, token);
 		} catch (OpenDayException ode) {
-			return new HttpResult(HttpResultEnum.SEND_MAIL_FAILED);
+			String message = ode.getMessage();
+			if (message.equals(ExceptionMsgEnum.SEND_MAIL_FAILED.name())) {
+				return new HttpResult(HttpResultEnum.SEND_MAIL_FAILED);
+			}
+			if (message.equals(ExceptionMsgEnum.SAVE_CACHE_FAILED.name())) {
+				return new HttpResult(HttpResultEnum.SIGN_UP_USER_FAILED);
+			}
+			return new HttpResult(HttpResultEnum.UNKNOWN_ERROR);
 		}
 	}
 
