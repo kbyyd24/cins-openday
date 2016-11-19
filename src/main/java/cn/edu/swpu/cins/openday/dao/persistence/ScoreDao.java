@@ -10,11 +10,10 @@ import java.util.List;
 @Repository
 public class ScoreDao {
 	private static final String SELECT_ALL_WITH_NAME =
-		"SELECT g.group_name as groupName, r.group_id as groupId, s.score as score, s.time as time " +
+		"SELECT g.group_name as groupName, g.id as groupId, s.score as score, s.time as time " +
 			"FROM `score` AS s " +
-			"INNER JOIN `registration` AS r ON (s.regist_id = r.id) " +
-			"INNER JOIN `group` AS g ON (r.group_id = g.id) " +
-			"ORDER BY score DESC ";
+			"INNER JOIN `group` AS g ON (s.group_id = g.id) " +
+			"ORDER BY s.score DESC ";
 	private JdbcOperations jdbcOperations;
 
 	@Autowired

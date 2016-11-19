@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS registration (
 
 CREATE TABLE IF NOT EXISTS `score` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-  `regist_id` int(11) NOT NULL COMMENT 'registration id',
+  `group_id` int(11) NOT NULL COMMENT 'group id',
   `score` FLOAT NOT NULL COMMENT 'signUpUser score',
   `time` bigint NOT NULL COMMENT 'commit time',
   PRIMARY KEY (`id`)
@@ -64,7 +64,7 @@ ALTER TABLE `group` ADD CONSTRAINT `group_match_ref` FOREIGN KEY (`match_id`) RE
 ALTER TABLE registration ADD CONSTRAINT `mugm_match_ref` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE registration ADD CONSTRAINT `mugm_user_ref` FOREIGN KEY (user_id) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE registration ADD CONSTRAINT `mugm_group_ref` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE `score` ADD CONSTRAINT `score_enlist_ref` FOREIGN KEY (regist_id) REFERENCES registration (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `score` ADD CONSTRAINT `score_enlist_ref` FOREIGN KEY (group_id) REFERENCES `group` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 COMMIT ;
 
