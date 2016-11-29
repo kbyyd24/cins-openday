@@ -4,4 +4,6 @@ public interface TimeService {
 	long getCurrentTimeMillis();
 
 	String getDate();
+
+	long getMatchExpireTime();
 }
