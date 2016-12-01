@@ -29,10 +29,10 @@ public class MailServiceImpl implements MailService {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "utf-8");
 		helper.setSubject(subject);
-		helper.setText(content);
+		helper.setText(content, true);
 		helper.setFrom(fromMail);
 		helper.setTo(to.stream().toArray(String[]::new));
-		helper.setCc(to.stream().toArray(String[]::new));
+		helper.setCc(cc.stream().toArray(String[]::new));
 		javaMailSender.send(message);
 	}
 }

@@ -7,9 +7,9 @@ import cn.edu.swpu.cins.openday.end.advice.model.RankMsg;
 import cn.edu.swpu.cins.openday.end.advice.model.Regist;
 import cn.edu.swpu.cins.openday.end.advice.service.RankService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +22,7 @@ public class RankServiceImpl implements RankService {
 
 	private UserDao userDao;
 
-	@Value("#{'${openDay.cins.teams.id'.split(',')}")
-	private List<Integer> cinsTeams;
+	private List<Integer> cinsTeams = Arrays.asList(1236,1267,1235,1273,1237);
 
 	@Autowired
 	public RankServiceImpl(ScoreDao scoreDao, UserDao userDao) {

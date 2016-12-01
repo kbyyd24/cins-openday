@@ -11,10 +11,7 @@ import java.util.List;
 public class UserDao {
 
 	private static final String SELECT_MAIL_AND_GROUP_ID =
-		"select u.mail as mail, r.group_id as groupId " +
-			"from user as u " +
-			"inner join registration as r " +
-			"on r.user_id = u.id";
+		"select u.mail as mail, r.group_id as groupId from user as u inner join registration as r on r.user_id = u.id";
 	private NamedParameterJdbcOperations jdbcOperations;
 
 	@Autowired
