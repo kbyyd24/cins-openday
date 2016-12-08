@@ -3,7 +3,7 @@
 ### What is this repository for? ###
 
 * Open-Day 项目后端代码
-* 1.0-SNAPSHOT
+* 1.0
 
 ### How do I get set up? ###
 
