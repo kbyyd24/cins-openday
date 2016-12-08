@@ -1,5 +1,7 @@
 # README #
 
+set webhooks for slack team : cins
+
 ### What is this repository for? ###
 
 * Open-Day 项目后端代码
