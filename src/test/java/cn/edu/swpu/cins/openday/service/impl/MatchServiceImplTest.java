@@ -7,8 +7,10 @@ import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
 import cn.edu.swpu.cins.openday.model.persistence.User;
+import cn.edu.swpu.cins.openday.model.service.ScoreRank;
 import cn.edu.swpu.cins.openday.model.service.TeammateMsg;
 import cn.edu.swpu.cins.openday.service.MatchService;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -97,12 +98,13 @@ public class MatchServiceImplTest {
 
 	@Test
 	public void test_getRankList_success() throws Exception {
-		List scores = mock(List.class);
+		List<ScoreRank> scores = Lists.newArrayList(
+				new ScoreRank("name", 1, 1, 5),
+				new ScoreRank("name", 2, 3, 4),
+				new ScoreRank("name", 1, 2, 4));
 		when(scoreDao.getAll()).thenReturn(scores);
-		doNothing().when(scores).forEach(any(Consumer.class));
 		service.getRankList();
 		verify(scoreDao).getAll();
-		verify(scores).forEach(any(Consumer.class));
 	}
 
 	@Test

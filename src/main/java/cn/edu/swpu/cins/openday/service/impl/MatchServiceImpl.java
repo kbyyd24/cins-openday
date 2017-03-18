@@ -3,8 +3,14 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.ExceptionMsgEnum;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
-import cn.edu.swpu.cins.openday.exception.*;
-import cn.edu.swpu.cins.openday.model.http.*;
+import cn.edu.swpu.cins.openday.exception.GroupException;
+import cn.edu.swpu.cins.openday.exception.OpenDayException;
+import cn.edu.swpu.cins.openday.exception.RegistrationException;
+import cn.edu.swpu.cins.openday.exception.UserException;
+import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.Rank;
+import cn.edu.swpu.cins.openday.model.http.RankResult;
+import cn.edu.swpu.cins.openday.model.http.TeamMsg;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
@@ -20,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -151,13 +157,10 @@ public class MatchServiceImpl implements MatchService {
 
 	private List<Rank> filterDuplication(List<ScoreRank> all) {
 		HashSet<Integer> groupSet = new HashSet<>();
-		List<Rank> ranks = new LinkedList<>();
-		all.forEach(scoreRank -> {
-			if (groupSet.add(scoreRank.getId())) {
-				ranks.add(new Rank(scoreRank));
-			}
-		});
-		return ranks;
+		return all.stream()
+				.filter(scoreRank -> groupSet.add(scoreRank.getId()))
+				.map(Rank::new)
+				.collect(Collectors.toList());
 	}
 
 	private void setRank(List<Rank> ranks) {
