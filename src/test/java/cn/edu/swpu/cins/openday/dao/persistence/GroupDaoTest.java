@@ -31,7 +31,7 @@ public class GroupDaoTest {
 	@Test
 	public void test_addGroup_success() throws Exception {
 		Group group = new Group();
-		String sql = "insert into `group` (group_name, match_id) " +
+		String sql = "insert ignore into `group` (group_name, match_id) " +
 			"values (:groupName, :matchId);";
 		when(jdbcOperations.update(eq(sql), anyMap())).thenReturn(1);
 		int line = dao.addGroup(group);

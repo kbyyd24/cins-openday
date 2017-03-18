@@ -142,15 +142,12 @@ public class MatchServiceImplTest {
 	}
 
 	@Test
-	public void test_getRegistId_success() throws Exception {
-		int registId = 1;
+	public void test_getGroupId_success() throws Exception {
+		int groupId = 1;
 		int userId = 1;
 		int matchId = 1;
-		Registration registration = mock(Registration.class);
-		when(registrationDao.getRegistration(matchId, userId)).thenReturn(registration);
-		when(registration.getId()).thenReturn(registId);
-		assertThat(service.getGroupId(matchId, userId), is(registId));
-		verify(registrationDao).getRegistration(matchId, userId);
-		verify(registration).getId();
+		when(registrationDao.getGroupId(matchId, userId)).thenReturn(groupId);
+		assertThat(service.getGroupId(matchId, userId), is(groupId));
+		verify(registrationDao).getGroupId(matchId, userId);
 	}
 }
