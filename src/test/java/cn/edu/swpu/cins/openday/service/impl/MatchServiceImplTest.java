@@ -3,6 +3,8 @@ package cn.edu.swpu.cins.openday.service.impl;
 import cn.edu.swpu.cins.openday.dao.persistence.*;
 import cn.edu.swpu.cins.openday.enums.service.MatchServiceResultEnum;
 import cn.edu.swpu.cins.openday.model.http.MatchRegister;
+import cn.edu.swpu.cins.openday.model.http.Rank;
+import cn.edu.swpu.cins.openday.model.http.RankResult;
 import cn.edu.swpu.cins.openday.model.persistence.Group;
 import cn.edu.swpu.cins.openday.model.persistence.Match;
 import cn.edu.swpu.cins.openday.model.persistence.Registration;
@@ -17,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -98,13 +101,20 @@ public class MatchServiceImplTest {
 
 	@Test
 	public void test_getRankList_success() throws Exception {
+		ScoreRank rank1 = new ScoreRank("name", 1, 1, 5);
+		ScoreRank rank2 = new ScoreRank("name", 2, 3, 4);
 		List<ScoreRank> scores = Lists.newArrayList(
-				new ScoreRank("name", 1, 1, 5),
-				new ScoreRank("name", 2, 3, 4),
+				rank1,
+				rank2,
 				new ScoreRank("name", 1, 2, 4));
 		when(scoreDao.getAll()).thenReturn(scores);
-		service.getRankList();
-		verify(scoreDao).getAll();
+		ArrayList<Rank> ranks = Lists.newArrayList(new Rank(rank1), new Rank(rank2));
+		ranks.get(0).setRank(1);
+		ranks.get(1).setRank(2);
+		RankResult rankList = service.getRankList();
+		RankResult rankResult = new RankResult();
+		rankResult.setRankList(ranks);
+		assertThat(rankList, is(rankResult));
 	}
 
 	@Test

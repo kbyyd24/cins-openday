@@ -164,7 +164,8 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	private void setRank(List<Rank> ranks) {
-		final int[] i = {1};
-		ranks.forEach(rank -> rank.setRank(i[0]++));
+		for (int i = 0; i < ranks.size();) {
+			ranks.get(i).setRank(++i);
+		}
 	}
 }
